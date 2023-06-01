@@ -1,0 +1,824 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     35566,        814]
+NotebookOptionsPosition[     34186,        781]
+NotebookOutlinePosition[     34589,        797]
+CellTagsIndexPosition[     34546,        794]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Old", " ", "=", " ", 
+  RowBox[{"Get", "[", "\"\<o1through4.m\>\"", "]"}]}]], "Input",
+ CellChangeTimes->{{3.8945492459059725`*^9, 3.8945492480738506`*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"5cb944b6-65ca-4391-81e1-674c34f339bb"],
+
+Cell[BoxData[
+ TemplateBox[<|"shortenedBoxes" -> TagBox[
+     RowBox[{
+       RowBox[{"(", 
+         RowBox[{"1", "-", "x"}], ")"}], " ", "x", " ", 
+       RowBox[{"(", 
+         RowBox[{
+           FractionBox[
+            RowBox[{"3", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{"-", "t"}]], " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  RowBox[{
+                    FractionBox["1", "4"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"2", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    ")"}]}], "+", 
+                  RowBox[{
+                    FractionBox["1", "6"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}], "+", 
+                  RowBox[{
+                    FractionBox["1", "24"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}]}], ")"}], " ", 
+              SuperscriptBox["W", "4"]}], 
+            RowBox[{"8", " ", 
+              SuperscriptBox["Ne", "4"]}]], "+", 
+           TemplateBox[{"16687"}, "OutputSizeLimit`Skeleton"], "+", 
+           FractionBox[
+            RowBox[{"250", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{
+                 RowBox[{"-", "3"}], " ", "t"}]], " ", 
+              SuperscriptBox["W", "2"], " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  FractionBox[
+                   RowBox[{
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{
+                    RowBox[{"-", 
+                    FractionBox["1", "2"]}], " ", "t", " ", 
+                    RowBox[{"(", 
+                    RowBox[{"14", "+", 
+                    FractionBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "W"]}], 
+                    ")"}]}]], " ", 
+                    SuperscriptBox["W", "2"], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "2"}], "-", 
+                    RowBox[{"4", " ", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], "+", 
+                    RowBox[{"6", " ", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}]}], ")"}],
+                     " ", "Ne", " ", "VG"}], "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}]}], 
+                   RowBox[{"4", " ", 
+                    SuperscriptBox["Ne", "2"], " ", 
+                    SuperscriptBox["VG", "2"], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"8", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"14", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"24", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"14", " ", "W"}]}], ")"}]}]], "+", 
+                  FractionBox[
+                   TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                   TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], "+", 
+                  FractionBox[
+                   TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                   TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], "-", 
+                  FractionBox[
+                   TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                   RowBox[{"Ne", " ", "VG", " ", 
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                    ")"}]}]]}], ")"}], " ", 
+              RowBox[{"(", 
+                TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}], " ", 
+              RowBox[{"(", 
+                RowBox[{"1", "-", 
+                  RowBox[{"2", " ", "y"}]}], ")"}], " ", 
+              SuperscriptBox["\[Alpha]", "4"], " ", 
+              SuperscriptBox["\[CapitalLambda]", "4"]}], 
+            RowBox[{"290521", " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  RowBox[{"8", " ", "Ne", " ", "VG"}], "-", 
+                  RowBox[{"14", " ", "W"}]}], ")"}]}]]}], ")"}]}], 
+     Short[#, 8]& ], "line" -> 30, "sessionID" -> 28662357560774840171, 
+   "byteCount" -> 154951352, "size" -> 8, "stored" -> False, "expr" -> 
+   Missing["NotStored"], "wrap" -> OutputSizeLimit`Defer, "version" -> 1|>,
+  "OutputSizeLimitTemplate"]], "Output",
+ CellChangeTimes->{3.894549257446255*^9},
+ CellLabel->"Out[30]=",ExpressionUUID->"6bb5887e-1467-4e33-891b-95ecf6167701"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"New", " ", "=", " ", 
+  RowBox[{"Get", "[", "\"\<o1through4Parallel.m\>\"", "]"}]}]], "Input",
+ CellChangeTimes->{{3.8945492515594053`*^9, 3.8945492559256163`*^9}},
+ CellLabel->"In[31]:=",ExpressionUUID->"e8ba2386-0c32-4f91-89fc-414a08a6f4f0"],
+
+Cell[BoxData[
+ TemplateBox[<|"shortenedBoxes" -> TagBox[
+     RowBox[{
+       RowBox[{"(", 
+         RowBox[{"1", "-", "x"}], ")"}], " ", "x", " ", 
+       RowBox[{"(", 
+         RowBox[{
+           FractionBox[
+            RowBox[{"3", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{"-", "t"}]], " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  RowBox[{
+                    FractionBox["1", "4"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"2", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    ")"}]}], "+", 
+                  RowBox[{
+                    FractionBox["1", "6"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}], "+", 
+                  RowBox[{
+                    FractionBox["1", "24"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}]}], ")"}], " ", 
+              SuperscriptBox["W", "4"]}], 
+            RowBox[{"8", " ", 
+              SuperscriptBox["Ne", "4"]}]], "-", 
+           FractionBox[
+            RowBox[{"3", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{"-", "t"}]], " ", 
+              SuperscriptBox["VG", "2"], " ", 
+              SuperscriptBox["W", "3"], " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  FractionBox["W", 
+                   RowBox[{"4", " ", "Ne", " ", "VG", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}]}]], "-", 
+                  FractionBox[
+                   RowBox[{
+                    SuperscriptBox["\[ExponentialE]", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], " ", 
+                    "W"}], 
+                   RowBox[{"4", " ", "Ne", " ", "VG", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}]}]], "-", 
+                  FractionBox["W", 
+                   TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], "+", 
+                  TemplateBox[{"6"}, "OutputSizeLimit`Skeleton"], "+", 
+                  FractionBox[
+                   RowBox[{"64", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"t", " ", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], 
+                    RowBox[{"2", " ", "W"}]]], " ", 
+                    SuperscriptBox["Ne", "2"], " ", 
+                    SuperscriptBox["VG", "2"], " ", "W"}], 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"8", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"12", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"4", " ", "W"}]}], ")"}]}]]}], ")"}]}], 
+            RowBox[{"10", " ", 
+              SuperscriptBox["Ne", "2"]}]], "+", 
+           FractionBox[
+            RowBox[{"3", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{"-", "t"}]], " ", 
+              SuperscriptBox["VG", "4"], " ", 
+              SuperscriptBox["W", "2"], " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  TemplateBox[{"4"}, "OutputSizeLimit`Skeleton"], "+", 
+                  TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}]}], 
+            RowBox[{"5", " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  RowBox[{"4", " ", "Ne", " ", "VG"}], "-", 
+                  RowBox[{"4", " ", "W"}]}], ")"}]}]], "+", 
+           RowBox[{
+             FractionBox["6", "5"], " ", 
+             SuperscriptBox["\[ExponentialE]", 
+              RowBox[{"-", "t"}]], " ", 
+             SuperscriptBox["VG", "4"], " ", 
+             RowBox[{"(", 
+               TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}]}], "+", 
+           TemplateBox[{"16680"}, "OutputSizeLimit`Skeleton"], "+", 
+           FractionBox[
+            TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "66066"], "+", 
+           FractionBox[
+            RowBox[{"25", " ", 
+              TemplateBox[{"6"}, "OutputSizeLimit`Skeleton"], " ", 
+              SuperscriptBox["\[CapitalLambda]", "4"]}], 
+            RowBox[{"52822", " ", 
+              SuperscriptBox["Ne", "2"], " ", 
+              SuperscriptBox["VG", "2"]}]], "+", 
+           FractionBox[
+            RowBox[{"250", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{
+                 RowBox[{"-", "3"}], " ", "t"}]], " ", 
+              SuperscriptBox["W", "2"], " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  FractionBox[
+                   RowBox[{
+                    SuperscriptBox["\[ExponentialE]", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], " ", 
+                    SuperscriptBox["W", "2"], " ", 
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}]}], 
+                   RowBox[{"4", " ", 
+                    TemplateBox[{"3"}, "OutputSizeLimit`Skeleton"], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"24", " ", "Ne", " ", "VG"}], "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], 
+                    ")"}]}]], "+", 
+                  TemplateBox[{"4"}, "OutputSizeLimit`Skeleton"]}], ")"}], 
+              " ", 
+              RowBox[{"(", 
+                RowBox[{"1", "-", 
+                  TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}], 
+              " ", 
+              RowBox[{"(", 
+                RowBox[{"1", "-", 
+                  RowBox[{"2", " ", "y"}]}], ")"}], " ", 
+              SuperscriptBox["\[Alpha]", "4"], " ", 
+              SuperscriptBox["\[CapitalLambda]", "4"]}], 
+            RowBox[{"290521", " ", 
+              RowBox[{"(", 
+                RowBox[{
+                  RowBox[{"8", " ", "Ne", " ", "VG"}], "-", 
+                  RowBox[{"14", " ", "W"}]}], ")"}]}]], "+", 
+           FractionBox[
+            RowBox[{"5", " ", 
+              SuperscriptBox["\[ExponentialE]", 
+               RowBox[{
+                 RowBox[{"-", "3"}], " ", "t"}]], " ", 
+              TemplateBox[{"3"}, "OutputSizeLimit`Skeleton"], " ", 
+              SuperscriptBox["\[Alpha]", "4"], " ", 
+              SuperscriptBox["\[CapitalLambda]", "4"]}], "14406"]}], ")"}]}], 
+     Short[#, 8]& ], "line" -> 31, "sessionID" -> 28662357560774840171, 
+   "byteCount" -> 151785792, "size" -> 8, "stored" -> False, "expr" -> 
+   Missing["NotStored"], "wrap" -> OutputSizeLimit`Defer, "version" -> 1|>,
+  "OutputSizeLimitTemplate"]], "Output",
+ CellChangeTimes->{3.8945492711799574`*^9},
+ CellLabel->"Out[31]=",ExpressionUUID->"d8cda86d-9dba-453c-98c5-e42fd988efb4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Old", "[", "4", "]"}]], "Input",
+ CellChangeTimes->{{3.894549262327841*^9, 3.8945492636900387`*^9}},
+ CellLabel->"In[32]:=",ExpressionUUID->"e2549a94-dc97-453a-8b81-168a0ecedc02"],
+
+Cell[BoxData[
+ TemplateBox[<|"shortenedBoxes" -> TagBox[
+     RowBox[{
+       RowBox[{"(", 
+         RowBox[{
+           RowBox[{"(", 
+             RowBox[{"1", "-", "x"}], ")"}], " ", "x", " ", 
+           RowBox[{"(", 
+             RowBox[{
+               FractionBox[
+                RowBox[{"3", " ", 
+                  SuperscriptBox["\[ExponentialE]", 
+                   RowBox[{"-", "t"}]], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    FractionBox["1", "4"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"2", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    ")"}]}], "+", 
+                    RowBox[{
+                    FractionBox["1", "6"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}], "+", 
+                    RowBox[{
+                    FractionBox["1", "24"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}]}], ")"}], " ", 
+                  SuperscriptBox["W", "4"]}], 
+                RowBox[{"8", " ", 
+                  SuperscriptBox["Ne", "4"]}]], "+", 
+               TemplateBox[{"16687"}, "OutputSizeLimit`Skeleton"], "+", 
+               FractionBox[
+                RowBox[{"250", " ", 
+                  SuperscriptBox["\[ExponentialE]", 
+                   RowBox[{
+                    RowBox[{"-", "3"}], " ", "t"}]], " ", 
+                  SuperscriptBox["W", "2"], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    FractionBox[
+                    RowBox[{
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{
+                    RowBox[{"-", 
+                    FractionBox["1", "2"]}], " ", "t", " ", 
+                    RowBox[{"(", 
+                    RowBox[{"14", "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], 
+                    ")"}]}]], " ", 
+                    SuperscriptBox["W", "2"], " ", 
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}]}], 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox["Ne", "2"], " ", 
+                    SuperscriptBox["VG", "2"], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"8", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"14", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"24", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"14", " ", "W"}]}], ")"}]}]], "+", 
+                    FractionBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                    RowBox[{
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}], 
+                    " ", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}]], "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "-", 
+                    FractionBox[
+                    RowBox[{"2", " ", "W", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"-", "2"}], " ", "W", " ", 
+                    RowBox[{"(", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], ")"}]}], 
+                    "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}]}], 
+                    RowBox[{"Ne", " ", "VG", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"16", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"14", " ", "W"}]}], ")"}]}]]}], ")"}], " ", 
+                  RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}], 
+                  " ", 
+                  RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", "y"}]}], ")"}], " ", 
+                  SuperscriptBox["\[Alpha]", "4"], " ", 
+                  SuperscriptBox["\[CapitalLambda]", "4"]}], 
+                RowBox[{"290521", " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"8", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"14", " ", "W"}]}], ")"}]}]]}], ")"}]}], ")"}], 
+       "[", "4", "]"}], Short[#, 8]& ], "line" -> 32, "sessionID" -> 
+   28662357560774840171, "byteCount" -> 154951416, "size" -> 8, "stored" -> 
+   False, "expr" -> Missing["NotStored"], "wrap" -> OutputSizeLimit`Defer, 
+   "version" -> 1|>,
+  "OutputSizeLimitTemplate"]], "Output",
+ CellChangeTimes->{3.8945492753870215`*^9},
+ CellLabel->"Out[32]=",ExpressionUUID->"7b5189c6-eb8d-4dc2-9be3-edc5c600c151"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"New", "[", "4", "]"}]], "Input",
+ CellChangeTimes->{{3.8945493090229883`*^9, 3.8945493107041063`*^9}},
+ CellLabel->"In[33]:=",ExpressionUUID->"e1d72583-f6de-4323-aeaf-92d976f649b7"],
+
+Cell[BoxData[
+ TemplateBox[<|"shortenedBoxes" -> TagBox[
+     RowBox[{
+       RowBox[{"(", 
+         RowBox[{
+           RowBox[{"(", 
+             RowBox[{"1", "-", "x"}], ")"}], " ", "x", " ", 
+           RowBox[{"(", 
+             RowBox[{
+               FractionBox[
+                RowBox[{"3", " ", 
+                  SuperscriptBox["\[ExponentialE]", 
+                   RowBox[{"-", "t"}]], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    FractionBox["1", "4"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"2", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    ")"}]}], "+", 
+                    RowBox[{
+                    FractionBox["1", "6"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "1"}], "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"4", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "-", 
+                    RowBox[{"2", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}], "+", 
+                    RowBox[{
+                    FractionBox["1", "24"], " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    RowBox[{"-", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]}]], 
+                    " ", 
+                    RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"4", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"6", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}], 
+                    "+", 
+                    RowBox[{"3", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"8", " ", "Ne", " ", "t", " ", "VG"}], "W"]]}]}], 
+                    ")"}]}]}], ")"}], " ", 
+                  SuperscriptBox["W", "4"]}], 
+                RowBox[{"8", " ", 
+                  SuperscriptBox["Ne", "4"]}]], "-", 
+               FractionBox[
+                RowBox[{"3", " ", 
+                  SuperscriptBox["\[ExponentialE]", 
+                   RowBox[{"-", "t"}]], " ", 
+                  SuperscriptBox["VG", "2"], " ", 
+                  SuperscriptBox["W", "3"], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    TemplateBox[{"11"}, "OutputSizeLimit`Skeleton"], "+", 
+                    FractionBox[
+                    RowBox[{"64", " ", 
+                    SuperscriptBox["\[ExponentialE]", 
+                    FractionBox[
+                    RowBox[{"t", " ", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], 
+                    RowBox[{"2", " ", "W"}]]], " ", 
+                    SuperscriptBox["Ne", "2"], " ", 
+                    SuperscriptBox["VG", "2"], " ", "W"}], 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"8", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"12", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"4", " ", "W"}]}], ")"}]}]]}], ")"}]}], 
+                RowBox[{"10", " ", 
+                  SuperscriptBox["Ne", "2"]}]], "+", 
+               FractionBox[
+                RowBox[{"3", " ", 
+                  TemplateBox[{"3"}, "OutputSizeLimit`Skeleton"], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    TemplateBox[{"4"}, "OutputSizeLimit`Skeleton"], "+", 
+                    FractionBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]]}], 
+                    ")"}]}], 
+                RowBox[{"5", " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"4", " ", "W"}]}], ")"}]}]], "+", 
+               TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "+", 
+               TemplateBox[{"16680"}, "OutputSizeLimit`Skeleton"], "+", 
+               FractionBox[
+                RowBox[{"25", " ", 
+                  TemplateBox[{"5"}, "OutputSizeLimit`Skeleton"], " ", 
+                  SuperscriptBox["\[CapitalLambda]", "4"]}], "66066"], "+", 
+               FractionBox[
+                RowBox[{"25", " ", 
+                  TemplateBox[{"6"}, "OutputSizeLimit`Skeleton"], " ", 
+                  SuperscriptBox["\[CapitalLambda]", "4"]}], 
+                RowBox[{"52822", " ", 
+                  SuperscriptBox["Ne", "2"], " ", 
+                  SuperscriptBox["VG", "2"]}]], "+", 
+               FractionBox[
+                RowBox[{"250", " ", 
+                  SuperscriptBox["\[ExponentialE]", 
+                   RowBox[{
+                    RowBox[{"-", "3"}], " ", "t"}]], " ", 
+                  SuperscriptBox["W", "2"], " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    FractionBox[
+                    RowBox[{
+                    SuperscriptBox["\[ExponentialE]", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]], " ", 
+                    SuperscriptBox["W", "2"], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"4", " ", 
+                    TemplateBox[{"2"}, "OutputSizeLimit`Skeleton"], " ", 
+                    "VG"}], "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]}], ")"}]}], 
+                    RowBox[{"4", " ", 
+                    TemplateBox[{"3"}, "OutputSizeLimit`Skeleton"], " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"24", " ", "Ne", " ", "VG"}], "+", 
+                    RowBox[{"14", " ", "W"}]}], ")"}]}]], "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "+", 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], "-", 
+                    FractionBox[
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], 
+                    TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"]]}], ")"}], 
+                  " ", 
+                  TemplateBox[{"1"}, "OutputSizeLimit`Skeleton"], " ", 
+                  RowBox[{"(", 
+                    RowBox[{"1", "-", 
+                    RowBox[{"2", " ", "y"}]}], ")"}], " ", 
+                  SuperscriptBox["\[Alpha]", "4"], " ", 
+                  SuperscriptBox["\[CapitalLambda]", "4"]}], 
+                RowBox[{"290521", " ", 
+                  RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"8", " ", "Ne", " ", "VG"}], "-", 
+                    RowBox[{"14", " ", "W"}]}], ")"}]}]], "+", 
+               FractionBox[
+                RowBox[{"5", " ", 
+                  SuperscriptBox["\[ExponentialE]", 
+                   RowBox[{
+                    RowBox[{"-", "3"}], " ", "t"}]], " ", 
+                  TemplateBox[{"3"}, "OutputSizeLimit`Skeleton"], " ", 
+                  SuperscriptBox["\[Alpha]", "4"], " ", 
+                  SuperscriptBox["\[CapitalLambda]", "4"]}], "14406"]}], 
+             ")"}]}], ")"}], "[", "4", "]"}], Short[#, 8]& ], "line" -> 33, 
+   "sessionID" -> 28662357560774840171, "byteCount" -> 151785856, "size" -> 8,
+    "stored" -> False, "expr" -> Missing["NotStored"], "wrap" -> 
+   OutputSizeLimit`Defer, "version" -> 1|>,
+  "OutputSizeLimitTemplate"]], "Output",
+ CellChangeTimes->{3.8945493153784113`*^9},
+ CellLabel->"Out[33]=",ExpressionUUID->"57a80f25-7e82-43de-bdd2-92a7b8f17af2"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Old", "[", "4", "]"}], " ", "==", " ", 
+   RowBox[{"New", "[", "4", "]"}]}], " ", "//", "FullSimplify"}]], "Input",
+ CellChangeTimes->{{3.8945493220836897`*^9, 3.8945493450988846`*^9}},
+ CellLabel->"In[34]:=",ExpressionUUID->"8829a1ab-b45c-4b54-aa9c-41d4335d8fee"],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.894550283643527*^9},
+ CellLabel->"Out[34]=",ExpressionUUID->"013346e9-b637-4bd1-b2b7-5d9e0e121bdf"]
+}, Open  ]]
+},
+WindowSize->{949., 472.5},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"7e9bd76c-1866-4aa9-94c7-68f278f422b1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 259, 4, 28, "Input",ExpressionUUID->"5cb944b6-65ca-4391-81e1-674c34f339bb"],
+Cell[842, 28, 6592, 146, 308, "Output",ExpressionUUID->"6bb5887e-1467-4e33-891b-95ecf6167701"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7471, 179, 267, 4, 28, "Input",ExpressionUUID->"e8ba2386-0c32-4f91-89fc-414a08a6f4f0"],
+Cell[7741, 185, 9458, 211, 349, "Output",ExpressionUUID->"d8cda86d-9dba-453c-98c5-e42fd988efb4"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17236, 401, 203, 3, 28, "Input",ExpressionUUID->"e2549a94-dc97-453a-8b81-168a0ecedc02"],
+Cell[17442, 406, 6834, 151, 276, "Output",ExpressionUUID->"7b5189c6-eb8d-4dc2-9be3-edc5c600c151"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24313, 562, 205, 3, 28, "Input",ExpressionUUID->"e1d72583-f6de-4323-aeaf-92d976f649b7"],
+Cell[24521, 567, 9142, 196, 349, "Output",ExpressionUUID->"57a80f25-7e82-43de-bdd2-92a7b8f17af2"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[33700, 768, 311, 6, 28, "Input",ExpressionUUID->"8829a1ab-b45c-4b54-aa9c-41d4335d8fee"],
+Cell[34014, 776, 156, 2, 54, "Output",ExpressionUUID->"013346e9-b637-4bd1-b2b7-5d9e0e121bdf"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
