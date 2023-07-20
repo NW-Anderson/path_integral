@@ -1,15 +1,43 @@
-library(data.table)
 library(ggraptR)
-library(gridExtra)
-library(viridis)
-library(matrixStats)
-library(tidyr)
+library(poolSeq)
 library(patchwork)
+library(dplyr)
+library(ggridges)
+library(tidyr)
+library(viridis)
+library(colorspace)
+library(gganimate)
+library(gifski)
+library(av)
+library(png)
+library(magick)
+library(scico)
+library(plotrix)
+library(ggdensity)
+library(ggplot2) # needs to be version ≥ 2.1.0
+library(scales)
+library(devtools)
+library(network)
+library(sna)
+library(GGally)
+library(geomnet)
+library(ggnetwork)
+library(igraph)
+library(ggraph)
+library(tidygraph)
+library(vcfR)
+library(ggplotify)
+library(pheatmap)
 library(ggbreak)
 dev.off()
 data <- fread("alpha_VG.csv")
 data$popalpha = 1000 * data$alpha
-ggraptR(data)
+tmp <- data[1:3,]
+tmp$popalpha <- 0
+tmp$Pdetected <- 0.01
+data <- rbind(data,tmp)
+rm(tmp)
+# ggraptR(data)
 ggplot(data = data, aes(x = popalpha, y = Pdetected)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
@@ -20,7 +48,20 @@ ggplot(data = data, aes(x = popalpha, y = Pdetected)) +
   geom_hline(yintercept=0.01, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_break(c(2,3), scales = 1.5) 
+  # scale_x_break(c(1,2), scales = 0.9) 
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.25,0.5,0.75,1,2,5), 
+                     limits = c(0,5),
+                     labels = c(0,0.25,0.5,0.75,1,2,5)) +
+  scale_y_continuous("P(detected)",
+                     breaks = c(0.01,0.02,0.04,0.06)) +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",4),"red",rep("black",2))))
