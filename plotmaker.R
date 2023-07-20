@@ -30,6 +30,9 @@ library(ggplotify)
 library(pheatmap)
 library(ggbreak)
 dev.off()
+
+#######################################
+
 data <- fread("alpha_VG.csv")
 data$popalpha = 1000 * data$alpha
 tmp <- data[1:3,]
@@ -53,6 +56,81 @@ ggplot(data = data, aes(x = popalpha, y = Pdetected)) +
              color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  # scale_x_break(c(1,2), scales = 0.9) 
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.25,0.5,0.75,1,2,5), 
+                     limits = c(0,5),
+                     labels = c(0,0.25,0.5,0.75,1,2,5)) +
+  scale_y_continuous("P(detected)",
+                     breaks = c(0.01,0.02,0.04,0.06)) +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",4),"red",rep("black",2))))
+
+#####################################################
+data <- fread("alpha_mult.csv")
+data$popalpha = 1000 * data$alpha
+tmp <- data[1:3,]
+tmp$popalpha <- 0
+tmp$Pdetected <- 0.01
+data <- rbind(data,tmp)
+rm(tmp)
+# ggraptR(data)
+ggplot(data = data, aes(x = popalpha, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(mult)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(mult)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Starting freq multiplier",
+                            override.aes = list(alpha=1))) +
+  # scale_x_break(c(1,2), scales = 0.9) 
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.25,0.5,0.75,1,2,5), 
+                     limits = c(0,5),
+                     labels = c(0,0.25,0.5,0.75,1,2,5)) +
+  scale_y_continuous("P(detected)",
+                     breaks = c(0.01,0.02,0.04,0.06)) +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",4),"red",rep("black",2))))
+
+############################################3
+
+data <- fread("alpha_start.csv")
+data$popalpha = 1000 * data$alpha
+tmp <- data[1:3,]
+tmp$popalpha <- 0
+tmp$Pdetected <- 0.01
+data <- rbind(data,tmp)
+rm(tmp)
+# ggraptR(data)
+ggplot(data = data, aes(x = popalpha, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(start)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(start)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Starting freq",
                             override.aes = list(alpha=1))) +
   # scale_x_break(c(1,2), scales = 0.9) 
   scale_x_continuous("Population Scaled Selection Coefficient", 
