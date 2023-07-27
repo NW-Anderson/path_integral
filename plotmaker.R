@@ -187,8 +187,8 @@ ggplot(data = data, aes(x = reps, y = Pdetectedatleastonce)) +
              size = 2.5) +
   geom_line(data = neutdata, 
             aes(x = reps, y = Pdetectedatleastonce), 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
+            linetype="dashed", 
+            color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
   guides(color=guide_legend(title = "Population Scaled\n Selection Coefficient",
                             override.aes = list(alpha=1))) +
@@ -200,3 +200,257 @@ ggplot(data = data, aes(x = reps, y = Pdetectedatleastonce)) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+
+#################################################
+
+#set parameters
+dt = .001
+n = 1000
+t = cumsum(rep(dt,n))
+
+#Brownian motion
+B = cumsum(rnorm(n,0,sqrt(dt)))
+
+plot(t,B,type="l")
+
+# master <- data.frame("class","rep", "X", "t")
+
+for(rep in 1:10){
+  #neutral Wright-Fisher
+  Edx = function(x,t){0}
+  Vdx = function(x,t){x*(1-x)}
+  X = numeric(n)
+  X[1] = .3
+  for (i in 2:n) {
+    X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
+    X[i] = max(0,X[i])
+    X[i] = min(1,X[i])
+  }
+  
+  # plot(t,X,type="l",ylim = c(0,1))
+  if(rep == 1){
+    master <- data.frame(class = 0,rep = rep, X = X,t = t)
+  }else{
+    master <- dplyr::bind_rows(master,
+                               data.frame(class = 0,
+                                          rep = rep, 
+                                          X = X,
+                                          t = t))
+  }
+  for(Numinteractions in c(10,100,200,500)){
+    interactions = sample(2:n,Numinteractions) %>% sort()
+    Edx = function(x,t){5*x*(1-x)}
+    Vdx = function(x,t){x*(1-x)}
+    X = numeric(n)
+    X[1] = .3
+    for (i in 2:n) {
+      if(i %in% interactions){
+        X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt 
+        X[i] = max(0,X[i])
+        X[i] = min(1,X[i])
+      } else{
+        X[i] = X[i-1] + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
+        X[i] = max(0,X[i])
+        X[i] = min(1,X[i])
+      }
+    }
+    master <- dplyr::bind_rows(master,
+                               data.frame(class = Numinteractions,
+                                          rep = rep, 
+                                          X = X,
+                                          t = t))
+  }
+  
+}
+
+Edx = function(x,t){5*x*(1-x)}
+Vdx = function(x,t){x*(1-x)}
+X = numeric(n)
+X[1] = .3
+for (i in 2:n) {
+  X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt
+  X[i] = max(0,X[i])
+  X[i] = min(1,X[i])
+}
+master <- dplyr::bind_rows(master,
+                           data.frame(class = 1000,
+                                      rep = 1, 
+                                      X = X,
+                                      t = t))
+# ggplot(master, aes(x = t, y = X)) + 
+#   geom_line(aes(color = as.factor(class),
+#                 alpha = as.factor(rep)))
+
+tmp <- master %>% # filter(class %in% c(0,500,1000)) %>%
+  filter(rep <= 3) %>%
+  group_by(class,rep) %>%
+  mutate(lineID = cur_group_id()) %>%
+  ungroup() %>% 
+  mutate(deterministic = (class == 1000))
+
+detline <- tmp %>% filter(deterministic)
+stochline <- tmp %>% filter(!deterministic)
+
+# #genic selection Wright-Fisher
+for(rep in 1:10){
+  #neutral Wright-Fisher
+  Edx = function(x,t){0}
+  Vdx = function(x,t){x*(1-x)}
+  X = numeric(n)
+  X[1] = .3
+  for (i in 2:n) {
+    X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
+    X[i] = max(0,X[i])
+    X[i] = min(1,X[i])
+  }
+  
+  # plot(t,X,type="l",ylim = c(0,1))
+  if(rep == 1){
+    masterdiff <- data.frame(class = 0,rep = rep, X = X,t = t)
+  }else{
+    masterdiff <- dplyr::bind_rows(masterdiff,
+                                   data.frame(class = 0,
+                                              rep = rep, 
+                                              X = X,
+                                              t = t))
+  }
+}
+
+diffline <- masterdiff %>% filter(rep <= 3)
+# Edx = function(x,t){5*x*(1-x)}
+# Vdx = function(x,t){x*(1-x)}
+# X = numeric(n)
+# X[1] = .3
+# for (i in 2:n) {
+#   X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
+#   X[i] = max(0,X[i])
+#   X[i] = min(1,X[i])
+# }
+# 
+# ggplot(stochline, aes(x = t, y = X)) +
+#   geom_line(aes(color = class,
+#                 group = as.factor(lineID)),
+#                 alpha = 0.6,
+#                 linewidth = 0.5) +
+#   theme_bw() +
+#   guides(color=guide_legend(title = "Number of\n interactions",
+#                             override.aes = list(alpha=1))) +
+#   # scale_x_break(c(1,2), scales = 0.9) 
+#   scale_x_continuous("time (genomic units)") +
+#   scale_y_continuous("Allele Frequency") +
+#   theme(panel.grid.minor.y = element_blank(),
+#         panel.grid.minor.x = element_blank()) +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+#   scale_color_viridis(end = 0.8) + 
+#   geom_line(data = detline,
+#             aes(x = t, y = X),
+#             color = viridis(11)[11],
+#             size = 1.5) +
+#   geom_line(data = diffline, 
+#             aes(x = t, y = X,
+#                 group = rep), 
+#             linetype="dashed", 
+#             color = viridis(11)[11], size  = 0.75) 
+# 
+# firstplot <- ggplot(detline,aes(x = t, y = X)) + 
+#   theme_bw() +
+#   guides(color=element_blank()) +
+#   # scale_x_break(c(1,2), scales = 0.9) 
+#   scale_x_continuous("time (genomic units)") +
+#   scale_y_continuous("Allele Frequency",
+#                      limits = c(0,1)) +
+#   theme(panel.grid.minor.y = element_blank(),
+#         panel.grid.minor.x = element_blank()) +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+#   geom_line(color = viridis(11)[11],
+#             size = 1.5) 
+
+firstplot
+
+secondplot <- firstplot +
+  geom_line(data = diffline, 
+            aes(x = t, y = X,
+                group = rep), 
+            linetype="dashed", 
+            color = viridis(11)[11], size  = 0.75) 
+
+secondplot
+
+neutline <- stochline %>% filter(class == 0)
+thirdplot <- secondplot + 
+  geom_line(data = neutline,
+            aes(group = as.factor(lineID)),
+            alpha = 0.6,
+            linewidth = 0.5,
+            color = viridis(11)[1]) 
+
+thirdplot
+
+tmp <- master %>% # filter(class %in% c(0,500,1000)) %>%
+  filter(rep %in% sample(1:10,3)) %>%
+  group_by(class,rep) %>%
+  mutate(lineID = cur_group_id()) %>%
+  ungroup() %>% 
+  mutate(deterministic = (class == 1000))
+pertline <- tmp %>% filter(!deterministic,
+                            class == 200) 
+
+
+thirdplot + geom_line(data = pertline,
+                      aes(group = as.factor(lineID)),
+                      alpha = 0.6,
+                      linewidth = 0.5,
+                      color = viridis(11)[6]) 
+
+##################################
+  # #genic selection Wright-Fisher
+  # Edx = function(x,t){5*x*(1-x)}
+  # Vdx = function(x,t){x*(1-x)}
+  # X = numeric(n)
+  # X[1] = .3
+  # for (i in 2:n) {
+  #   X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
+  #   X[i] = max(0,X[i])
+  #   X[i] = min(1,X[i])
+  # }
+  # 
+# lines(t,X,type="l", col = "red")
+
+# genic selection
+# Edx = function(x,t){5*x*(1-x)}
+# Vdx = function(x,t){x*(1-x)}
+# X = numeric(n)
+# X[1] = .3
+# for (i in 2:n) {
+#   X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt
+#   X[i] = max(0,X[i])
+#   X[i] = min(1,X[i])
+# }
+
+
+# lines(t,X,type="l",col = "blue")
+
+
+#########################################################
+
+traj<-function(p,w11,w12,w22,tgen=200,plot.it=TRUE,add.it=FALSE,col="red"){
+  
+  #w11<-.1
+  #w12<-1
+  #w22<-.1
+  p.array<-p
+  for(i in 1:tgen){
+    wbar<- w11*p^2 +w12*2*p*(1-p) + w22 * (1-p)^2
+    margin<-(w11*p + w12*(1-p)) - (w12*p + w22*(1-p))
+    d_p<-p*(1-p)*(margin) /(wbar)
+    
+    p<- p+d_p
+    p.array<-c(p.array,p)
+  }
+  if(!add.it) plot(p.array,xlab="generations",ylab="Frequency of allele 1",type="l",lwd=3,col=col,ylim=c(0,1),cex.lab=1.5,cex.axis=1.5)
+  if(add.it) lines(p.array,lwd=3,col=col)
+  
+  #if(plot.it==FALSE) return(p.array)
+}
+
+traj(p=0.03,w11=1, w12=.95, w22=.9,tgen=2000,col="red")
