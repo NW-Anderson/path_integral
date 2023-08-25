@@ -539,7 +539,7 @@ ggplot(df) +
                  image=fig),
              size=Inf) +
   facet_grid(rows=vars(Gegenbauers),
-             cols=vars(Generation),
+             cols=vars(PopScaledSelection),
              scales = "free",
              labeller = label_both) +
   theme_blank() +
