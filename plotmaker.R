@@ -29,6 +29,7 @@ library(vcfR)
 library(ggplotify)
 library(pheatmap)
 library(ggbreak)
+library(ggimage)
 dev.off()
 
 #######################################
@@ -393,7 +394,7 @@ tmp <- master %>% # filter(class %in% c(0,500,1000)) %>%
   ungroup() %>% 
   mutate(deterministic = (class == 1000))
 pertline <- tmp %>% filter(!deterministic,
-                            class == 200) 
+                           class == 200) 
 
 
 thirdplot + geom_line(data = pertline,
@@ -403,17 +404,17 @@ thirdplot + geom_line(data = pertline,
                       color = viridis(11)[6]) 
 
 ##################################
-  # #genic selection Wright-Fisher
-  # Edx = function(x,t){5*x*(1-x)}
-  # Vdx = function(x,t){x*(1-x)}
-  # X = numeric(n)
-  # X[1] = .3
-  # for (i in 2:n) {
-  #   X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
-  #   X[i] = max(0,X[i])
-  #   X[i] = min(1,X[i])
-  # }
-  # 
+# #genic selection Wright-Fisher
+# Edx = function(x,t){5*x*(1-x)}
+# Vdx = function(x,t){x*(1-x)}
+# X = numeric(n)
+# X[1] = .3
+# for (i in 2:n) {
+#   X[i] = X[i-1] + Edx(X[i-1],t[i-1])*dt + sqrt(Vdx(X[i-1],t[i-1]))*rnorm(1,0,sqrt(dt))
+#   X[i] = max(0,X[i])
+#   X[i] = min(1,X[i])
+# }
+# 
 # lines(t,X,type="l", col = "red")
 
 # genic selection
@@ -454,3 +455,93 @@ traj<-function(p,w11,w12,w22,tgen=200,plot.it=TRUE,add.it=FALSE,col="red"){
 }
 
 traj(p=0.03,w11=1, w12=.95, w22=.9,tgen=2000,col="red")
+
+#########################################################
+
+df <- data.frame(gen=c(),
+                 geg=c(),
+                 fig=c())
+for(gen in c(50, 100,150)){
+  for(geg in c(10,20,30)){
+    df <- dplyr::bind_rows(df,
+                           data.frame(gen,
+                                      geg,
+                                      path.expand(paste("2Na10_geg",geg,"_gen",gen,".png",sep=""))))
+  }
+}
+df <- df %>% rename(fig = path.expand.paste..2Na10_geg...geg..._gen...gen....png...sep.......,
+                    Generation = gen,
+                    Gegenbauers = geg)
+
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(Gegenbauers),
+             cols=vars(Generation),
+             scales = "free",
+             labeller = label_both) +
+  theme_blank() +
+  xlab("Ending Frequency") +
+  ylab("Density")
+
+#########################################################
+
+df <- data.frame(gen=c(),
+                 geg=c(),
+                 fig=c())
+for(gen in c(250, 500,750)){
+  for(geg in c(10,20,30)){
+    df <- dplyr::bind_rows(df,
+                           data.frame(gen,
+                                      geg,
+                                      path.expand(paste("2na5_geg",geg,"_gen",gen,".png",sep=""))))
+  }
+}
+df <- df %>% rename(fig = path.expand.paste..2na5_geg...geg..._gen...gen....png...sep.......,
+                    Generation = gen,
+                    Gegenbauers = geg)
+
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(Gegenbauers),
+             cols=vars(Generation),
+             scales = "free",
+             labeller = label_both) +
+  theme_blank() +
+  xlab("Ending Frequency") +
+  ylab("Density")
+
+#########################################################
+
+df <- data.frame(sel=c(),
+                 geg=c(),
+                 fig=c())
+for(sel in c(1, 5,10)){
+  for(geg in c(10,30,50)){
+    df <- dplyr::bind_rows(df,
+                           data.frame(sel,
+                                      geg,
+                                      path.expand(paste("2na",sel,"_geg",geg,"_gen20.png",sep=""))))
+  }
+}
+df <- df %>% rename(fig = path.expand.paste..2na...sel..._geg...geg..._gen20.png...sep.......,
+                    Gegenbauers = geg,
+                    PopScaledSelection = sel)
+
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(Gegenbauers),
+             cols=vars(Generation),
+             scales = "free",
+             labeller = label_both) +
+  theme_blank() +
+  xlab("Ending Frequency") +
+  ylab("Density")
