@@ -70,6 +70,49 @@ ggplot(data = data, aes(x = popalpha, y = Pdetected)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
                                    colour = c(rep("black",4),"red",rep("black",2))))
 
+#######################################
+setwd("~/Documents/GitHub/path_integral/alpha_VG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "VG", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 1000 * master$alpha
+tmp <- master[1:4,]
+tmp$popalpha <- 0
+tmp$Pdetected <- 0.01
+master <- rbind(master,tmp)
+rm(tmp)
+
+ggplot(data = master, aes(x = popalpha, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.5,1,5,10), 
+                     limits = c(0,10),
+                     labels = c(0,0.5,1,5,10)) +
+  scale_y_continuous("P(detected)",
+                     breaks = c(0.01,0.02,0.04,0.06,0.08)) +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",4),"red",rep("black",2))))
+
 #####################################################
 data <- fread("alpha_mult.csv")
 data$popalpha = 1000 * data$alpha
@@ -107,7 +150,7 @@ ggplot(data = data, aes(x = popalpha, y = Pdetected)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
                                    colour = c(rep("black",4),"red",rep("black",2))))
 
-############################################3
+############################################
 
 data <- fread("alpha_start.csv")
 data$popalpha = 1000 * data$alpha
@@ -145,6 +188,94 @@ ggplot(data = data, aes(x = popalpha, y = Pdetected)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
                                    colour = c(rep("black",4),"red",rep("black",2))))
 
+############################################
+
+setwd("~/Documents/GitHub/path_integral/alpha_start")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 1000 * master$alpha
+tmp <- master[1:4,]
+tmp$popalpha <- 0
+tmp$Pdetected <- 0.01
+master <- rbind(master,tmp)
+rm(tmp)
+
+ggplot(data = master, aes(x = popalpha, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(start)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(start)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Starting freq",
+                            override.aes = list(alpha=1))) +
+  # scale_x_break(c(1,2), scales = 0.9) 
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.5,1,5,10), 
+                     limits = c(0,10),
+                     labels = c(0,0.5,1,5,10)) +
+  scale_y_continuous("P(detected)") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",4),"red",rep("black",2))))
+
+############################################
+
+setwd("~/Documents/GitHub/path_integral/alpha_time")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "time", "start", "thresh", "totalP", "Pdetected")
+master <- filter(master, time < 0.25)
+master$popalpha = 1000 * master$alpha
+tmp <- master[1:4,]
+tmp$popalpha <- 0
+tmp$Pdetected <- 0.01
+master <- rbind(master,tmp)
+rm(tmp)
+
+ggplot(data = master, aes(x = popalpha, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(time)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(time)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Time (Genomic Units)",
+                            override.aes = list(alpha=1))) +
+  # scale_x_break(c(1,2), scales = 0.9) 
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.5,1,5,10), 
+                     limits = c(0,10),
+                     labels = c(0,0.5,1,5,10)) +
+  scale_y_continuous("P(detected)") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",4),"red",rep("black",2))))
 ###############################################
 
 data <- fread("alpha_VG.csv")
