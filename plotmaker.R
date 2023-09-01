@@ -86,6 +86,8 @@ tmp$Pdetected <- 0.01
 master <- rbind(master,tmp)
 rm(tmp)
 
+master <- master %>% filter(!(popalpha == 10 & VG == 0.0101 & Pdetected <= 0.01))
+
 ggplot(data = master, aes(x = popalpha, y = Pdetected)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
@@ -111,7 +113,8 @@ ggplot(data = master, aes(x = popalpha, y = Pdetected)) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",4),"red",rep("black",2))))
+                                   colour = c(rep("black",2),"red",rep("black",2)))) + 
+  scale_color_viridis(discrete = T)
 
 #####################################################
 data <- fread("alpha_mult.csv")
@@ -230,7 +233,8 @@ ggplot(data = master, aes(x = popalpha, y = Pdetected)) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",4),"red",rep("black",2))))
+                                   colour = c(rep("black",2),"red",rep("black",2)))) + 
+  scale_color_viridis(discrete = T)
 
 ############################################
 
@@ -242,7 +246,8 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, tmp)
 }
 names(master) <- c("alpha", "time", "start", "thresh", "totalP", "Pdetected")
-master <- filter(master, time < 0.25)
+master <- filter(master, time < 0.25,
+                 time > 0.025)
 master$popalpha = 1000 * master$alpha
 tmp <- master[1:4,]
 tmp$popalpha <- 0
@@ -275,7 +280,9 @@ ggplot(data = master, aes(x = popalpha, y = Pdetected)) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",4),"red",rep("black",2))))
+                                   colour = c(rep("black",4),"red",rep("black",2)))) + 
+  scale_color_viridis(discrete = T)
+
 ###############################################
 
 data <- fread("alpha_VG.csv")
