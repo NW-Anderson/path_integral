@@ -3,99 +3,64 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[         0,          0]
-NotebookDataLength[     33833,        852]
-NotebookOptionsPosition[     31058,        791]
-NotebookOutlinePosition[     31518,        809]
-CellTagsIndexPosition[     31475,        806]
+NotebookDataLength[     19953,        481]
+NotebookOptionsPosition[     18426,        443]
+NotebookOutlinePosition[     18886,        461]
+CellTagsIndexPosition[     18843,        458]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
 
 Cell[CellGroupData[{
-Cell["Set Verification", "Section",
- CellChangeTimes->{{3.905274479204461*^9, 
-  3.905274481093506*^9}},ExpressionUUID->"4c4c85c7-cf03-4301-a04d-\
-00f67399bf30"],
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"(*", " ", 
-   RowBox[{
-   "Some", " ", "verification", " ", "tools", " ", "for", " ", "checking", 
-    " ", "if", " ", "sets", " ", "are", " ", "closed", " ", "under", " ", 
-    "complementation", " ", "and", " ", "countable", " ", "unions"}], " ", 
-   "*)"}], "\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{
-    RowBox[{"unionMemberQ", "[", 
-     RowBox[{"set_", ",", "subset_"}], "]"}], ":=", 
-    RowBox[{"AllTrue", "[", 
-     RowBox[{"set", ",", 
-      RowBox[{
-       RowBox[{"MemberQ", "[", 
-        RowBox[{"set", ",", 
-         RowBox[{"Union", "[", 
-          RowBox[{"#", ",", "subset"}], "]"}]}], "]"}], "&"}]}], "]"}]}], 
-   "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"setUnionClosedQ", "[", "set_", "]"}], ":=", 
-    RowBox[{"AllTrue", "[", 
-     RowBox[{"set", ",", 
-      RowBox[{
-       RowBox[{"unionMemberQ", "[", 
-        RowBox[{"set", ",", "#"}], "]"}], "&"}]}], "]"}]}], 
-   "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"complMemberQ", "[", 
-     RowBox[{"set_", ",", "subset_"}], "]"}], ":=", 
-    RowBox[{"MemberQ", "[", 
-     RowBox[{"set", ",", 
-      RowBox[{"Complement", "[", 
-       RowBox[{
-        RowBox[{"Union", "[", 
-         RowBox[{"Flatten", "[", "set", "]"}], "]"}], ",", "subset"}], 
-       "]"}]}], "]"}]}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"setComplClosedQ", "[", "set_", "]"}], ":=", 
-    RowBox[{"AllTrue", "[", 
-     RowBox[{"set", ",", 
-      RowBox[{
-       RowBox[{"complMemberQ", "[", 
-        RowBox[{"set", ",", "#"}], "]"}], "&"}]}], "]"}]}], 
-   "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"allSetsClosed", "[", "set_", "]"}], ":=", "\[IndentingNewLine]", 
-    
-    RowBox[{
-     RowBox[{"AllTrue", "[", 
-      RowBox[{"set", ",", 
-       RowBox[{
-        RowBox[{"MemberQ", "[", 
-         RowBox[{"#", ",", 
-          RowBox[{"{", "}"}]}], "]"}], "&"}]}], "]"}], "&&", 
-     RowBox[{"AllTrue", "[", 
-      RowBox[{"set", ",", "setComplClosedQ"}], "]"}], "&&", 
-     RowBox[{"AllTrue", "[", 
-      RowBox[{"set", ",", "setUnionClosedQ"}], "]"}]}]}]}]}]], "Input",
- CellChangeTimes->{{3.9050299996219788`*^9, 3.90503003220383*^9}, {
-   3.905030298772868*^9, 3.905030355706667*^9}, {3.905030410060171*^9, 
-   3.905030416531769*^9}, {3.9050304958806467`*^9, 3.905030499444603*^9}, {
-   3.905030560859171*^9, 3.90503057300758*^9}, {3.905030653879125*^9, 
-   3.905030654111691*^9}, {3.905030713208426*^9, 3.9050307442348146`*^9}, {
-   3.905033702292203*^9, 3.905033726109873*^9}, {3.9050344150116987`*^9, 
-   3.905034459856885*^9}, 3.905034519558094*^9, {3.905037326201523*^9, 
-   3.905037339328197*^9}, {3.9050439642704973`*^9, 3.905043987081332*^9}, 
-   3.905267664751968*^9},
- CellLabel->"In[1]:=",ExpressionUUID->"795ee191-85aa-4ddf-aa22-cdf966f845f3"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["Set Generation", "Section",
+Cell["Set Generation", "Title",
  CellChangeTimes->{{3.9052744859336433`*^9, 
   3.9052745003746843`*^9}},ExpressionUUID->"30b3a16e-a495-4660-9d2a-\
 e68b8d548b7e"],
+
+Cell[TextData[{
+ "This notebook allows us to precompute all special cases where our selection \
+terms will be zero. This algorithm isn\[CloseCurlyQuote]t the most efficient \
+and runs out of memory on my server (64G) at k=6, but it is sufficient for \
+our purposes. It generates cases for k=5 in ~5.5 hours on 12 cores (Intel \
+Core i7-12700K).\n\nWe\[CloseCurlyQuote]re generating all sets that are \
+subsets of the power set and that are 1) closed under complementation between \
+nested subsets and 2) closed under unions between disjoint sets. This gives \
+us all of the possibilities for the coefficients to add up to 0. For example, \
+if we generate {{3},{2,4},{2,3,4}}, this means that ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["a", "3"], "=", "0"}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "f0adfb6d-51a0-4451-85b0-cbedb0fc88f0"],
+ ", ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      SubscriptBox["a", "2"], "+", 
+      SubscriptBox["a", "4"]}], "=", "0"}], ","}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "677bbc05-462b-4f6a-b7da-3fa94fdc9675"],
+ Cell[BoxData[
+  FormBox[
+   RowBox[{" ", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["a", "2"], "+", 
+      SubscriptBox["a", "3"], "+", 
+      SubscriptBox["a", "4"]}], "=", "0."}]}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "e260b333-7f3b-427f-92eb-34c20c524644"]
+}], "Text",
+ CellChangeTimes->{{3.905431716343713*^9, 3.905431798766099*^9}, {
+  3.905431893208274*^9, 3.905431899651393*^9}, {3.905431935658914*^9, 
+  3.905431962464259*^9}, {3.905432035181118*^9, 3.90543221559138*^9}, {
+  3.90543510886425*^9, 
+  3.905435110011244*^9}},ExpressionUUID->"a6699473-4e68-4b6a-a6d9-\
+650aeef68111"],
 
 Cell[BoxData[
  RowBox[{
@@ -225,27 +190,6 @@ Cell[BoxData[
            RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "&"}], "/@", 
       RowBox[{"iterPairs", "[", 
        RowBox[{"set1", ",", "set2"}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
-   RowBox[{"(*", 
-    RowBox[{
-     RowBox[{"N", ".", "B", ".", " ", "DeleteDuplicates"}], " ", "returns", 
-     " ", "unsorted", " ", "sets"}], "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"joinSetsParallel", "[", 
-     RowBox[{"set1_", ",", "set2_"}], "]"}], ":=", 
-    RowBox[{"DeleteDuplicates", "[", 
-     RowBox[{"ParallelMap", "[", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"closeSet", "[", 
-         RowBox[{"Union", "[", 
-          RowBox[{
-           RowBox[{"#", "[", 
-            RowBox[{"[", "1", "]"}], "]"}], ",", 
-           RowBox[{"#", "[", 
-            RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "&"}], ",", 
-       RowBox[{"iterPairs", "[", 
-        RowBox[{"set1", ",", "set2"}], "]"}]}], "]"}], "]"}]}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"inner", "[", 
      RowBox[{"outerItem_", ",", "set_"}], "]"}], ":=", 
@@ -256,8 +200,12 @@ Cell[BoxData[
         RowBox[{"Union", "[", 
          RowBox[{"outerItem", ",", "#"}], "]"}], "]"}], "&"}], "/@", "set"}], 
      "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"N", ".", "B", ".", " ", "DeleteDuplicates"}], " ", "returns", 
+     " ", "unsorted", " ", "sets"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"joinSetsParallel2", "[", 
+    RowBox[{"joinSetsParallel", "[", 
      RowBox[{"set1_", ",", "set2_"}], "]"}], ":=", "\[IndentingNewLine]", 
     RowBox[{"DeleteDuplicates", "[", 
      RowBox[{"Flatten", "[", 
@@ -273,7 +221,7 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"genKSetsParallel", "[", "k_", "]"}], ":=", 
      RowBox[{"Fold", "[", 
-      RowBox[{"joinSetsParallel2", ",", 
+      RowBox[{"joinSetsParallel", ",", 
        RowBox[{
         RowBox[{
          RowBox[{"kSets", "[", "#", "]"}], "&"}], "/@", 
@@ -290,12 +238,16 @@ Cell[BoxData[
         RowBox[{"Range", "[", "k", "]"}]}]}], "]"}]}], ";"}], 
    "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"parallelUnion", "[", "set_", "]"}], ":=", 
-    RowBox[{"ParallelMap", "[", 
+    RowBox[{"prettyTime", "[", "s_", "]"}], ":=", "\[IndentingNewLine]", 
+    RowBox[{"UnitConvert", "[", 
      RowBox[{
-      RowBox[{
-       RowBox[{"Union", "@@", "#1"}], "&"}], ",", "set"}], 
-     "]"}]}]}]}]], "Input",
+      RowBox[{"Quantity", "[", 
+       RowBox[{"s", ",", "\"\<Seconds\>\""}], "]"}], ",", 
+      RowBox[{"MixedUnit", "[", 
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<Hours\>\"", ",", "\"\<Minutes\>\"", ",", "\"\<Seconds\>\""}], 
+        "}"}], "]"}]}], "]"}]}]}]}]], "Input",
  CellChangeTimes->{{3.9050408261042023`*^9, 3.905040833133802*^9}, {
    3.9050439262022676`*^9, 3.905043953293985*^9}, 3.9050440000807543`*^9, {
    3.905044089363036*^9, 3.905044092058776*^9}, {3.9050449277997923`*^9, 
@@ -327,466 +279,166 @@ Cell[BoxData[
    3.905271873618013*^9}, {3.9052731721586514`*^9, 3.9052732817801027`*^9}, {
    3.9052733493910933`*^9, 3.905273380381385*^9}, {3.905273845304858*^9, 
    3.905273854746696*^9}, {3.9052741535135612`*^9, 3.905274155799921*^9}, {
-   3.905274296896668*^9, 3.905274316544201*^9}},
- CellLabel->"In[6]:=",ExpressionUUID->"98306bd5-7652-4039-a9f1-d1b496740917"],
+   3.905274296896668*^9, 3.905274316544201*^9}, {3.905432843737973*^9, 
+   3.905432877003106*^9}, {3.9054332897839727`*^9, 3.905433306573917*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"98306bd5-7652-4039-a9f1-d1b496740917"],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
-  RowBox[{"sets", "=", 
-   RowBox[{"AbsoluteTiming", "[", 
-    RowBox[{"genKSetsParallel", "[", "5", "]"}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"Print", "[", 
-  RowBox[{"sets", "[", 
-   RowBox[{"[", "1", "]"}], "]"}], "]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"(*", 
+  RowBox[{
    RowBox[{
-    RowBox[{"sets", "=", 
-     RowBox[{"AbsoluteTiming", "[", 
-      RowBox[{"genKSetsParallel", "[", "6", "]"}], "]"}]}], ";", 
-    "\[IndentingNewLine]", 
-    RowBox[{"Print", "[", 
-     RowBox[{"sets", "[", 
-      RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "*)"}]}]}], "Input",
- CellChangeTimes->{{3.905274192157111*^9, 3.905274192980544*^9}, 
-   3.905274336437866*^9, {3.905274507260891*^9, 3.9052745363092833`*^9}, 
-   3.905429452254816*^9},
- CellLabel->"In[22]:=",ExpressionUUID->"e444cfc1-819c-4ed2-a964-a1b4674bde55"],
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"s", "=", 
+       RowBox[{"AbsoluteTiming", "[", 
+        RowBox[{"genKSetsParallel", "[", "#", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"StringForm", "[", 
+        RowBox[{"\"\<Generated k=`` in ``\>\"", ",", "#", ",", 
+         RowBox[{"prettyTime", "[", 
+          RowBox[{"s", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "]"}]}], "]"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"sets", "[", "#", "]"}], "=", 
+       RowBox[{"s", "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", ")"}],
+     "&"}], "/@", 
+   RowBox[{"Range", "[", "5", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.905432460548094*^9, 3.905432508234421*^9}, {
+   3.905432547433938*^9, 3.905432554681632*^9}, {3.905432626366455*^9, 
+   3.905432792047146*^9}, {3.905432901714579*^9, 3.905432939631421*^9}, 
+   3.905432994350713*^9, {3.9054331628251677`*^9, 3.905433163569797*^9}},
+ CellLabel->"In[16]:=",ExpressionUUID->"6b118b3b-4c06-4a21-afd3-bc7871eb8bf1"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
- DynamicModuleBox[{Progress`ProgressDump`forceRedraw$$ = {{}, {}}, 
-  Progress`ProgressDump`open$$ = True, Progress`ProgressDump`clock$$ = 83., 
-  Progress`ProgressDump`maxTime$$ = DirectedInfinity[1]}, 
-  OverlayBox[{
-   AnimatorBox[Dynamic[Progress`ProgressDump`clock$$], {2., 
-     DirectedInfinity[1], 1.},
-    AnimationRate->1,
-    AnimationRunTime->81.7443323135376,
-    AnimationTimeIndex->81.7443323135376,
-    AppearanceElements->None,
-    ImageSize->{1, 1}], 
-   DynamicWrapperBox[
-    DynamicBox[ToBoxes[
-      Progress`GenerateProgressPanel[{
-       "Progress" :> (Parallel`Combine`Private`nreceived + 
-          Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36, "Results" :> 
-        StringTemplate["`1`/`2` evaluations of `3` items each (`4` kernels)"][
-         Parallel`Combine`Private`nreceived, 36, 5, 12], "Times" :> 
-        With[{Parallel`Combine`Private`elapsed$ = 
-           AbsoluteTime[] - Parallel`Combine`Private`start}, {
-          Parallel`Combine`Private`remaining$ = (
-             1./((Parallel`Combine`Private`nreceived + 
-               Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36) - 1) 
-            Parallel`Combine`Private`elapsed$}, 
-          StringTemplate["Elapsed: `1`, remaining: `2`, ETA: `3`"][
-           Parallel`Protected`ProgressTimeFormat[
-           Parallel`Combine`Private`elapsed$], 
-           Parallel`Protected`ProgressTimeFormat[
-           Parallel`Combine`Private`remaining$], 
-           DateString[
-           Parallel`Combine`Private`remaining$ + AbsoluteTime[]]]]}, <|{
-        "DelayedTask" -> ScheduledTaskObject[11, 
-           HoldForm[AppendTo[Progress`ProgressDump`this$state$18139, 
-              Progress`ProgressDump`CreateProgressState[
-              Progress`ProgressDump`parameters$18139, 
-               Progress`ProgressDump`info$18139, ProgressReporting -> 
-               Automatic, "Title" -> "ParallelMap", UpdateInterval -> 1, 
-               "ConsoleSupport" -> False, "TimeEstimate" -> None]]; 
-            Progress`ProgressDump`ProgressInit[
-             Progress`ProgressDump`this$state$18139]; Null], {2, 1}, 
-           Automatic, True, "AutoRemove" -> False, "EpilogFunction" :> Null, 
-           "TaskGroup" -> "Global`"], "State" :> 
-         Progress`ProgressDump`this$state$18139, "Title" -> "ParallelMap", 
-         "Type" -> "Grid", "Environment" -> "Notebook", 
-         "Parameters" -> {
-          "Progress" :> (Parallel`Combine`Private`nreceived + 
-             Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36, 
-           "Results" :> 
-           StringTemplate[
-            "`1`/`2` evaluations of `3` items each (`4` kernels)"][
-            Parallel`Combine`Private`nreceived, 36, 5, 12], "Times" :> 
-           With[{Parallel`Combine`Private`elapsed$ = 
-              AbsoluteTime[] - Parallel`Combine`Private`start}, {
-             Parallel`Combine`Private`remaining$ = (
-                1./((Parallel`Combine`Private`nreceived + 
-                  Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36) - 1)
-                 Parallel`Combine`Private`elapsed$}, 
-             StringTemplate["Elapsed: `1`, remaining: `2`, ETA: `3`"][
-              Parallel`Protected`ProgressTimeFormat[
-              Parallel`Combine`Private`elapsed$], 
-              Parallel`Protected`ProgressTimeFormat[
-              Parallel`Combine`Private`remaining$], 
-              DateString[
-              Parallel`Combine`Private`remaining$ + AbsoluteTime[]]]]}, 
-         "PreemptibleQ" -> True, "ConsoleQ" -> False, "Evaluator" -> "Local", 
-         "EvaluationCell" -> 
-         CellObject[
-          "e444cfc1-819c-4ed2-a964-a1b4674bde55", 
-           "4148ac79-2388-4f9d-af40-677c8f31bfc0"], "TimeStart" -> 
-         3.905411536143088`16.34424179394406*^9, "TimeStartLocal" -> 
-         3.905411536143088`16.34424179394406*^9, "InitialTimeEstimate" -> 
-         Indeterminate, "UpdateInterval" -> 1, "OuterUpdateInterval" -> 1, 
-         "Buttons" -> None, "Optional" -> {}, "ContainerQ" -> False, 
-         "CreateContainerQ" -> False, "CurrentContainer" -> None, 
-         "PreviousContainer" -> None, "ContainerName" -> None, "Cell" -> 
-         Hold[Progress`ProgressDump`cell$18179], "Clock" :> 
-         Dynamic[Progress`ProgressDump`clock$$], "Redraw" -> 
-         Progress`ProgressDump`forceRedraw$$, "Open" :> 
-         Dynamic[Progress`ProgressDump`open$$]}|>], StandardForm],
-     ImageSizeCache->{438., {43.89453125, 50.10546875}},
-     TrackedSymbols:>{Progress`ProgressDump`forceRedraw$$}], Refresh[
-    Progress`ProgressDump`forceRedraw$$ = 
-     With[{Progress`ProgressDump`values = Quiet[
-          
-          Values[{"Progress" :> (Parallel`Combine`Private`nreceived + 
-              Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36, 
-            "Results" :> 
-            StringTemplate[
-             "`1`/`2` evaluations of `3` items each (`4` kernels)"][
-             Parallel`Combine`Private`nreceived, 36, 5, 12], "Times" :> 
-            With[{Parallel`Combine`Private`elapsed$ = 
-               AbsoluteTime[] - Parallel`Combine`Private`start}, {
-              Parallel`Combine`Private`remaining$ = (
-                 1./((Parallel`Combine`Private`nreceived + 
-                   Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36) - 
-                 1) Parallel`Combine`Private`elapsed$}, 
-              StringTemplate["Elapsed: `1`, remaining: `2`, ETA: `3`"][
-               Parallel`Protected`ProgressTimeFormat[
-               Parallel`Combine`Private`elapsed$], 
-               Parallel`Protected`ProgressTimeFormat[
-               Parallel`Combine`Private`remaining$], 
-               DateString[
-               Parallel`Combine`Private`remaining$ + AbsoluteTime[]]]]}]]}, 
-       Map[
-       Position[Progress`ProgressDump`values, #, Infinity]& , {
-        None, Automatic}]], UpdateInterval -> 
-     Lookup[<|"DelayedTask" -> ScheduledTaskObject[11, 
-          HoldForm[AppendTo[Progress`ProgressDump`this$state$18139, 
-             Progress`ProgressDump`CreateProgressState[
-             Progress`ProgressDump`parameters$18139, 
-              Progress`ProgressDump`info$18139, ProgressReporting -> 
-              Automatic, "Title" -> "ParallelMap", UpdateInterval -> 1, 
-              "ConsoleSupport" -> False, "TimeEstimate" -> None]]; 
-           Progress`ProgressDump`ProgressInit[
-            Progress`ProgressDump`this$state$18139]; Null], {2, 1}, Automatic,
-           True, "AutoRemove" -> False, "EpilogFunction" :> Null, "TaskGroup" -> 
-          "Global`"], "State" :> Progress`ProgressDump`this$state$18139, 
-        "Title" -> "ParallelMap", "Type" -> "Grid", "Environment" -> 
-        "Notebook", 
-        "Parameters" -> {
-         "Progress" :> (Parallel`Combine`Private`nreceived + 
-            Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36, "Results" :> 
-          StringTemplate[
-           "`1`/`2` evaluations of `3` items each (`4` kernels)"][
-           Parallel`Combine`Private`nreceived, 36, 5, 12], "Times" :> 
-          With[{Parallel`Combine`Private`elapsed$ = 
-             AbsoluteTime[] - Parallel`Combine`Private`start}, {
-            Parallel`Combine`Private`remaining$ = (
-               1./((Parallel`Combine`Private`nreceived + 
-                 Min[12, 36 - Parallel`Combine`Private`nreceived]/2)/36) - 1) 
-              Parallel`Combine`Private`elapsed$}, 
-            StringTemplate["Elapsed: `1`, remaining: `2`, ETA: `3`"][
-             Parallel`Protected`ProgressTimeFormat[
-             Parallel`Combine`Private`elapsed$], 
-             Parallel`Protected`ProgressTimeFormat[
-             Parallel`Combine`Private`remaining$], 
-             DateString[
-             Parallel`Combine`Private`remaining$ + AbsoluteTime[]]]]}, 
-        "PreemptibleQ" -> True, "ConsoleQ" -> False, "Evaluator" -> "Local", 
-        "EvaluationCell" -> 
-        CellObject[
-         "e444cfc1-819c-4ed2-a964-a1b4674bde55", 
-          "4148ac79-2388-4f9d-af40-677c8f31bfc0"], "TimeStart" -> 
-        3.905411536143088`16.34424179394406*^9, "TimeStartLocal" -> 
-        3.905411536143088`16.34424179394406*^9, "InitialTimeEstimate" -> 
-        Indeterminate, "UpdateInterval" -> 1, "OuterUpdateInterval" -> 1, 
-        "Buttons" -> None, "Optional" -> {}, "ContainerQ" -> False, 
-        "CreateContainerQ" -> False, "CurrentContainer" -> None, 
-        "PreviousContainer" -> None, "ContainerName" -> None, "Cell" -> 
-        Hold[Progress`ProgressDump`cell$18179], "Clock" -> Dynamic[None]|>, 
-       "OuterUpdateInterval"], TrackedSymbols :> {}],
-    ImageSizeCache->{438., {43.89453125, 50.10546875}}]}, All, 2],
-  DynamicModuleValues:>{}]], "PrintTemporary",
- ShowCellLabel->True,
- CellChangeTimes->{3.905429538149517*^9},
+ InterpretationBox["\<\"Generated k=\\!\\(\\*RowBox[{\\\"1\\\"}]\\) in \\!\\(\
+\\*TemplateBox[List[\\\"0\\\", \\\"0\\\", \\\"0.000017`\\\", RowBox[List[\\\"\
+\\\\[ThinSpace]\\\", \\\"\\\\\\\"h\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"min\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"s\\\\\\\"\\\"]], \
+\\\"hours,minutes,seconds\\\", RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"\\\\\\\"Hours\\\\\\\"\\\", \\\",\\\", \\\"\\\\\\\"Minutes\\\\\
+\\\"\\\", \\\",\\\", \\\"\\\\\\\"Seconds\\\\\\\"\\\"]], \\\"}\\\"]]], \
+\\\"QuantityMixedUnit3\\\"]\\)\"\>",
+  StringForm["Generated k=`` in ``", 1, 
+   Quantity[
+    MixedMagnitude[{0, 0, 0.000017}], 
+    MixedUnit[{"Hours", "Minutes", "Seconds"}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.905432965893153*^9, 3.905433015843889*^9, 
+  3.905433179952855*^9, 3.9054332207434797`*^9, 3.9054333264164047`*^9, 
+  3.905441790733486*^9, 3.905441824421083*^9},
  CellLabel->
   "During evaluation of \
-In[22]:=",ExpressionUUID->"3ca6a537-241d-4645-b414-8e75805043a2"]
-}, Open  ]],
-
-Cell["\<\
-Computing k=5 takes 5.57 hours on my 12 core machine and runs out of memory \
-for k=6\
-\>", "Text",
- CellChangeTimes->{{3.905429484789447*^9, 
-  3.9054295144071712`*^9}},ExpressionUUID->"9388ef0e-644a-4361-81f1-\
-1b844375dd4f"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["Debugging", "Section",
- CellChangeTimes->{{3.905274461306038*^9, 
-  3.905274464359356*^9}},ExpressionUUID->"267f8488-5f3b-4b63-8041-\
-142297c2ec93"],
+In[16]:=",ExpressionUUID->"c6c17f3a-3a48-4f2e-973b-429494550ab5"],
 
 Cell[BoxData[
- RowBox[{
-  RowBox[{"sets", "=", 
-   RowBox[{"genKSets", "[", "4", "]"}]}], ";"}]], "Input",
- CellChangeTimes->{{3.9052740302119207`*^9, 3.905274031565877*^9}},
- CellLabel->"In[38]:=",ExpressionUUID->"426a9339-09e4-4a6b-974e-d1fabbce452e"],
+ InterpretationBox["\<\"Generated k=\\!\\(\\*RowBox[{\\\"2\\\"}]\\) in \\!\\(\
+\\*TemplateBox[List[\\\"0\\\", \\\"0\\\", \\\"1.7345519999999999`\\\", \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"h\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"min\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"s\\\\\\\"\\\"]], \
+\\\"hours,minutes,seconds\\\", RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"\\\\\\\"Hours\\\\\\\"\\\", \\\",\\\", \\\"\\\\\\\"Minutes\\\\\
+\\\"\\\", \\\",\\\", \\\"\\\\\\\"Seconds\\\\\\\"\\\"]], \\\"}\\\"]]], \
+\\\"QuantityMixedUnit3\\\"]\\)\"\>",
+  StringForm["Generated k=`` in ``", 2, 
+   Quantity[
+    MixedMagnitude[{0, 0, 1.7345519999999999`}], 
+    MixedUnit[{"Hours", "Minutes", "Seconds"}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.905432965893153*^9, 3.905433015843889*^9, 
+  3.905433179952855*^9, 3.9054332207434797`*^9, 3.9054333264164047`*^9, 
+  3.905441790733486*^9, 3.905441826157037*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"ddcf3bc6-af08-438f-a468-8fd4acb0325d"],
 
 Cell[BoxData[
- RowBox[{
-  RowBox[{"psets", "=", 
-   RowBox[{"genKSetsParallel", "[", "4", "]"}]}], ";"}]], "Input",
- CellChangeTimes->{{3.905273862814204*^9, 3.90527387095367*^9}, {
-  3.905274019287066*^9, 3.905274026734066*^9}},
- CellLabel->"In[39]:=",ExpressionUUID->"6c59d694-78a6-435a-8914-adc136bc9d40"],
+ InterpretationBox["\<\"Generated k=\\!\\(\\*RowBox[{\\\"3\\\"}]\\) in \\!\\(\
+\\*TemplateBox[List[\\\"0\\\", \\\"0\\\", \\\"0.042224`\\\", RowBox[List[\\\"\
+\\\\[ThinSpace]\\\", \\\"\\\\\\\"h\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"min\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"s\\\\\\\"\\\"]], \
+\\\"hours,minutes,seconds\\\", RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"\\\\\\\"Hours\\\\\\\"\\\", \\\",\\\", \\\"\\\\\\\"Minutes\\\\\
+\\\"\\\", \\\",\\\", \\\"\\\\\\\"Seconds\\\\\\\"\\\"]], \\\"}\\\"]]], \
+\\\"QuantityMixedUnit3\\\"]\\)\"\>",
+  StringForm["Generated k=`` in ``", 3, 
+   Quantity[
+    MixedMagnitude[{0, 0, 0.042224}], 
+    MixedUnit[{"Hours", "Minutes", "Seconds"}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.905432965893153*^9, 3.905433015843889*^9, 
+  3.905433179952855*^9, 3.9054332207434797`*^9, 3.9054333264164047`*^9, 
+  3.905441790733486*^9, 3.905441826200598*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"fb5ea47e-a393-46e6-b7fb-58364dea1be4"],
 
 Cell[BoxData[
- RowBox[{
-  RowBox[{"Sort", "[", "psets", "]"}], "==", "sets"}]], "Input",
- CellChangeTimes->{{3.905274059540831*^9, 3.9052740693983393`*^9}},
- CellLabel->"In[40]:=",ExpressionUUID->"8ff8210b-6598-4fba-abc2-96604c3aa2ea"],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"s1", "=", 
-  RowBox[{"kSets", "[", "1", "]"}]}]], "Input",
- CellChangeTimes->{{3.9052719069865313`*^9, 3.9052719210305853`*^9}},
- CellLabel->"In[20]:=",ExpressionUUID->"4ae2195e-1ac2-42f2-bf99-a477de970dcc"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"{", "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", "1", "}"}], "}"}]}], "}"}]], "Output",
- CellChangeTimes->{3.9052719145083857`*^9, 3.905271979008897*^9},
- CellLabel->"Out[20]=",ExpressionUUID->"f8212b9d-a04c-4962-995f-f9645b9823a3"]
-}, Open  ]],
-
-Cell[CellGroupData[{
+ InterpretationBox["\<\"Generated k=\\!\\(\\*RowBox[{\\\"4\\\"}]\\) in \\!\\(\
+\\*TemplateBox[List[\\\"0\\\", \\\"0\\\", \\\"2.404558`\\\", RowBox[List[\\\"\
+\\\\[ThinSpace]\\\", \\\"\\\\\\\"h\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"min\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"s\\\\\\\"\\\"]], \
+\\\"hours,minutes,seconds\\\", RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"\\\\\\\"Hours\\\\\\\"\\\", \\\",\\\", \\\"\\\\\\\"Minutes\\\\\
+\\\"\\\", \\\",\\\", \\\"\\\\\\\"Seconds\\\\\\\"\\\"]], \\\"}\\\"]]], \
+\\\"QuantityMixedUnit3\\\"]\\)\"\>",
+  StringForm["Generated k=`` in ``", 4, 
+   Quantity[
+    MixedMagnitude[{0, 0, 2.404558}], 
+    MixedUnit[{"Hours", "Minutes", "Seconds"}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.905432965893153*^9, 3.905433015843889*^9, 
+  3.905433179952855*^9, 3.9054332207434797`*^9, 3.9054333264164047`*^9, 
+  3.905441790733486*^9, 3.905441828607498*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"833c8732-4d7a-48b6-a934-69f86dd5cf62"],
 
 Cell[BoxData[
- RowBox[{"s2", "=", " ", 
-  RowBox[{"joinSetsParallel", "[", 
-   RowBox[{"s1", ",", 
-    RowBox[{"kSets", "[", "2", "]"}]}], "]"}]}]], "Input",
- CellChangeTimes->{{3.9052719164973392`*^9, 3.9052719532957563`*^9}},
- CellLabel->"In[21]:=",ExpressionUUID->"4e821e03-213a-4a58-8b5e-eaf12699649d"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"{", "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", "2", "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", 
-     RowBox[{"1", ",", "2"}], "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "1", "}"}], ",", 
-     RowBox[{"{", "2", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", "1", "}"}], "}"}]}], "}"}]], "Output",
- CellChangeTimes->{3.905271981789242*^9},
- CellLabel->"Out[21]=",ExpressionUUID->"18b2c579-7d99-44dc-a0d0-dea10b84414f"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"s3", "=", " ", 
-  RowBox[{"joinSetsParallel", "[", 
-   RowBox[{"s2", ",", 
-    RowBox[{"kSets", "[", "3", "]"}]}], "]"}]}]], "Input",
- CellChangeTimes->{{3.905273602553258*^9, 3.905273609266102*^9}},
- CellLabel->"In[87]:=",ExpressionUUID->"24c8de0e-a45f-4155-a0dc-c98c6dfa89f3"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"{", "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", "3", "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", 
-     RowBox[{"1", ",", "3"}], "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", 
-     RowBox[{"2", ",", "3"}], "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", 
-     RowBox[{"1", ",", "2", ",", "3"}], "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "1", "}"}], ",", 
-     RowBox[{"{", "3", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "2", "}"}], ",", 
-     RowBox[{"{", "3", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "3", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"1", ",", "3"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "2", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "3"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "1", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "1", "}"}], ",", 
-     RowBox[{"{", "2", "}"}], ",", 
-     RowBox[{"{", "3", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "3"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", "2", "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", 
-     RowBox[{"1", ",", "2"}], "}"}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "3"}], "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"2", ",", "3"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     RowBox[{"{", "1", "}"}], ",", 
-     RowBox[{"{", "2", "}"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"1", ",", "2"}], "}"}]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{"{", "1", "}"}], "}"}]}], "}"}]], "Output",
- CellChangeTimes->{3.905273609928487*^9},
- CellLabel->"Out[87]=",ExpressionUUID->"653dd99d-f99b-49b2-a608-616a27d4f161"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"Flatten", "[", 
-   RowBox[{
-    RowBox[{
-     RowBox[{
-      RowBox[{"inner", "[", 
-       RowBox[{"#", ",", 
-        RowBox[{"kSets", "[", "3", "]"}]}], "]"}], "&"}], "/@", "s2"}], ",", 
-    "1"}], "]"}], "==", 
-  RowBox[{"(", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"Union", "[", 
-      RowBox[{
-       RowBox[{"#", "[", 
-        RowBox[{"[", "1", "]"}], "]"}], ",", 
-       RowBox[{"#", "[", 
-        RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "&"}], "/@", 
-    RowBox[{"iterPairs", "[", 
-     RowBox[{"s2", ",", 
-      RowBox[{"kSets", "[", "3", "]"}]}], "]"}]}], ")"}]}]], "Input",
- CellChangeTimes->{{3.905272771208449*^9, 3.905272989831531*^9}, 
-   3.9052744285264463`*^9},ExpressionUUID->"f9f29449-6d13-4c4c-b481-\
-5bd1d67328a6"],
-
-Cell[BoxData["True"], "Output",
- CellChangeTimes->{{3.90527290927908*^9, 3.9052729162929697`*^9}, {
-  3.905272957125543*^9, 3.905272976174081*^9}},
- CellLabel->"Out[67]=",ExpressionUUID->"695734c4-9e52-4558-a5e4-edf3f4159145"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"inner", "[", 
-   RowBox[{"outerItem_", ",", "set_"}], "]"}], ":=", 
-  RowBox[{"Union", "[", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"closeSet", "[", 
-      RowBox[{"Union", "[", 
-       RowBox[{"outerItem", ",", "#"}], "]"}], "]"}], "&"}], "/@", "set"}], 
-   "]"}]}], "\[IndentingNewLine]", 
- RowBox[{"Length", "/@", 
-  RowBox[{"(", 
-   RowBox[{
-    RowBox[{
-     RowBox[{"inner", "[", 
-      RowBox[{"#", ",", 
-       RowBox[{"kSets", "[", "4", "]"}]}], "]"}], "&"}], "/@", "s3"}], 
-   ")"}]}]}], "Input",
- CellChangeTimes->{{3.905272995351884*^9, 3.9052731316016703`*^9}, {
-  3.9052736340946007`*^9, 3.9052736653205967`*^9}, {3.905273706920011*^9, 
-  3.905273715424752*^9}, {3.905273753604312*^9, 3.905273759463949*^9}},
- CellLabel->"In[90]:=",ExpressionUUID->"cecaa4bc-2696-42ae-a818-322093d1872c"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-  "60", ",", "12", ",", "27", ",", "27", ",", "32", ",", "4", ",", "4", ",", 
-   "6", ",", "14", ",", "6", ",", "6", ",", "2", ",", "12", ",", "27", ",", 
-   "14", ",", "14", ",", "10", ",", "4", ",", "12"}], "}"}]], "Output",
- CellChangeTimes->{{3.9052730238303003`*^9, 3.905273132101976*^9}, 
-   3.905273679949863*^9, 3.905273729459745*^9},
- CellLabel->"Out[91]=",ExpressionUUID->"2739f7f6-01b6-43ee-8fbf-c2253065f993"]
+ InterpretationBox["\<\"Generated k=\\!\\(\\*RowBox[{\\\"5\\\"}]\\) in \\!\\(\
+\\*TemplateBox[List[\\\"5\\\", \\\"39\\\", \\\"21.759992999999156`\\\", \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"h\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"min\\\\\\\"\\\"]], \
+RowBox[List[\\\"\\\\[ThinSpace]\\\", \\\"\\\\\\\"s\\\\\\\"\\\"]], \
+\\\"hours,minutes,seconds\\\", RowBox[List[\\\"{\\\", \
+RowBox[List[\\\"\\\\\\\"Hours\\\\\\\"\\\", \\\",\\\", \\\"\\\\\\\"Minutes\\\\\
+\\\"\\\", \\\",\\\", \\\"\\\\\\\"Seconds\\\\\\\"\\\"]], \\\"}\\\"]]], \
+\\\"QuantityMixedUnit3\\\"]\\)\"\>",
+  StringForm["Generated k=`` in ``", 5, 
+   Quantity[
+    MixedMagnitude[{5, 39, 21.759992999999156`}], 
+    MixedUnit[{"Hours", "Minutes", "Seconds"}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.905432965893153*^9, 3.905433015843889*^9, 
+  3.905433179952855*^9, 3.9054332207434797`*^9, 3.9054333264164047`*^9, 
+  3.905441790733486*^9, 3.905462190370907*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"5702da47-bbcb-4c52-8685-28d4b5336768"]
 }, Open  ]]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Save", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<out\>\"", ",", 
+      "\"\<sets.m\>\""}], "}"}], "]"}], ",", "sets"}], "]"}]], "Input",
+ CellChangeTimes->{{3.905433044240128*^9, 3.905433049074144*^9}, {
+  3.905433099953348*^9, 3.905433101484434*^9}},
+ CellLabel->"In[17]:=",ExpressionUUID->"6580744a-afae-4837-ba34-26be9df60d2c"]
 }, Open  ]]
 },
 WindowSize->{810, 1440},
@@ -809,43 +461,20 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[422, 15, 161, 3, 68, "Section",ExpressionUUID->"4c4c85c7-cf03-4301-a04d-00f67399bf30"],
-Cell[586, 20, 2766, 69, 197, "Input",ExpressionUUID->"795ee191-85aa-4ddf-aa22-cdf966f845f3"]
-}, Open  ]],
+Cell[422, 15, 161, 3, 98, "Title",ExpressionUUID->"30b3a16e-a495-4660-9d2a-e68b8d548b7e"],
+Cell[586, 20, 1775, 42, 194, "Text",ExpressionUUID->"a6699473-4e68-4b6a-a6d9-650aeef68111"],
+Cell[2364, 64, 8985, 219, 610, "Input",ExpressionUUID->"98306bd5-7652-4039-a9f1-d1b496740917"],
 Cell[CellGroupData[{
-Cell[3389, 94, 163, 3, 68, "Section",ExpressionUUID->"30b3a16e-a495-4660-9d2a-e68b8d548b7e"],
-Cell[3555, 99, 9311, 231, 651, "Input",ExpressionUUID->"98306bd5-7652-4039-a9f1-d1b496740917"],
+Cell[11374, 287, 1142, 27, 98, "Input",ExpressionUUID->"6b118b3b-4c06-4a21-afd3-bc7871eb8bf1"],
 Cell[CellGroupData[{
-Cell[12891, 334, 852, 22, 92, "Input",ExpressionUUID->"e444cfc1-819c-4ed2-a964-a1b4674bde55"],
-Cell[13746, 358, 8834, 158, 119, "PrintTemporary",ExpressionUUID->"3ca6a537-241d-4645-b414-8e75805043a2"]
-}, Open  ]],
-Cell[22595, 519, 237, 6, 35, "Text",ExpressionUUID->"9388ef0e-644a-4361-81f1-1b844375dd4f"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[22869, 530, 154, 3, 68, "Section",ExpressionUUID->"267f8488-5f3b-4b63-8041-142297c2ec93"],
-Cell[23026, 535, 253, 5, 29, "Input",ExpressionUUID->"426a9339-09e4-4a6b-974e-d1fabbce452e"],
-Cell[23282, 542, 308, 6, 29, "Input",ExpressionUUID->"6c59d694-78a6-435a-8914-adc136bc9d40"],
-Cell[23593, 550, 235, 4, 29, "Input",ExpressionUUID->"8ff8210b-6598-4fba-abc2-96604c3aa2ea"],
-Cell[CellGroupData[{
-Cell[23853, 558, 231, 4, 29, "Input",ExpressionUUID->"4ae2195e-1ac2-42f2-bf99-a477de970dcc"],
-Cell[24087, 564, 286, 7, 33, "Output",ExpressionUUID->"f8212b9d-a04c-4962-995f-f9645b9823a3"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[24410, 576, 306, 6, 32, "Input",ExpressionUUID->"4e821e03-213a-4a58-8b5e-eaf12699649d"],
-Cell[24719, 584, 580, 18, 33, "Output",ExpressionUUID->"18b2c579-7d99-44dc-a0d0-dea10b84414f"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[25336, 607, 302, 6, 32, "Input",ExpressionUUID->"24c8de0e-a45f-4155-a0dc-c98c6dfa89f3"],
-Cell[25641, 615, 3017, 101, 96, "Output",ExpressionUUID->"653dd99d-f99b-49b2-a608-616a27d4f161"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[28695, 721, 769, 24, 29, "Input",ExpressionUUID->"f9f29449-6d13-4c4c-b481-5bd1d67328a6"],
-Cell[29467, 747, 226, 3, 33, "Output",ExpressionUUID->"695734c4-9e52-4558-a5e4-edf3f4159145"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[29730, 755, 836, 22, 51, "Input",ExpressionUUID->"cecaa4bc-2696-42ae-a818-322093d1872c"],
-Cell[30569, 779, 461, 8, 33, "Output",ExpressionUUID->"2739f7f6-01b6-43ee-8fbf-c2253065f993"]
+Cell[12541, 318, 1067, 20, 34, "Print",ExpressionUUID->"c6c17f3a-3a48-4f2e-973b-429494550ab5"],
+Cell[13611, 340, 1088, 20, 34, "Print",ExpressionUUID->"ddcf3bc6-af08-438f-a468-8fd4acb0325d"],
+Cell[14702, 362, 1067, 20, 34, "Print",ExpressionUUID->"fb5ea47e-a393-46e6-b7fb-58364dea1be4"],
+Cell[15772, 384, 1067, 20, 34, "Print",ExpressionUUID->"833c8732-4d7a-48b6-a934-69f86dd5cf62"],
+Cell[16842, 406, 1090, 20, 34, "Print",ExpressionUUID->"5702da47-bbcb-4c52-8685-28d4b5336768"]
 }, Open  ]]
+}, Open  ]],
+Cell[17959, 430, 451, 10, 29, "Input",ExpressionUUID->"6580744a-afae-4837-ba34-26be9df60d2c"]
 }, Open  ]]
 }
 ]
