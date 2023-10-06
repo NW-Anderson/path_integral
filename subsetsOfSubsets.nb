@@ -1,0 +1,273 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      9815,        263]
+NotebookOptionsPosition[      9114,        242]
+NotebookOutlinePosition[      9514,        258]
+CellTagsIndexPosition[      9471,        255]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"conditions", " ", "=", " ", 
+  RowBox[{"Select", "[", 
+   RowBox[{
+    RowBox[{"Subsets", "[", 
+     RowBox[{"Range", "[", "4", "]"}], "]"}], ",", 
+    RowBox[{
+     RowBox[{"#", "!=", 
+      RowBox[{"{", "}"}]}], "&"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.905099265201747*^9, 3.9050992668491793`*^9}, {
+  3.905099314648135*^9, 3.905099371993009*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"23f97867-fe85-4d3f-900c-7d2cc1ea8ce2"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", "1", "}"}], ",", 
+   RowBox[{"{", "2", "}"}], ",", 
+   RowBox[{"{", "3", "}"}], ",", 
+   RowBox[{"{", "4", "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "2"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "3"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "3"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"3", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "2", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.9050992677857456`*^9, 3.9050993731536484`*^9},
+ CellLabel->"Out[3]=",ExpressionUUID->"c468cb0f-1fff-4f58-9dd2-dd35f4444c9b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"conditionCombos", " ", "=", " ", 
+  RowBox[{"Subsets", "[", "conditions", "]"}]}]], "Input",
+ CellChangeTimes->{{3.9050992715279074`*^9, 3.9050992960186415`*^9}},
+ CellLabel->"In[4]:=",ExpressionUUID->"4888addf-627b-4821-b959-4ed60e99f993"],
+
+Cell[BoxData[
+ TemplateBox[<|"shortenedBoxes" -> TagBox[
+     RowBox[{"{", 
+       RowBox[{
+         RowBox[{"{", "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"{", "1", "}"}], "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"{", "2", "}"}], "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"{", "3", "}"}], "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"{", "4", "}"}], "}"}], ",", 
+         RowBox[{"{", 
+           RowBox[{"{", 
+             RowBox[{"1", ",", "2"}], "}"}], "}"}], ",", 
+         TemplateBox[{"32757"}, "OutputSizeLimit`Skeleton"], ",", 
+         RowBox[{"{", 
+           RowBox[{
+             RowBox[{"{", "1", "}"}], ",", 
+             RowBox[{"{", "2", "}"}], ",", 
+             RowBox[{"{", "3", "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+           RowBox[{
+             RowBox[{"{", "1", "}"}], ",", 
+             RowBox[{"{", "2", "}"}], ",", 
+             RowBox[{"{", "4", "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+           RowBox[{
+             RowBox[{"{", "1", "}"}], ",", 
+             RowBox[{"{", "3", "}"}], ",", 
+             RowBox[{"{", "4", "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+           RowBox[{
+             RowBox[{"{", "2", "}"}], ",", 
+             RowBox[{"{", "3", "}"}], ",", 
+             RowBox[{"{", "4", "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+           RowBox[{
+             RowBox[{"{", "1", "}"}], ",", 
+             RowBox[{"{", "2", "}"}], ",", 
+             RowBox[{"{", "3", "}"}], ",", 
+             RowBox[{"{", "4", "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"2", ",", "3", ",", "4"}], "}"}], ",", 
+             RowBox[{"{", 
+               RowBox[{"1", ",", "2", ",", "3", ",", "4"}], "}"}]}], "}"}]}], 
+       "}"}], Short[#, 8]& ], "line" -> 4, "sessionID" -> 
+   28731486237823184720, "byteCount" -> 25952336, "size" -> 8, "stored" -> 
+   False, "expr" -> Missing["NotStored"], "wrap" -> OutputSizeLimit`Defer, 
+   "version" -> 1|>,
+  "OutputSizeLimitTemplate"]], "Output",
+ CellChangeTimes->{3.9050992987779245`*^9, 3.9050993780177817`*^9},
+ CellLabel->"Out[4]=",ExpressionUUID->"027b08f6-b406-43a0-bbc9-924ddba9a978"]
+}, Open  ]]
+},
+WindowSize->{810, 467},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"e0802d52-8f6f-4063-acd4-2192b5bb3d62"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 460, 11, 28, "Input",ExpressionUUID->"23f97867-fe85-4d3f-900c-7d2cc1ea8ce2"],
+Cell[1043, 35, 1044, 30, 52, "Output",ExpressionUUID->"c468cb0f-1fff-4f58-9dd2-dd35f4444c9b"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2124, 70, 264, 4, 28, "Input",ExpressionUUID->"4888addf-627b-4821-b959-4ed60e99f993"],
+Cell[2391, 76, 6707, 163, 203, "Output",ExpressionUUID->"027b08f6-b406-43a0-bbc9-924ddba9a978"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
