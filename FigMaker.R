@@ -174,7 +174,7 @@ ggplot(data = master, aes(x = k, y = error)) +
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("kmax") +
+  scale_x_continuous("k_max") +
   scale_y_continuous("Absolute Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
@@ -225,10 +225,13 @@ ggplot(data = master, aes(x = start, y = error)) +
 ############################
 
 rm(list = ls())
+
 setwd("~/Documents/GitHub/path_integral/results/convergence20gen")
+
 df <- data.frame(sel=c(),
                  geg=c(),
                  fig=c())
+
 for(sel in c(1, 5,10)){
   for(geg in c(10,30,50)){
     df <- dplyr::bind_rows(df,
@@ -237,23 +240,70 @@ for(sel in c(1, 5,10)){
                                       path.expand(paste("2na",sel,"_", geg,"geg","_0.02time.svg",sep=""))))
   }
 }
+
 df <- df %>% rename(fig = path.expand.paste..2na...sel..._...geg...geg...._0.02time.svg...,
-                    Gegenbauers = geg,
+                    m_max = geg,
                     PopScaledSelection = sel)
 
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                 y = 1,
+                 cols = c(0:5, "NDSolve"),
+                 lntyp = c(rep(1,6), 2)) 
 ggplot(df) +
   geom_image(aes(x=1,
                  y=1,
                  image=fig),
              size=Inf) +
-  facet_grid(rows=vars(Gegenbauers),
+  facet_grid(rows=vars(m_max),
              cols=vars(PopScaledSelection),
              scales = "free",
              labeller = label_both) +
-  theme_blank() +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") + 
   xlab("Ending Frequency") +
-  ylab("Density")
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
 
+
+
+# ggplot(pointdf, aes(x = x, y = y, color = cols)) +
+#   geom_line(aes(linetype = cols),
+#              alpha = 0) + 
+#   guides(color = guide_legend(override.aes = list(alpha = 1),
+#                               nrow = 1)) +
+#   theme_bw() + 
+#   labs(color = "k_max",
+#        linetype = "k_max") + 
+#   scale_color_manual(values = the_colors, name = "k_max") +
+#   scale_linetype_manual(values=c(rep("solid",6), "dashed"), name="k_max") + 
+#   theme(legend.position="bottom") 
 ##############################
 #### Convergence Alpha VG ####
 ##############################
@@ -275,6 +325,18 @@ df <- df %>% rename(fig = path.expand.paste..2na...sel...._50geg...._...genVar..
                     VG = genVar,
                     PopScaledSelection = sel)
 
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
 ggplot(df) +
   geom_image(aes(x=1,
                  y=1,
@@ -284,9 +346,30 @@ ggplot(df) +
              cols=vars(PopScaledSelection),
              scales = "free",
              labeller = label_both) +
-  theme_blank() +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") +
   xlab("Ending Frequency") +
-  ylab("Density")
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
 
 ############################
 #### Convergence 2Na 5 ####
@@ -307,21 +390,55 @@ for(tme in c(0.5, 0.25, 0.75)){
   }
 }
 df <- df %>% rename(fig = path.expand.paste..2na5_...geg...geg...._...tme...time.svg...,
-                    Gegenbauers = geg,
+                    m_max = geg,
                     Time = tme)
 
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
+ 
 ggplot(df) +
   geom_image(aes(x=1,
                  y=1,
                  image=fig),
              size=Inf) +
-  facet_grid(rows=vars(Gegenbauers),
+  facet_grid(rows=vars(m_max),
              cols=vars(Time),
              scales = "free",
              labeller = label_both) +
-  theme_blank() +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") +
   xlab("Ending Frequency") +
-  ylab("Density")
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
 
 ############################
 #### Convergence 2Na 10 ####
@@ -342,21 +459,55 @@ for(tme in c(0.05, 0.1, 0.15)){
   }
 }
 df <- df %>% rename(fig = path.expand.paste..2na10_...geg...geg...._...tme...time.svg...,
-                    Gegenbauers = geg,
+                    m_max = geg,
                     Time = tme)
+
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
 
 ggplot(df) +
   geom_image(aes(x=1,
                  y=1,
                  image=fig),
              size=Inf) +
-  facet_grid(rows=vars(Gegenbauers),
+  facet_grid(rows=vars(m_max),
              cols=vars(Time),
              scales = "free",
              labeller = label_both) +
-  theme_blank() +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") +
   xlab("Ending Frequency") +
-  ylab("Density")
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
 
 #######################
 #### pDetection VG ####
