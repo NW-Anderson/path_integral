@@ -46,7 +46,7 @@ for(file in list.files()){
 }
 names(master) <- c("alpha", "VG", "pintAUC", "numAUC")
 master$popalpha = 1000 * master$alpha
-master$error = abs(master$numAUC - master$pintAUC)
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
 rm(tmp, file)
 
 summary(master$error)
@@ -63,12 +63,15 @@ ggplot(data = master, aes(x = popalpha, y = error)) +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
   scale_x_continuous("Population Scaled Selection Coefficient") +
-  scale_y_continuous("Absolute Error") +
+  scale_y_continuous("Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18))
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
 
 # mster <- master %>% filter(VG<=0.001)
 # ggplot(data = mster, aes(x = popalpha, y = error)) +
@@ -102,7 +105,7 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, tmp)
 }
 names(master) <- c("time", "VG", "pintAUC", "numAUC")
-master$error = abs(master$numAUC - master$pintAUC)
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
 rm(tmp, file)
 
 summary(master$error)
@@ -119,12 +122,15 @@ ggplot(data = master, aes(x = time, y = error)) +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
   scale_x_continuous("Time (Genomic Units)") +
-  scale_y_continuous("Absolute Error") +
+  scale_y_continuous("Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18))
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
 
 # mster <- master %>% filter(VG<=0.001)
 # ggplot(data = mster, aes(x = time, y = error)) +
@@ -158,7 +164,7 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, tmp)
 }
 names(master) <- c("k", "VG", "pintAUC", "numAUC")
-master$error = abs(master$numAUC - master$pintAUC)
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
 rm(tmp, file)
 
 summary(master$error)
@@ -175,12 +181,15 @@ ggplot(data = master, aes(x = k, y = error)) +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
   scale_x_continuous("k_max") +
-  scale_y_continuous("Absolute Error") +
+  scale_y_continuous("Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18))
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
 
 #####################
 #### Error Start ####
@@ -196,7 +205,7 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, tmp)
 }
 names(master) <- c("start", "VG", "pintAUC", "numAUC")
-master$error = abs(master$numAUC - master$pintAUC)
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
 rm(tmp, file)
 
 summary(master$error)
@@ -213,12 +222,15 @@ ggplot(data = master, aes(x = start, y = error)) +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
   scale_x_continuous("Starting Frequency") +
-  scale_y_continuous("Absolute Error") +
+  scale_y_continuous("Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18))
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
 
 ############################
 #### Convergence 20 Gen ####
