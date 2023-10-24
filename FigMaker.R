@@ -221,7 +221,8 @@ ggplot(data = master, aes(x = start, y = error)) +
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Starting Frequency") +
+  scale_x_continuous("Starting Frequency",
+                     breaks = (1:9 / 10)) +
   scale_y_continuous("Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
@@ -266,9 +267,9 @@ the_colors <- c(rgb(0.396811, 0.31014, 0.2041),
                 rgb(0.35082, 0.595178, 0.853742))
 
 pointdf <- data.table(x = 1,
-                 y = 1,
-                 cols = c(0:5, "NDSolve"),
-                 lntyp = c(rep(1,6), 2)) 
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
 ggplot(df) +
   geom_image(aes(x=1,
                  y=1,
@@ -417,7 +418,7 @@ pointdf <- data.table(x = 1,
                       y = 1,
                       cols = c(0:5, "NDSolve"),
                       lntyp = c(rep(1,6), 2)) 
- 
+
 ggplot(df) +
   geom_image(aes(x=1,
                  y=1,
@@ -656,3 +657,124 @@ ggplot(data = master, aes(x = popalpha, y = Pdetected)) +
                                    colour = c(rep("black",2),"red",rep("black",2)))) + 
   scale_color_viridis(discrete = T) + 
   theme(axis.title = element_text(size=18))
+
+#######################
+#### pDetection Ne ####
+#######################
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$alpha
+rm(tmp)
+
+ggplot(data = master, aes(x = popalpha, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("Population Scaled Selection Coefficient", 
+                     breaks = c(0,0.5,1,5,10), 
+                     limits = c(0,10),
+                     labels = c(0,0.5,1,5,10)) +
+  scale_y_continuous("P(detected)",
+                     breaks = c(0.01,0.02,0.04,0.06,0.08)) +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",2),"red",rep("black",2)))) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18))
+
+######################
+#### model figure ####
+######################
+
+rm(list=ls())
+
+x <- seq(from = -2, to = 3, length.out = 500)
+
+phenodist <- dnorm(x, sd = sqrt(10^-2))
+phenodist <- phenodist / max(phenodist)
+
+olddist <- dnorm(x, sd = 1)
+olddist <- olddist / max(olddist)
+
+newdist <- dnorm(x, mean = 1, sd = 1)
+newdist <- newdist / max(newdist)
+
+df <- dplyr::bind_rows(data.table(x = x,
+                                  y = phenodist,
+                                  class = "pheno",
+                                  cols = 1),
+                       data.table(x = x,
+                                  y = olddist,
+                                  class = "old",
+                                  cols = 2),
+                       data.table(x = x,
+                                  y = newdist,
+                                  class = "new",
+                                  cols = 2))
+
+areadf <- data.table(x = x,
+                     y = phenodist,
+                     class = "pheno",
+                     cols = 1)
+
+the_colors <- c(rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.35082, 0.595178, 0.853742))
+
+ggplot(df, aes(x = x, y = y)) + 
+  geom_line(aes(color = class,
+                linetype = class,
+                group = class),
+            linewidth = 2,
+            alpha = 0.75) +
+  scale_color_manual(values = c(rep(the_colors[1],2), the_colors[2]),
+                     labels=c("Shifted Fitness Function",
+                              "Initial Fitness Function",
+                              "Trait Distribution"),
+                     name = "") +
+  scale_linetype_manual(values = c("dotted", rep("solid",2)),
+                        labels=c("Shifted Fitness Function",
+                                 "Initial Fitness Function",
+                                 "Trait Distribution"),
+                        name = "") +
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "bottom",
+        axis.title.x = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  scale_x_continuous(breaks = c(0,1),
+                     labels = c("0" = "Old\nOptimum", 
+                                "1" = "New\nOptimum"),
+                     name = "Trait Value") +
+  guides(linetype = guide_legend(override.aes = list(linewidth = 2),
+                              nrow = 1)) +
+  geom_area(data = areadf, 
+            fill = the_colors[2],
+            alpha = 0.5)
