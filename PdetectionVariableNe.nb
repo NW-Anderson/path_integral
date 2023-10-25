@@ -1,0 +1,1100 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     43392,       1092]
+NotebookOptionsPosition[     41021,       1052]
+NotebookOutlinePosition[     41426,       1068]
+CellTagsIndexPosition[     41383,       1065]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Get", "[", "\"\<path-integrals.m\>\"", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Kimura", "[", 
+   RowBox[{"x_", ",", "y_", ",", "t_", ",", "n_"}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "m", "}"}], ",", 
+    RowBox[{"Sum", "[", 
+     RowBox[{
+      RowBox[{"4", "*", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"2", "*", "m"}], "+", "1"}], ")"}], "*", "x", "*", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", "-", "x"}], ")"}], "/", 
+        RowBox[{"(", 
+         RowBox[{"m", "*", 
+          RowBox[{"(", 
+           RowBox[{"m", "+", "1"}], ")"}]}], ")"}]}], "*", 
+       RowBox[{"GegenbauerC", "[", 
+        RowBox[{
+         RowBox[{"m", "-", "1"}], ",", 
+         RowBox[{"3", "/", "2"}], ",", 
+         RowBox[{"1", "-", 
+          RowBox[{"2", "*", "x"}]}]}], "]"}], "*", 
+       RowBox[{"GegenbauerC", "[", 
+        RowBox[{
+         RowBox[{"m", "-", "1"}], ",", 
+         RowBox[{"3", "/", "2"}], ",", 
+         RowBox[{"1", "-", 
+          RowBox[{"2", "*", "y"}]}]}], "]"}], "*", 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", "1"}], "/", "2"}], "*", "m", "*", 
+         RowBox[{"(", 
+          RowBox[{"m", "+", "1"}], ")"}], "*", "t"}], "]"}]}], ",", 
+      RowBox[{"{", 
+       RowBox[{"m", ",", "1", ",", "n"}], "}"}]}], "]"}]}], 
+   "\[IndentingNewLine]", "]"}]}], "\n", 
+ RowBox[{
+  RowBox[{"haywardNe500", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", " ", "Ne", " ", "\[Alpha]", " ", 
+        RowBox[{"\[CapitalLambda]", " ", "/", " ", "W"}]}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"y", " ", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "Ne", " ", "VG", " ", 
+           RowBox[{"t", " ", "/", " ", "W"}]}], "]"}]}], " ", "-", " ", "x"}],
+        ")"}]}], "]"}], "*", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Kimura", "[", 
+       RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], " ", "+", " ", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"(", 
+           RowBox[{"2", 
+            SuperscriptBox["Ne", "2"], " ", "\[Alpha]", " ", 
+            RowBox[{"\[CapitalLambda]", " ", "/", " ", 
+             SuperscriptBox["W", "2"]}]}], ")"}], "j"], " ", 
+         RowBox[{
+          RowBox[{"pints", "[", 
+           RowBox[{"[", "j", "]"}], "]"}], "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", "5"}], "}"}]}], "]"}]}], ")"}]}]}], ";", 
+  RowBox[{"Clear", "[", "pints", "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.9068463358158417`*^9, 3.906846344376001*^9}, {
+  3.906846391430894*^9, 3.9068464137863193`*^9}},
+ CellLabel->"In[50]:=",ExpressionUUID->"f3e354b3-8c5c-4c16-896b-774649615d8f"],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.9071336754282703`*^9},
+ CellLabel->"Out[50]=",ExpressionUUID->"8f6335e2-3137-498f-9fd4-33d2c45669f6"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part", "partd", 
+   "\"Part specification \\!\\(\\*RowBox[{\\\"pints\\\", \\\"\
+\[LeftDoubleBracket]\\\", \\\"1\\\", \\\"\[RightDoubleBracket]\\\"}]\\) is \
+longer than depth of object.\"", 2, 52, 9, 28744813986667650318, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.907133675481262*^9},
+ CellLabel->
+  "During evaluation of \
+In[50]:=",ExpressionUUID->"cb1334ec-9c10-49f4-bb6c-9dc612f33ae2"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part", "partd", 
+   "\"Part specification \\!\\(\\*RowBox[{\\\"pints\\\", \\\"\
+\[LeftDoubleBracket]\\\", \\\"2\\\", \\\"\[RightDoubleBracket]\\\"}]\\) is \
+longer than depth of object.\"", 2, 52, 10, 28744813986667650318, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.907133675493329*^9},
+ CellLabel->
+  "During evaluation of \
+In[50]:=",ExpressionUUID->"11d63771-ce35-4f68-a3d7-6bf81cb05463"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part", "partd", 
+   "\"Part specification \\!\\(\\*RowBox[{\\\"pints\\\", \\\"\
+\[LeftDoubleBracket]\\\", \\\"3\\\", \\\"\[RightDoubleBracket]\\\"}]\\) is \
+longer than depth of object.\"", 2, 52, 11, 28744813986667650318, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.907133675502328*^9},
+ CellLabel->
+  "During evaluation of \
+In[50]:=",ExpressionUUID->"76a21eb5-12c7-42d5-a696-d2095b5fd172"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General", "stop", 
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"Part\\\", \\\"::\\\", \
+\\\"partd\\\"}], \\\"MessageName\\\"]\\) will be suppressed during this \
+calculation.\"", 2, 52, 12, 28744813986667650318, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9071336755121727`*^9},
+ CellLabel->
+  "During evaluation of \
+In[50]:=",ExpressionUUID->"d2bd6e75-55f3-4f58-b450-b48e1d609fa4"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Get", "[", "\"\<path-integrals-vary-ne.m\>\"", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"haywardNe1000", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", " ", "Ne", " ", "\[Alpha]", " ", 
+        RowBox[{"\[CapitalLambda]", " ", "/", " ", "W"}]}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"y", " ", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "Ne", " ", "VG", " ", 
+           RowBox[{"t", " ", "/", " ", "W"}]}], "]"}]}], " ", "-", " ", "x"}],
+        ")"}]}], "]"}], "*", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Kimura", "[", 
+       RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], " ", "+", " ", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"(", 
+           RowBox[{"2", 
+            SuperscriptBox["Ne", "2"], " ", "\[Alpha]", " ", 
+            RowBox[{"\[CapitalLambda]", " ", "/", " ", 
+             SuperscriptBox["W", "2"]}]}], ")"}], "j"], " ", 
+         RowBox[{
+          RowBox[{"pints", "[", 
+           RowBox[{"[", "j", "]"}], "]"}], "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", "5"}], "}"}]}], "]"}]}], ")"}]}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"haywardNe250", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", " ", "Ne", " ", "\[Alpha]", " ", 
+        RowBox[{"\[CapitalLambda]", " ", "/", " ", "W"}]}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"y", " ", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "Ne", " ", "VG", " ", 
+           RowBox[{"t", " ", "/", " ", "W"}]}], "]"}]}], " ", "-", " ", "x"}],
+        ")"}]}], "]"}], "*", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Kimura", "[", 
+       RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], " ", "+", " ", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"(", 
+           RowBox[{"2", 
+            SuperscriptBox["Ne", "2"], " ", "\[Alpha]", " ", 
+            RowBox[{"\[CapitalLambda]", " ", "/", " ", 
+             SuperscriptBox["W", "2"]}]}], ")"}], "j"], " ", 
+         RowBox[{
+          RowBox[{"pints", "[", 
+           RowBox[{"[", "j", "]"}], "]"}], "[", 
+          RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", "5"}], "}"}]}], "]"}]}], ")"}]}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"haywardNe200", " ", "=", " ", 
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", " ", "Ne", " ", "\[Alpha]", " ", 
+        RowBox[{"\[CapitalLambda]", " ", "/", " ", "W"}]}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"y", " ", 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "Ne", " ", "VG", " ", 
+           RowBox[{"t", " ", "/", " ", "W"}]}], "]"}]}], " ", "-", " ", "x"}],
+        ")"}]}], "]"}], "*", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"Kimura", "[", 
+       RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], " ", "+", " ", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"(", 
+           RowBox[{"2", 
+            SuperscriptBox["Ne", "2"], " ", "\[Alpha]", " ", 
+            RowBox[{"\[CapitalLambda]", " ", "/", " ", 
+             SuperscriptBox["W", "2"]}]}], ")"}], "j"], " ", 
+         RowBox[{
+          RowBox[{"pints", "[", 
+           RowBox[{"[", "j", "]"}], "]"}], "[", 
+          RowBox[{"[", "3", "]"}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"j", ",", "1", ",", "5"}], "}"}]}], "]"}]}], ")"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Clear", "[", "pints", "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.906846415511183*^9, 3.906846430800165*^9}, 
+   3.90684648148536*^9, {3.9068465554529552`*^9, 3.9068465670979366`*^9}, 
+   3.9071249510869646`*^9},
+ CellLabel->"In[4]:=",ExpressionUUID->"79d9211b-35bf-4eb6-8e18-3bf890d73182"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"fitVar", " ", "=", " ", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"jumpSize", " ", "=", " ", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"sigCutoff", " ", "=", " ", "0.99"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"start", "=", " ", "0.1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"selCoef", " ", "=", " ", "0.005"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"genVar", " ", "=", " ", "0.001"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.9068466263279247`*^9, 3.9068466710299826`*^9}, {
+   3.906846813981735*^9, 3.9068468205496373`*^9}, 3.9071253764374743`*^9},
+ CellLabel->"In[9]:=",ExpressionUUID->"16279fda-804a-4227-b2c8-0020622eec57"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"**", "**"}], "**"}], "**"}], "**"}], "*************)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"**", "**", "**", " ", "Ne"}], " ", "=", " ", "1000"}], " ", 
+   "*******)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"**", "**", "**", "**"}], "***************)"}]}]], "Input",
+ CellChangeTimes->{{3.906846727063759*^9, 3.9068467338956585`*^9}},
+ CellLabel->"In[15]:=",ExpressionUUID->"0f544928-2d17-4c4c-b7cb-12d9df29f4c1"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "time", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"time", " ", "=", " ", "0.05"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Clear", "[", "selectedNe", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"selectedNe", " ", "=", " ", "1000"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.907125194243817*^9, 3.9071252064056964`*^9}, 
+   3.907125243916231*^9, {3.907125305152856*^9, 3.9071253390972643`*^9}, {
+   3.9071254528484173`*^9, 3.907125453703746*^9}, 3.9071331781905193`*^9, 
+   3.907133520791461*^9, {3.9071335962492847`*^9, 3.907133597643078*^9}},
+ CellLabel->"In[40]:=",ExpressionUUID->"5cfa2a5e-c58a-4900-a7f9-e1a46a5c8fd8"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Do", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Clear", "[", 
+     RowBox[{
+     "neutAUC", ",", " ", "pNeutFix", ",", "tmp", ",", "thresh", ",", 
+      "\[CapitalPsi]", ",", " ", "totalP", ",", " ", "Pdetected"}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"selectedNe", ",", " ", "\"\< xxxx \>\"", ",", 
+      RowBox[{"time", "\"\<:\>\""}]}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"neutAUC", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"pNeutFix", " ", "=", " ", 
+     RowBox[{"1", "-", " ", "neutAUC"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"tmp", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"thresh", " ", "=", " ", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"tmp", " ", "==", " ", 
+         RowBox[{"1", "-", "sigCutoff"}]}], " ", "&&", " ", 
+        RowBox[{"0", "<", "\[CapitalPsi]", "<", "1"}]}], ",", " ", 
+       RowBox[{"{", "\[CapitalPsi]", "}"}], ",", " ", 
+       TemplateBox[{},
+        "Reals"]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "[", "thresh", "]"}], " ", "!=", " ", "1"}], ",", 
+      RowBox[{"Throw", "[", 
+       RowBox[{"{", 
+        RowBox[{
+        "selectedNe", ",", ",", " ", "\"\< xxxx \>\"", ",", " ", "start", 
+         ",", "\"\<:\>\""}], "}"}], "]"}]}], "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", " ", "/.", " ", "thresh"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", "\[CapitalPsi]", "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"pNeutFix", " ", "+", "  ", 
+      RowBox[{"NIntegrate", "[", 
+       RowBox[{
+        RowBox[{"Evaluate", "[", 
+         RowBox[{
+          RowBox[{"Kimura", "[", 
+           RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+            RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"y", ",", " ", "0", ",", 
+          RowBox[{"start", "+", "\[CapitalPsi]"}]}], "}"}]}], "]"}]}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"totalP", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe1000", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Pdetected", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe1000", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"totalP", ",", " ", "\"\< xxxx \>\"", ",", " ", "Pdetected"}], 
+     "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Export", "[", 
+     RowBox[{
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"\"\<pDetection_\>\"", ",", "\"\<Ne\>\"", ",", 
+        RowBox[{"ToString", "[", "selectedNe", "]"}], ",", " ", 
+        "\"\<_selCoef\>\"", ",", 
+        RowBox[{"ToString", "[", "selCoef", "]"}], ",", "\"\<.csv\>\""}], 
+       "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{
+        "selCoef", ",", "selectedNe", ",", "time", ",", " ", "start", ",", 
+         "\[CapitalPsi]", ",", "totalP", ",", "Pdetected"}], "}"}], "}"}], 
+      ",", " ", "\"\<csv\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"selCoef", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "0", ",", " ", "0.0005", ",", "0.001", ",", "0.005", ",", " ", "0.01"}],
+       "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.907125194243817*^9, 3.9071252064056964`*^9}, 
+   3.907125243916231*^9, {3.907125305152856*^9, 3.9071253390972643`*^9}, {
+   3.9071254528484173`*^9, 3.907125453703746*^9}, 3.9071331781905193`*^9, 
+   3.907133520791461*^9, {3.9071335962492847`*^9, 
+   3.907133597643078*^9}},ExpressionUUID->"aef0383f-b1f0-4b95-a067-\
+659169590285"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"1000", "\[InvisibleSpace]", "\<\" xxxx \"\>", "\[InvisibleSpace]", 
+   RowBox[{"0.025`", " ", "\<\":\"\>"}]}],
+  SequenceForm[1000, " xxxx ", 0.025 ":"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.907133119103462*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"cd9bca66-5218-42d1-bf74-85be8c891a3e"],
+
+Cell[BoxData["0.9004460496515316`"], "Print",
+ CellChangeTimes->{3.9071331216080956`*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"caef1bb2-f16a-42cc-8f5f-5444ccb2774c"],
+
+Cell[BoxData["1.0000000000011813`"], "Print",
+ CellChangeTimes->{3.9071331226759014`*^9},
+ CellLabel->
+  "During evaluation of \
+In[16]:=",ExpressionUUID->"535345ac-5b18-46c8-9281-50c07eb58374"]
+}, Open  ]],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.907133166506355*^9},
+ CellLabel->"Out[20]=",ExpressionUUID->"92dc0030-4058-4183-a83f-105e87530539"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"**", "**"}], "**"}], "**"}], "**"}], "************)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"**", "**", "**", " ", "Ne"}], " ", "=", " ", "500"}], " ", 
+   "*******)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"**", "**", "**", "**"}], "**************)"}]}]], "Input",
+ CellChangeTimes->{{3.906846727063759*^9, 3.9068467338956585`*^9}, {
+  3.9068469938538017`*^9, 
+  3.9068469984528313`*^9}},ExpressionUUID->"cc8d9a18-32f7-4c12-a0a9-\
+a61caed61e7f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "selectedNe", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Clear", "[", "time", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"time", " ", "=", " ", "0.1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"selectedNe", " ", "=", " ", "500"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Clear", "[", 
+     RowBox[{
+     "neutAUC", ",", " ", "pNeutFix", ",", "tmp", ",", "thresh", ",", 
+      "\[CapitalPsi]", ",", " ", "totalP", ",", " ", "Pdetected"}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"selectedNe", ",", " ", "\"\< xxxx \>\"", ",", 
+      RowBox[{"time", "\"\<:\>\""}]}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"neutAUC", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"pNeutFix", " ", "=", " ", 
+     RowBox[{"1", "-", " ", "neutAUC"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"tmp", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"thresh", " ", "=", " ", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"tmp", " ", "==", " ", 
+         RowBox[{"1", "-", "sigCutoff"}]}], " ", "&&", " ", 
+        RowBox[{"0", "<", "\[CapitalPsi]", "<", "1"}]}], ",", " ", 
+       RowBox[{"{", "\[CapitalPsi]", "}"}], ",", " ", 
+       TemplateBox[{},
+        "Reals"]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "[", "thresh", "]"}], " ", "!=", " ", "1"}], ",", 
+      RowBox[{"Throw", "[", 
+       RowBox[{"{", 
+        RowBox[{
+        "selectedNe", ",", ",", " ", "\"\< xxxx \>\"", ",", " ", "start", 
+         ",", "\"\<:\>\""}], "}"}], "]"}]}], "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", " ", "/.", " ", "thresh"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", "\[CapitalPsi]", "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"pNeutFix", " ", "+", "  ", 
+      RowBox[{"NIntegrate", "[", 
+       RowBox[{
+        RowBox[{"Evaluate", "[", 
+         RowBox[{
+          RowBox[{"Kimura", "[", 
+           RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+            RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"y", ",", " ", "0", ",", 
+          RowBox[{"start", "+", "\[CapitalPsi]"}]}], "}"}]}], "]"}]}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"totalP", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe500", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Pdetected", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe500", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"totalP", ",", " ", "\"\< xxxx \>\"", ",", " ", "Pdetected"}], 
+     "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Export", "[", 
+     RowBox[{
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"\"\<pDetection_\>\"", ",", "\"\<Ne\>\"", ",", 
+        RowBox[{"ToString", "[", "selectedNe", "]"}], ",", " ", 
+        "\"\<_selCoef\>\"", ",", 
+        RowBox[{"ToString", "[", "selCoef", "]"}], ",", "\"\<.csv\>\""}], 
+       "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{
+        "selCoef", ",", "selectedNe", ",", "time", ",", " ", "start", ",", 
+         "\[CapitalPsi]", ",", "totalP", ",", "Pdetected"}], "}"}], "}"}], 
+      ",", " ", "\"\<csv\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"selCoef", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "0", ",", " ", "0.0005", ",", "0.001", ",", "0.005", ",", " ", "0.01"}],
+       "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellChangeTimes->{{3.9068467584134502`*^9, 3.906846774011306*^9}, {
+   3.906846836950203*^9, 3.9068469880590754`*^9}, {3.9071252153755164`*^9, 
+   3.9071252170585017`*^9}, 3.90712531029111*^9, {3.907125343119735*^9, 
+   3.9071253473603983`*^9}, {3.907125457425025*^9, 3.9071254584480543`*^9}, {
+   3.9071335427573028`*^9, 
+   3.907133545008572*^9}},ExpressionUUID->"2eb83508-dcea-455f-bb86-\
+330e1d05133c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"**", "**"}], "**"}], "**"}], "**"}], "************)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"**", "**", "**", " ", "Ne"}], " ", "=", " ", "250"}], " ", 
+   "*******)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"**", "**", "**", "**"}], "**************)"}]}]], "Input",
+ CellChangeTimes->{{3.906846727063759*^9, 3.9068467338956585`*^9}, {
+  3.9068469938538017`*^9, 
+  3.906847011181113*^9}},ExpressionUUID->"67e5f157-5a6e-4904-b9c6-\
+fc14f27f1777"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "time", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"time", " ", "=", " ", "0.2"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Clear", "[", "selectedNe", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"selectedNe", " ", "=", " ", "250"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Clear", "[", 
+     RowBox[{
+     "neutAUC", ",", " ", "pNeutFix", ",", "tmp", ",", "thresh", ",", 
+      "\[CapitalPsi]", ",", " ", "totalP", ",", " ", "Pdetected"}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"selectedNe", ",", " ", "\"\< xxxx \>\"", ",", 
+      RowBox[{"time", "\"\<:\>\""}]}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"neutAUC", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"pNeutFix", " ", "=", " ", 
+     RowBox[{"1", "-", " ", "neutAUC"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"tmp", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"thresh", " ", "=", " ", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"tmp", " ", "==", " ", 
+         RowBox[{"1", "-", "sigCutoff"}]}], " ", "&&", " ", 
+        RowBox[{"0", "<", "\[CapitalPsi]", "<", "1"}]}], ",", " ", 
+       RowBox[{"{", "\[CapitalPsi]", "}"}], ",", " ", 
+       TemplateBox[{},
+        "Reals"]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "[", "thresh", "]"}], " ", "!=", " ", "1"}], ",", 
+      RowBox[{"Throw", "[", 
+       RowBox[{"{", 
+        RowBox[{
+        "selectedNe", ",", ",", " ", "\"\< xxxx \>\"", ",", " ", "start", 
+         ",", "\"\<:\>\""}], "}"}], "]"}]}], "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", " ", "/.", " ", "thresh"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", "\[CapitalPsi]", "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"pNeutFix", " ", "+", "  ", 
+      RowBox[{"NIntegrate", "[", 
+       RowBox[{
+        RowBox[{"Evaluate", "[", 
+         RowBox[{
+          RowBox[{"Kimura", "[", 
+           RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+            RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"y", ",", " ", "0", ",", 
+          RowBox[{"start", "+", "\[CapitalPsi]"}]}], "}"}]}], "]"}]}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"totalP", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe250", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Pdetected", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe250", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"totalP", ",", " ", "\"\< xxxx \>\"", ",", " ", "Pdetected"}], 
+     "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Export", "[", 
+     RowBox[{
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"\"\<pDetection_\>\"", ",", "\"\<Ne\>\"", ",", 
+        RowBox[{"ToString", "[", "selectedNe", "]"}], ",", " ", 
+        "\"\<_selCoef\>\"", ",", 
+        RowBox[{"ToString", "[", "selCoef", "]"}], ",", "\"\<.csv\>\""}], 
+       "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{
+        "selCoef", ",", "selectedNe", ",", "time", ",", " ", "start", ",", 
+         "\[CapitalPsi]", ",", "totalP", ",", "Pdetected"}], "}"}], "}"}], 
+      ",", " ", "\"\<csv\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"selCoef", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "0", ",", " ", "0.0005", ",", "0.001", ",", "0.005", ",", " ", "0.01"}],
+       "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellChangeTimes->{{3.907125194243817*^9, 3.9071252064056964`*^9}, {
+   3.9071252561847367`*^9, 3.9071252615968876`*^9}, 3.9071253166008415`*^9, {
+   3.9071253510646496`*^9, 3.907125356649827*^9}, {3.9071254628185244`*^9, 
+   3.9071254634183035`*^9}, {3.907133549810497*^9, 
+   3.907133550504825*^9}},ExpressionUUID->"5d3889f0-93b9-4afd-810e-\
+199ebb429086"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"**", "**"}], "**"}], "**"}], "**"}], "************)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"**", "**", "**", " ", "Ne"}], " ", "=", " ", "200"}], " ", 
+   "*******)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"**", "**", "**", "**"}], "**************)"}]}]], "Input",
+ CellChangeTimes->{{3.906846727063759*^9, 3.9068467338956585`*^9}, {
+  3.9068469938538017`*^9, 3.9068469984528313`*^9}, {3.906847032421734*^9, 
+  3.9068470324743767`*^9}},ExpressionUUID->"fa077338-fe32-4f47-892d-\
+cc25f9185a08"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "time", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"time", " ", "=", " ", "0.25"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Clear", "[", "selectedNe", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"selectedNe", " ", "=", " ", "200"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Do", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Clear", "[", 
+     RowBox[{
+     "neutAUC", ",", " ", "pNeutFix", ",", "tmp", ",", "thresh", ",", 
+      "\[CapitalPsi]", ",", " ", "totalP", ",", " ", "Pdetected"}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"selectedNe", ",", " ", "\"\< xxxx \>\"", ",", 
+      RowBox[{"time", "\"\<:\>\""}]}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"neutAUC", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"pNeutFix", " ", "=", " ", 
+     RowBox[{"1", "-", " ", "neutAUC"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"tmp", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{
+         RowBox[{"Kimura", "[", 
+          RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+           RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"thresh", " ", "=", " ", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"tmp", " ", "==", " ", 
+         RowBox[{"1", "-", "sigCutoff"}]}], " ", "&&", " ", 
+        RowBox[{"0", "<", "\[CapitalPsi]", "<", "1"}]}], ",", " ", 
+       RowBox[{"{", "\[CapitalPsi]", "}"}], ",", " ", 
+       TemplateBox[{},
+        "Reals"]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "[", "thresh", "]"}], " ", "!=", " ", "1"}], ",", 
+      RowBox[{"Throw", "[", 
+       RowBox[{"{", 
+        RowBox[{
+        "selectedNe", ",", ",", " ", "\"\< xxxx \>\"", ",", " ", "start", 
+         ",", "\"\<:\>\""}], "}"}], "]"}]}], "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", " ", "/.", " ", "thresh"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"\[CapitalPsi]", " ", "=", " ", 
+     RowBox[{"\[CapitalPsi]", "[", 
+      RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", "\[CapitalPsi]", "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"pNeutFix", " ", "+", "  ", 
+      RowBox[{"NIntegrate", "[", 
+       RowBox[{
+        RowBox[{"Evaluate", "[", 
+         RowBox[{
+          RowBox[{"Kimura", "[", 
+           RowBox[{"x", ",", "y", ",", "t", ",", "50"}], "]"}], "/.", " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"x", "\[Rule]", "start"}], ",", " ", 
+            RowBox[{"t", "\[Rule]", "time"}]}], "}"}]}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"y", ",", " ", "0", ",", 
+          RowBox[{"start", "+", "\[CapitalPsi]"}]}], "}"}]}], "]"}]}], "]"}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"totalP", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe200", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", "0", ",", "1"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Pdetected", " ", "=", " ", 
+     RowBox[{"NIntegrate", "[", 
+      RowBox[{
+       RowBox[{"Evaluate", "[", 
+        RowBox[{"haywardNe200", "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"x", "\[Rule]", "start"}], ",", 
+           RowBox[{"t", " ", "->", " ", "time"}], ",", " ", 
+           RowBox[{"\[Alpha]", "->", "selCoef"}], ",", 
+           RowBox[{"\[CapitalLambda]", " ", "\[Rule]", " ", "jumpSize"}], ",",
+            " ", 
+           RowBox[{"Ne", "\[Rule]", "selectedNe"}], ",", " ", 
+           RowBox[{"VG", "->", "genVar"}], ",", "  ", 
+           RowBox[{"W", "\[Rule]", "fitVar"}]}], "}"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", " ", 
+         RowBox[{"start", "+", "\[CapitalPsi]"}], ",", "1"}], "}"}]}], 
+      "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"totalP", ",", " ", "\"\< xxxx \>\"", ",", " ", "Pdetected"}], 
+     "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Export", "[", 
+     RowBox[{
+      RowBox[{"StringJoin", "[", 
+       RowBox[{"\"\<pDetection_\>\"", ",", "\"\<Ne\>\"", ",", 
+        RowBox[{"ToString", "[", "selectedNe", "]"}], ",", " ", 
+        "\"\<_selCoef\>\"", ",", 
+        RowBox[{"ToString", "[", "selCoef", "]"}], ",", "\"\<.csv\>\""}], 
+       "]"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{
+        "selCoef", ",", "selectedNe", ",", "time", ",", " ", "start", ",", 
+         "\[CapitalPsi]", ",", "totalP", ",", "Pdetected"}], "}"}], "}"}], 
+      ",", " ", "\"\<csv\>\""}], "]"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"selCoef", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "0", ",", " ", "0.0005", ",", "0.001", ",", "0.005", ",", " ", "0.01"}],
+       "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellChangeTimes->{{3.907125194243817*^9, 3.9071252064056964`*^9}, {
+   3.9071252757713985`*^9, 3.90712528725512*^9}, 3.907125321489208*^9, {
+   3.9071254664115047`*^9, 3.907125467043466*^9}, {3.907133557080953*^9, 
+   3.9071335573892236`*^9}, {3.907174290330264*^9, 
+   3.9071742974812975`*^9}},ExpressionUUID->"fccc2494-7181-47cc-9b56-\
+9abe43381d62"]
+},
+WindowSize->{1428., 741.75},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"5310fb18-b7cb-4178-ab4a-59f26bf4967a"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 2916, 81, 109, "Input",ExpressionUUID->"f3e354b3-8c5c-4c16-896b-774649615d8f"],
+Cell[3499, 105, 158, 2, 32, "Output",ExpressionUUID->"8f6335e2-3137-498f-9fd4-33d2c45669f6"],
+Cell[3660, 109, 451, 10, 28, "Message",ExpressionUUID->"cb1334ec-9c10-49f4-bb6c-9dc612f33ae2"],
+Cell[4114, 121, 452, 10, 28, "Message",ExpressionUUID->"11d63771-ce35-4f68-a3d7-6bf81cb05463"],
+Cell[4569, 133, 452, 10, 28, "Message",ExpressionUUID->"76a21eb5-12c7-42d5-a696-d2095b5fd172"],
+Cell[5024, 145, 452, 10, 28, "Message",ExpressionUUID->"d2bd6e75-55f3-4f58-b450-b48e1d609fa4"]
+}, Open  ]],
+Cell[5491, 158, 4168, 116, 116, "Input",ExpressionUUID->"79d9211b-35bf-4eb6-8e18-3bf890d73182"],
+Cell[9662, 276, 736, 15, 124, "Input",ExpressionUUID->"16279fda-804a-4227-b2c8-0020622eec57"],
+Cell[10401, 293, 557, 15, 67, "Input",ExpressionUUID->"0f544928-2d17-4c4c-b7cb-12d9df29f4c1"],
+Cell[10961, 310, 695, 13, 86, "Input",ExpressionUUID->"5cfa2a5e-c58a-4900-a7f9-e1a46a5c8fd8"],
+Cell[CellGroupData[{
+Cell[11681, 327, 6372, 151, 333, "Input",ExpressionUUID->"aef0383f-b1f0-4b95-a067-659169590285"],
+Cell[CellGroupData[{
+Cell[18078, 482, 375, 9, 22, "Print",ExpressionUUID->"cd9bca66-5218-42d1-bf74-85be8c891a3e"],
+Cell[18456, 493, 194, 4, 22, "Print",ExpressionUUID->"caef1bb2-f16a-42cc-8f5f-5444ccb2774c"],
+Cell[18653, 499, 194, 4, 22, "Print",ExpressionUUID->"535345ac-5b18-46c8-9281-50c07eb58374"]
+}, Open  ]],
+Cell[18862, 506, 156, 2, 32, "Output",ExpressionUUID->"92dc0030-4058-4183-a83f-105e87530539"]
+}, Open  ]],
+Cell[19033, 511, 588, 17, 67, "Input",ExpressionUUID->"cc8d9a18-32f7-4c12-a0a9-a61caed61e7f"],
+Cell[19624, 530, 6765, 160, 409, "Input",ExpressionUUID->"2eb83508-dcea-455f-bb86-330e1d05133c"],
+Cell[26392, 692, 586, 17, 67, "Input",ExpressionUUID->"67e5f157-5a6e-4904-b9c6-fc14f27f1777"],
+Cell[26981, 711, 6699, 159, 409, "Input",ExpressionUUID->"5d3889f0-93b9-4afd-810e-199ebb429086"],
+Cell[33683, 872, 636, 17, 67, "Input",ExpressionUUID->"fa077338-fe32-4f47-892d-cc25f9185a08"],
+Cell[34322, 891, 6695, 159, 409, "Input",ExpressionUUID->"fccc2494-7181-47cc-9b56-9abe43381d62"]
+}
+]
+*)
+
