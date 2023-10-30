@@ -31,6 +31,7 @@ library(pheatmap)
 library(ggbreak)
 library(ggimage)
 library(rsvg)
+library(ggrepel)
 dev.off()
 
 ##################
@@ -671,38 +672,94 @@ for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("alpha", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
-master$popalpha = 2 * master$Ne * master$alpha
+names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$selCoef
 rm(tmp)
 
-ggplot(data = master, aes(x = popalpha, y = Pdetected)) + 
-  geom_line(aes(color = as.factor(VG)),
+ggplot(data = master, aes(x = selCoef, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(Ne)),
             alpha = 0.6,
             size = 1.5) + 
-  geom_point(aes(color = as.factor(VG)),
+  geom_point(aes(color = as.factor(Ne)),
              alpha=1,
              size = 2.5) +
   geom_hline(yintercept=0.01, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) + 
-  geom_vline(xintercept=1, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = "Ne",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Population Scaled Selection Coefficient", 
-                     breaks = c(0,0.5,1,5,10), 
-                     limits = c(0,10),
-                     labels = c(0,0.5,1,5,10)) +
-  scale_y_continuous("P(detected)",
-                     breaks = c(0.01,0.02,0.04,0.06,0.08)) +
+  scale_x_continuous("Selection Coefficient", 
+                     breaks = c(0, 5e-04, 1e-03, 5e-03, 1e-02), 
+                     limits = c(0, 1e-02),
+                     labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
+  scale_y_continuous("P(detected)") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",2),"red",rep("black",2)))) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
   theme(axis.title = element_text(size=18))
+
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+master <- master %>% filter(selCoef == 0.01)
+master$reps = 1000 / master$Ne
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(j in 0:tmp$reps){
+    foo <- data.table(Ne = tmp$Ne,
+                      reps = paste(tmp$reps, " Replicates"),
+                      reps_number = tmp$reps,
+                      bin = j,
+                      prob = choose(tmp$reps, j) * 
+                        tmp$Pdetected^j * 
+                        (1 - tmp$Pdetected)^(tmp$reps - j))
+    df <- dplyr::bind_rows(df, foo)
+  }
+}
+rm(foo, master, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps) %>% 
+  mutate(Pdetected = sum(prob)) %>% 
+  mutate(prob = prob / Pdetected) %>% ungroup() 
+dfnotdetected <- df %>% filter(bin == 0)
+dfnotdetected$reps_number <- c(1,3,2.5,1.5)
+
+ggplot(dfdetected, aes(y=prob, x=as.factor(bin))) + 
+  geom_bar(stat="identity",
+           fill = viridis(4)[2],
+           alpha = 0.5) + 
+  facet_wrap(~ reps, scales="free_x") + 
+  theme_bw() + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number, 
+                                      y = 1.1, 
+                                      label = paste("P(detected): ",round(1- prob,3))),
+            hjust = 0, vjust = 1) + 
+  theme(panel.grid.minor.x = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12))
+
 
 ######################
 #### model figure ####

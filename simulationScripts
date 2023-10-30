@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct 26 17:55:56 2023
+
+@author: nathan
+"""
+import fwdpy11
+import numpy as np
+from dataclasses import dataclass
+from typing import List
+import demes
+
+## set up recorders
+@dataclass
+class SimData:
+    generation: int
+    demes_ids: List[int]
+    mean_phenotype: List[float]
+    mean_fitness: List[float]
+    var_phenotype: List[float]
+
+
+# @dataclass
+# class Recorder:
+#     data: list
+
+#     def __call__(self, pop, sampler):
+#         md = np.array(pop.diploid_metadata)
+#         # general properties of the population
+#         # store lists of mean phenotypes and fitness, and var(pheno)
+#         deme_ids = sorted(list(set(md["deme"])))
+#         mean_pheno = [md[md["deme"] == i]["g"].mean() for i in deme_ids]
+#         mean_fitness = [md[md["deme"] == i]["w"].mean() for i in deme_ids]
+#         var_pheno = [md[md["deme"] == i]["g"].var() for i in deme_ids]
+#         self.data.append(
+#             SimData(pop.generation, deme_ids, mean_pheno, mean_fitness, var_pheno)
+#         )
+#         # record only the last N generations
+#         if pop.generation >= pop.N * 9:
+#             sampler.assign(np.arange(0, pop.N))
+
+@dataclass
+class Recorder(object):
+    def __init__(self, start):
+        self.generation = []
+        self.gbar = []
+        self.wbar = []
+        self.start = start    
+        
+    def __call__(self, pop, sampler):
+        if pop.generation > self.start:
+            self.generation.append(pop.generation)
+            md=np.array(pop.diploid_metadata, copy=False)
+            self.gbar.append(md['g'].mean())
+            self.wbar.append(md['w'].mean())
+            
+# r = Recorder(data=[])
+
+pop = fwdpy11.DiploidPopulation(100, 1.0)
+
+rng = fwdpy11.GSLrng(54321)
+
+GSS = fwdpy11.GSS(optimum=0.0, VS=1.0)
+
+des = [fwdpy11.ConstantS(0, 1, 1, 0.01),
+       fwdpy11.ConstantS(0, 1, 1, -0.01),
+       ]
+
+p = {
+    "nregions": [],
+    "gvalue": fwdpy11.Additive(2.0, GSS),
+    "sregions": des,
+    "recregions": [fwdpy11.PoissonInterval(0, 1., 1)],
+    "rates": (0.0, 1e-3, None),
+    "prune_selected": False,
+    ## None doesnt work, neither does ForwardDemesGraph idk if this is right tbh
+    ## "demography": fwdpy11.DiscreteDemography(),
+    ## also works with it commented out?
+    "simlen": 10*pop.N,
+}
+params = fwdpy11.ModelParams(**p)
+
+params
+
+r = Recorder(start=1)
+
+fwdpy11.evolvets(rng, pop, params, 100, recorder=r, suppress_table_indexing=True)
+
+import matplotlib.pyplot as plt
+
+f, ax = plt.subplots()
+ax.plot(r.generation, r.gbar, label="Mean trait value")
+ax.plot(r.generation, r.wbar, label="Mean fitness")
+ax.set_xlabel("Generation")
+ax.set_ylabel("Value")
+plt.legend()
+plt.show()
