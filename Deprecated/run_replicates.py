@@ -1,13 +1,10 @@
 import fwdpy11
 import numpy as np
-import pandas as pd
 from dataclasses import dataclass
 from typing import List
 
 import time
 import demes
-
-import os
 
 ## Set up parameters
 
@@ -24,14 +21,13 @@ U = 2.5e-3
 
 expectedVG = 4 * U * VS
 optimum = 0.0
-shift = 1.0
+shift = 0.5
 
 # Set up selected mutations
 a = 0.01
 sregions = [fwdpy11.ConstantS(0, L, 1, a), fwdpy11.ConstantS(0, L, 1, -a)]
 
 # Load demographic model using demes
-os.chdir("/home/nathan/Documents/GitHub/path_integral")
 g = demes.load("subpopulations.yaml")
 burnin = 10
 model = fwdpy11.discrete_demography.from_demes(g, burnin=burnin)
@@ -117,7 +113,7 @@ line_time = g.demes[0].end_time
 assert ts.num_samples == pop.N * 2 * (line_time + 1)
 
 
-
+"""
 ## The tree sequence should record all generations from the last generation
 ## prior to the split into replicate lines, keeping every individual in all
 ## generations after the optimum shift.
@@ -156,4 +152,4 @@ for j, t in enumerate(times):
             allele_frequencies[i][:, j] = afs
 
 #
-
+"""
