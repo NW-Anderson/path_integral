@@ -46,6 +46,7 @@ class Recorder(object):
         self.generation = []
         self.gbar = []
         self.wbar = []
+        self.gvar = []
         self.start = start    
         
     def __call__(self, pop, sampler):
@@ -54,10 +55,11 @@ class Recorder(object):
             md=np.array(pop.diploid_metadata, copy=False)
             self.gbar.append(md['g'].mean())
             self.wbar.append(md['w'].mean())
+            self.gvar.append(md["g"].var())
             
 # r = Recorder(data=[])
 
-pop = fwdpy11.DiploidPopulation(100, 1.0)
+pop = fwdpy11.DiploidPopulation(500, 1.0)
 
 rng = fwdpy11.GSLrng(54321)
 
@@ -71,8 +73,8 @@ p = {
     "nregions": [],
     "gvalue": fwdpy11.Additive(2.0, GSS),
     "sregions": des,
-    "recregions": [fwdpy11.PoissonInterval(0, 1., 1)],
-    "rates": (0.0, 1e-3, None),
+    "recregions": [fwdpy11.PoissonInterval(0, 1, 1)],
+    "rates": (0.0, 1, None),
     "prune_selected": False,
     ## None doesnt work, neither does ForwardDemesGraph idk if this is right tbh
     ## "demography": fwdpy11.DiscreteDemography(),
@@ -90,9 +92,11 @@ fwdpy11.evolvets(rng, pop, params, 100, recorder=r, suppress_table_indexing=True
 import matplotlib.pyplot as plt
 
 f, ax = plt.subplots()
-ax.plot(r.generation, r.gbar, label="Mean trait value")
-ax.plot(r.generation, r.wbar, label="Mean fitness")
+# ax.plot(r.generation, r.gbar, label="Mean trait value")
+# ax.plot(r.generation, r.wbar, label="Mean fitness")
+ax.plot(r.generation, r.gvar, label="Genetic Variance")
 ax.set_xlabel("Generation")
 ax.set_ylabel("Value")
 plt.legend()
 plt.show()
+

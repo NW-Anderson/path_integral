@@ -34,26 +34,110 @@ library(rsvg)
 library(ggrepel)
 dev.off()
 
-##################
-#### Error VG ####
-##################
+####################################
+####### pDetection Alpha VG #######
+####################################
 
-setwd("~/Documents/GitHub/path_integral/results/numErrorAlphaVG")
+# rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
 list.files()
 master <- data.frame()
 for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("alpha", "VG", "pintAUC", "numAUC")
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
 master$popalpha = 1000 * master$alpha
-master$error = (master$pintAUC - master$numAUC) / master$numAUC
 rm(tmp, file)
 
-summary(master$error)
-plot(density(master$error))
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
 
-ggplot(data = master, aes(x = popalpha, y = error)) + 
+pintDf <- master %>% filter(statDist < 0.05)
+
+numDf <- master %>% filter(VG == 1e-4,
+                           popalpha >= 15)
+numDf$yval <- c(numDf[1,]$pintDetected,
+                numDf[2,]$numDetected)
+
+p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  geom_vline(xintercept=1, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("2 Ne \u03b1", 
+                     breaks = c(0,0.5,1,5,10, 15, 20), 
+                     labels = c(0,0.5,1,5,10, 15, 20)) +
+  scale_y_continuous("P(detected)") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",2),"red",rep("black",2)))) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18)) + 
+  geom_point(data = numDf, aes(x = popalpha, 
+                               y = yval,
+                               color = as.factor(VG)),
+             alpha=c(0,1),
+             size = 2.5,
+             shape = 17) +
+  geom_line(data = numDf, aes(x = popalpha, 
+                              y = yval,
+                              color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5,
+            linetype = "dashed") 
+
+p1
+
+########################
+#### Error Alpha VG ####
+########################
+
+# rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
+rm(tmp, file)
+
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
+
+summary(master$statDist)
+plot(density(master$statDist))
+
+# master <- master %>% filter(VG != 1e-04)
+
+e1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -63,8 +147,10 @@ ggplot(data = master, aes(x = popalpha, y = error)) +
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Population Scaled Selection Coefficient") +
-  scale_y_continuous("Error") +
+  # scale_x_continuous("Population Scaled Selection Coefficient") +
+  # scale_y_continuous("Error") +
+  xlab("2 Ne \u03b1") + 
+  ylab("Statistical Distance") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
@@ -72,47 +158,114 @@ ggplot(data = master, aes(x = popalpha, y = error)) +
   theme(axis.title = element_text(size=18)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+             color = turbo(11)[11], size  = 0.75) +
+  scale_y_break(c(0.05,1.2), scales = 1)
 
-# mster <- master %>% filter(VG<=0.001)
-# ggplot(data = mster, aes(x = popalpha, y = error)) +
-#   geom_line(aes(color = as.factor(VG)),
-#             alpha = 0.6,
-#             size = 1.5) +
-#   geom_point(aes(color = as.factor(VG)),
-#              alpha=1,
-#              size = 2.5) +
-#   theme_bw() +
-#   guides(color=guide_legend(title = "Genetic Variance",
-#                             override.aes = list(alpha=1))) +
-#   scale_x_continuous("Population Scaled Selection Coefficient") +
-#   scale_y_continuous("Absolute Error") +
-#   theme(panel.grid.minor.y = element_blank(),
-#         panel.grid.minor.x = element_blank()) +
-#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
-#   scale_color_viridis(discrete = T)
+## idk if i like the break?
+
+e1
+
+#########################
+#### pDetection Time ####
+#########################
+
+# rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedTimeVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
+rm(tmp, file)
+
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
+
+pintDf <- master %>% filter(statDist < 0.05)
+
+numDf <- master %>% filter(VG == 1e-4,
+                           time >= 0.15)
+numDf$yval <- c(numDf[1,]$pintDetected,
+                numDf[2,]$numDetected)
+
+# pintDf <- pintDf %>% filter(VG == 0.1)
+
+p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  scale_x_continuous("Time (Genomic Units)") +
+  scale_y_continuous("P(detected)") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18),
+        axis.title.y = element_blank()) +
+  geom_point(data = numDf, aes(x = time,
+                               y = yval,
+                               color = as.factor(VG)),
+             alpha=c(0,1),
+             size = 2.5,
+             shape = 17) +
+  geom_line(data = numDf, aes(x = time,
+                              y = yval,
+                              color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5,
+            linetype = "dashed") +
+  guides(color = F,
+         shape = F)
+
+p2
 
 ####################
 #### Error Time ####
 ####################
 
-rm(list = ls())
+# rm(list=ls())
 
-setwd("~/Documents/GitHub/path_integral/results/numErrorTimeVG")
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedTimeVG")
 list.files()
 master <- data.frame()
 for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("time", "VG", "pintAUC", "numAUC")
-master$error = (master$pintAUC - master$numAUC) / master$numAUC
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
 rm(tmp, file)
 
-summary(master$error)
-plot(density(master$error))
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
 
-ggplot(data = master, aes(x = time, y = error)) + 
+summary(master$statDist)
+plot(density(master$statDist))
+
+# master <- master %>% filter(VG != 1e-04)
+
+e2 <- ggplot(data = master, aes(x = time, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -122,8 +275,10 @@ ggplot(data = master, aes(x = time, y = error)) +
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Time (Genomic Units)") +
-  scale_y_continuous("Error") +
+  # scale_x_continuous("Population Scaled Selection Coefficient") +
+  # scale_y_continuous("Error") +
+  xlab("Time (Genomic Units)") + 
+  ylab("Statistical Distance") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
@@ -131,88 +286,113 @@ ggplot(data = master, aes(x = time, y = error)) +
   theme(axis.title = element_text(size=18)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+             color = turbo(11)[11], size  = 0.75) +
+  scale_y_break(c(0.02,0.05), scales = 1)
 
-# mster <- master %>% filter(VG<=0.001)
-# ggplot(data = mster, aes(x = time, y = error)) +
-#   geom_line(aes(color = as.factor(VG)),
-#             alpha = 0.6,
-#             size = 1.5) +
-#   geom_point(aes(color = as.factor(VG)),
-#              alpha=1,
-#              size = 2.5) +
-#   theme_bw() +
-#   guides(color=guide_legend(title = "Genetic Variance",
-#                             override.aes = list(alpha=1))) +
-#   scale_x_continuous("Population Scaled Selection Coefficient") +
-#   scale_y_continuous("Absolute Error") +
-#   theme(panel.grid.minor.y = element_blank(),
-#         panel.grid.minor.x = element_blank()) +
-#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
-#   scale_color_viridis(discrete = T)
+## idk if i like the break?
 
-#################
-#### Error k ####
-#################
+e2 
 
-rm(list = ls())
+##########################
+#### pDetection Start ####
+##########################
 
-setwd("~/Documents/GitHub/path_integral/results/numErrorKVG")
+# rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedStartVG")
 list.files()
 master <- data.frame()
 for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("k", "VG", "pintAUC", "numAUC")
-master$error = (master$pintAUC - master$numAUC) / master$numAUC
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
 rm(tmp, file)
 
-summary(master$error)
-plot(density(master$error))
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
 
-ggplot(data = master, aes(x = k, y = error)) + 
+# pintDf <- master %>% filter(statDist < 0.05)
+# 
+# numDf <- master %>% filter(VG == 1e-4,
+#                            time >= 0.15)
+# numDf$yval <- c(numDf[1,]$pintDetected,
+#                 numDf[2,]$numDetected)
+
+p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
   geom_point(aes(color = as.factor(VG)),
              alpha=1,
              size = 2.5) +
+  geom_hline(yintercept=0.01, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
-                            override.aes = list(alpha=1))) +
-  scale_x_continuous("k_max") +
-  scale_y_continuous("Error") +
+  scale_x_continuous("Starting Frequency", 
+                     breaks = c(0.025,0.05,0.1,0.15,0.20), 
+                     labels = c(0.025,0.05,0.1,0.15,0.20)) +
+  scale_y_continuous("P(detected)") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+  theme(axis.title = element_text(size=18),
+        axis.title.y = element_blank()) +
+  guides(color = F)
+  # geom_point(data = numDf, aes(x = time,
+  #                              y = yval,
+  #                              color = as.factor(VG)),
+  #            alpha=c(0,1),
+  #            size = 2.5,
+  #            shape = 17) +
+  # geom_line(data = numDf, aes(x = time,
+  #                             y = yval,
+  #                             color = as.factor(VG)),
+  #           alpha = 0.6,
+  #           size = 1.5,
+  #           linetype = "dashed")
+
+p3
 
 #####################
 #### Error Start ####
 #####################
 
-rm(list = ls())
+# rm(list=ls())
 
-setwd("~/Documents/GitHub/path_integral/results/numErrorStartVG")
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedStartVG")
 list.files()
 master <- data.frame()
 for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("start", "VG", "pintAUC", "numAUC")
-master$error = (master$pintAUC - master$numAUC) / master$numAUC
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
 rm(tmp, file)
 
-summary(master$error)
-plot(density(master$error))
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
 
-ggplot(data = master, aes(x = start, y = error)) + 
+summary(master$statDist)
+plot(density(master$statDist))
+
+# master <- master %>% filter(VG != 1e-04)
+
+e3 <- ggplot(data = master, aes(x = start, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -222,9 +402,10 @@ ggplot(data = master, aes(x = start, y = error)) +
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Starting Frequency",
-                     breaks = (1:9 / 10)) +
-  scale_y_continuous("Error") +
+  # scale_x_continuous("Population Scaled Selection Coefficient") +
+  # scale_y_continuous("Error") +
+  xlab("Starting Frequency") + 
+  ylab("Statistical Distance") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
@@ -233,6 +414,17 @@ ggplot(data = master, aes(x = start, y = error)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
+  # scale_y_break(c(0.02,0.05), scales = 1)
+
+## idk if i like the break?
+
+e3 
+
+########################
+#### pDetected Main ####
+########################
+
+p1 + p2 + p3 + plot_layout(guides = "collect")
 
 ############################
 #### Convergence 20 Gen ####
@@ -524,6 +716,463 @@ ggplot(df) +
   theme(axis.title = element_text(size=18))
 
 #######################
+#### pDetection Ne ####
+#######################
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+ggplot(data = master, aes(x = Ne, y = Pdetected)) + 
+  geom_line(aes(color = as.factor(selCoef)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(selCoef)),
+             alpha=1,
+             size = 2.5) +
+  # geom_hline(yintercept=0.01, 
+  #            linetype="dashed", 
+  #            color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = "Selection\nCoefficient",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous(breaks = c(200, 250, 500, 1000)) +
+  # scale_x_continuous("Selection Coefficient", 
+  #                    breaks = c(0, 5e-04, 1e-03, 5e-03, 1e-02), 
+  #                    limits = c(0, 1e-02),
+  #                    labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
+  scale_y_continuous("P(detected)") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18))
+
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+master <- master %>% filter(selCoef == 0.01)
+master$reps = 1000 / master$Ne
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(j in 0:tmp$reps){
+    foo <- data.table(Ne = tmp$Ne,
+                      reps = paste(tmp$reps, 
+                                   " Replicates of Size ", 
+                                   tmp$Ne),
+                      reps_number = tmp$reps,
+                      bin = j,
+                      prob = choose(tmp$reps, j) * 
+                        tmp$Pdetected^j * 
+                        (1 - tmp$Pdetected)^(tmp$reps - j))
+    df <- dplyr::bind_rows(df, foo)
+  }
+}
+rm(foo, master, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps) %>% 
+  mutate(Pdetected = sum(prob)) %>% 
+  mutate(prob = prob / Pdetected) %>% ungroup() 
+dfnotdetected <- df %>% filter(bin == 0)
+dfnotdetected$reps_number <- c(1,3,2.5,1.5)
+
+ggplot(dfdetected, aes(y=prob, x=as.factor(bin))) + 
+  geom_bar(stat="identity",
+           fill = viridis(4)[2],
+           alpha = 0.5) + 
+  facet_wrap(~ reps, scales="free_x") + 
+  theme_bw() + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number, 
+                                      y = 1.1, 
+                                      label = paste("P(detected > 0 times) : ",round(1- prob,3))),
+            hjust = 0.5, vjust = 1) + 
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1))
+
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+# master <- master %>% filter(selCoef == 0.01)
+master$reps = 4000 / master$Ne
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(j in 0:tmp$reps){
+    foo <- data.table(Ne = tmp$Ne,
+                      reps = paste(tmp$reps, 
+                                   " Replicates of Size ", 
+                                   tmp$Ne),
+                      selCoef = tmp$selCoef,
+                      reps_number = tmp$reps,
+                      bin = j,
+                      prob = choose(tmp$reps, j) * 
+                        tmp$Pdetected^j * 
+                        (1 - tmp$Pdetected)^(tmp$reps - j))
+    df <- dplyr::bind_rows(df, foo)
+  }
+}
+rm(foo, master, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps, selCoef) %>% 
+  mutate(Pdetected = sum(prob)) %>% 
+  mutate(prob = prob / Pdetected,
+         selCoef = as.factor(selCoef),
+         reps = as.factor(reps)) %>% ungroup() 
+dfdetected$reps <- factor(dfdetected$reps,
+                          levels = levels(dfdetected$reps)[c(3,4,1,2)])
+
+dfnotdetected <- df %>% filter(bin == 0) %>% 
+  mutate(reps = as.factor(reps),
+         selCoef = as.factor(selCoef),
+         pdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
+  mutate(pdetected = as.factor(pdetected))
+dfnotdetected$reps_number <- rep(c(3.25,
+                                   15,
+                                   12,
+                                   6.25),
+                                 each = 5)
+dfnotdetected$vjust = rep((1.5 * c(2,3,4,5,1)), 4)
+
+breaksfun <- function(x){
+  1:max(x)
+}
+
+ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
+                       group = selCoef)) + 
+  geom_line(alpha = 0.6,
+            size = 1.5) + 
+  geom_point(alpha=1,
+             size = 2.5) +
+  facet_wrap(~ factor(reps, levels = unique(dfdetected$reps)[c(1,4,3,2)]), scales="free_x") + 
+  theme_bw() + 
+  scale_x_continuous(breaks = breaksfun) + 
+  scale_color_viridis(discrete = T) + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number,
+                                      y = 1,
+                                      label = pdetected,
+                                      vjust = vjust)) + 
+  guides(color=guide_legend(title = "Selection\nCoefficient",
+                            override.aes = list(alpha=1))) +
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1))
+
+########################
+#### RFS all 1 size ####
+########################
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
+rm(tmp, file)
+
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
+
+master <- master %>% filter(VG  == 1e-3)
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(reps in c(5, 10, 15, 20)){
+    for(j in 0:reps){
+      foo <- data.table(reps = paste(reps, " Replicates"),
+                        reps_number = reps,
+                        bin = j,
+                        popalpha = tmp$popalpha,
+                        prob = choose(reps, j) * 
+                          tmp$pintDetected^j * 
+                          (1 - tmp$pintDetected)^(reps - j))
+      df <- dplyr::bind_rows(df, foo)
+    }
+  }
+}
+rm(foo, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps, popalpha) %>% 
+  mutate(Pdetected = sum(prob)) %>% 
+  mutate(prob = prob / Pdetected,
+         # # bin = as.factor(bin),
+         # Ne = as.factor(Ne),
+         reps = as.factor(reps),
+         popalpha = as.factor(popalpha)) %>% ungroup() 
+dfdetected$reps <- factor(dfdetected$reps, 
+                          levels = levels(dfdetected$reps)[c(4,1,2,3)])
+
+dfnotdetected <- df %>% filter(bin == 0) %>% 
+  mutate(reps = as.factor(reps),
+         popalpha = as.factor(popalpha),
+         pdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
+  mutate(pdetected = as.factor(pdetected))
+dfnotdetected$reps_number <- rep(c(3.5,
+                                   6.75,
+                                   9.75,
+                                   13),
+                                 6)
+dfnotdetected$vjust = rep((1.5 * 1:6), each = 4)
+ 
+
+breaksfun <- function(x){
+  1:max(x)
+}
+
+ggplot(dfdetected, aes(y = prob,
+                       x = bin,
+                       color = popalpha)) + 
+  geom_line(alpha = 0.6,
+            size = 1.5) + 
+  geom_point(alpha=1,
+             size = 2.5) +
+  facet_wrap(~ reps, scales="free") + 
+  theme_bw() + 
+  scale_x_continuous(breaks = breaksfun) + 
+  scale_color_viridis(discrete = T) + 
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number,
+                                      y = 1,
+                                      label = pdetected,
+                                      vjust = vjust)) + 
+  guides(color=guide_legend(title = "Selection\nCoefficient",
+                            override.aes = list(alpha=1))) 
+  
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+master <- master %>% filter(selCoef == 1e-2)
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(reps in c(5, 10, 15, 20)){
+    for(j in 0:reps){
+      foo <- data.table(reps = paste(reps, " Replicates"),
+                        reps_number = reps,
+                        bin = j,
+                        selCoef = tmp$selCoef,
+                        Ne = tmp$Ne,
+                        prob = choose(reps, j) * 
+                          tmp$Pdetected^j * 
+                          (1 - tmp$Pdetected)^(reps - j))
+      df <- dplyr::bind_rows(df, foo)
+    }
+  }
+}
+rm(foo, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps, Ne) %>% 
+  mutate(Pdetected = sum(prob)) %>% 
+  mutate(prob = prob / Pdetected,
+         # # bin = as.factor(bin),
+         Ne = as.factor(Ne),
+         reps = as.factor(reps)) %>% ungroup() 
+dfdetected$reps <- factor(dfdetected$reps, 
+                          levels = levels(dfdetected$reps)[c(4,1,2,3)])
+
+dfnotdetected <- df %>% filter(bin == 0) %>% 
+  mutate(reps = as.factor(reps),
+         Ne = as.factor(Ne),
+         pdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
+  mutate(pdetected = as.factor(pdetected))
+dfnotdetected$reps_number <- rep(c(3.5,
+                                   6.75,
+                                   9.75,
+                                   13),
+                                 4)
+dfnotdetected$vjust = rep((1.5 * c(4,1,2,3)), each = 4)
+ 
+
+breaksfun <- function(x){
+  1:max(x)
+}
+
+ggplot(dfdetected, aes(y = prob,
+                       x = bin,
+                       color = Ne)) + 
+  geom_line(alpha = 0.6,
+            size = 1.5) + 
+  geom_point(alpha=1,
+             size = 2.5) +
+  facet_wrap(~ reps, scales="free") + 
+  theme_bw() + 
+  scale_x_continuous(breaks = breaksfun) + 
+  scale_color_viridis(discrete = T) + 
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number,
+                                      y = 1,
+                                      label = pdetected,
+                                      vjust = vjust)) + 
+  guides(color=guide_legend(title = "Effective\nPopulation\nSize",
+                            override.aes = list(alpha=1))) 
+
+######################
+#### model figure ####
+######################
+
+rm(list=ls())
+
+x <- seq(from = -2, to = 3, length.out = 500)
+
+phenodist <- dnorm(x, sd = sqrt(10^-2))
+phenodist <- phenodist / max(phenodist)
+
+olddist <- dnorm(x, sd = 1)
+olddist <- olddist / max(olddist)
+
+newdist <- dnorm(x, mean = 1, sd = 1)
+newdist <- newdist / max(newdist)
+
+df <- dplyr::bind_rows(data.table(x = x,
+                                  y = phenodist,
+                                  class = "pheno",
+                                  cols = 1),
+                       data.table(x = x,
+                                  y = olddist,
+                                  class = "old",
+                                  cols = 2),
+                       data.table(x = x,
+                                  y = newdist,
+                                  class = "new",
+                                  cols = 2))
+
+areadf <- data.table(x = x,
+                     y = phenodist,
+                     class = "pheno",
+                     cols = 1)
+
+the_colors <- c(rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.35082, 0.595178, 0.853742))
+
+ggplot(df, aes(x = x, y = y)) + 
+  geom_line(aes(color = class,
+                linetype = class,
+                group = class),
+            linewidth = 2,
+            alpha = 0.75) +
+  scale_color_manual(values = c(rep(the_colors[1],2), the_colors[2]),
+                     labels=c("Shifted Fitness Function",
+                              "Initial Fitness Function",
+                              "Trait Distribution"),
+                     name = "") +
+  scale_linetype_manual(values = c("dotted", rep("solid",2)),
+                        labels=c("Shifted Fitness Function",
+                                 "Initial Fitness Function",
+                                 "Trait Distribution"),
+                        name = "") +
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.border = element_blank(),
+        legend.position = "bottom",
+        axis.title.x = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  scale_x_continuous(breaks = c(0,1),
+                     labels = c("0" = "Old\nOptimum", 
+                                "1" = "New\nOptimum"),
+                     name = "Trait Value") +
+  guides(linetype = guide_legend(override.aes = list(linewidth = 2),
+                                 nrow = 1)) +
+  geom_area(data = areadf, 
+            fill = the_colors[2],
+            alpha = 0.5)
+
+##################################
+########### Deprecated ########### 
+##################################
+#######################
 #### pDetection VG ####
 #######################
 
@@ -659,179 +1308,201 @@ ggplot(data = master, aes(x = popalpha, y = Pdetected)) +
   scale_color_viridis(discrete = T) + 
   theme(axis.title = element_text(size=18))
 
-#######################
-#### pDetection Ne ####
-#######################
+##################
+#### Error VG ####
+##################
 
-rm(list=ls())
-
-setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+setwd("~/Documents/GitHub/path_integral/results/numErrorAlphaVG")
 list.files()
 master <- data.frame()
 for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
-master$popalpha = 2 * master$Ne * master$selCoef
-rm(tmp)
+names(master) <- c("alpha", "VG", "pintAUC", "numAUC")
+master$popalpha = 1000 * master$alpha
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
+rm(tmp, file)
 
-ggplot(data = master, aes(x = selCoef, y = Pdetected)) + 
-  geom_line(aes(color = as.factor(Ne)),
+summary(master$error)
+plot(density(master$error))
+
+ggplot(data = master, aes(x = popalpha, y = error)) + 
+  geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
-  geom_point(aes(color = as.factor(Ne)),
+  geom_point(aes(color = as.factor(VG)),
              alpha=1,
              size = 2.5) +
-  geom_hline(yintercept=0.01, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
-  guides(color=guide_legend(title = "Ne",
+  guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Selection Coefficient", 
-                     breaks = c(0, 5e-04, 1e-03, 5e-03, 1e-02), 
-                     limits = c(0, 1e-02),
-                     labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
-  scale_y_continuous("P(detected)") +
+  scale_x_continuous("Population Scaled Selection Coefficient") +
+  scale_y_continuous("Error") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18))
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
 
-#############
-#### RFS ####
-#############
+# mster <- master %>% filter(VG<=0.001)
+# ggplot(data = mster, aes(x = popalpha, y = error)) +
+#   geom_line(aes(color = as.factor(VG)),
+#             alpha = 0.6,
+#             size = 1.5) +
+#   geom_point(aes(color = as.factor(VG)),
+#              alpha=1,
+#              size = 2.5) +
+#   theme_bw() +
+#   guides(color=guide_legend(title = "Genetic Variance",
+#                             override.aes = list(alpha=1))) +
+#   scale_x_continuous("Population Scaled Selection Coefficient") +
+#   scale_y_continuous("Absolute Error") +
+#   theme(panel.grid.minor.y = element_blank(),
+#         panel.grid.minor.x = element_blank()) +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+#   scale_color_viridis(discrete = T)
 
-rm(list=ls())
+####################
+#### Error Time ####
+####################
 
-setwd("~/Documents/GitHub/path_integral/results/pDetectionAlphaNe")
+rm(list = ls())
+
+setwd("~/Documents/GitHub/path_integral/results/numErrorTimeVG")
 list.files()
 master <- data.frame()
 for(file in list.files()){
   tmp <- fread(file)
   master <- dplyr::bind_rows(master, tmp)
 }
-names(master) <- c("selCoef", "Ne", "time", "start", "thresh", "totalP", "Pdetected")
-master$popalpha = 2 * master$Ne * master$selCoef
-rm(tmp)
+names(master) <- c("time", "VG", "pintAUC", "numAUC")
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
+rm(tmp, file)
 
-master <- master %>% filter(selCoef == 0.01)
-master$reps = 1000 / master$Ne
+summary(master$error)
+plot(density(master$error))
 
-df <- data.table()
-for(i in 1:nrow(master)){
-  tmp <- master[i,]
-  for(j in 0:tmp$reps){
-    foo <- data.table(Ne = tmp$Ne,
-                      reps = paste(tmp$reps, " Replicates"),
-                      reps_number = tmp$reps,
-                      bin = j,
-                      prob = choose(tmp$reps, j) * 
-                        tmp$Pdetected^j * 
-                        (1 - tmp$Pdetected)^(tmp$reps - j))
-    df <- dplyr::bind_rows(df, foo)
-  }
-}
-rm(foo, master, tmp, file, i, j)
-
-dfdetected <- df %>% filter(bin > 0) %>% 
-  group_by(reps) %>% 
-  mutate(Pdetected = sum(prob)) %>% 
-  mutate(prob = prob / Pdetected) %>% ungroup() 
-dfnotdetected <- df %>% filter(bin == 0)
-dfnotdetected$reps_number <- c(1,3,2.5,1.5)
-
-ggplot(dfdetected, aes(y=prob, x=as.factor(bin))) + 
-  geom_bar(stat="identity",
-           fill = viridis(4)[2],
-           alpha = 0.5) + 
-  facet_wrap(~ reps, scales="free_x") + 
-  theme_bw() + 
-  xlab("Number of Replicates Detected") + 
-  ylab("Probability Given Detected at least Once") + 
-  geom_text(data = dfnotdetected, aes(x = reps_number, 
-                                      y = 1.1, 
-                                      label = paste("P(detected): ",round(1- prob,3))),
-            hjust = 0, vjust = 1) + 
-  theme(panel.grid.minor.x = element_blank(),
-        axis.title = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12))
-
-
-######################
-#### model figure ####
-######################
-
-rm(list=ls())
-
-x <- seq(from = -2, to = 3, length.out = 500)
-
-phenodist <- dnorm(x, sd = sqrt(10^-2))
-phenodist <- phenodist / max(phenodist)
-
-olddist <- dnorm(x, sd = 1)
-olddist <- olddist / max(olddist)
-
-newdist <- dnorm(x, mean = 1, sd = 1)
-newdist <- newdist / max(newdist)
-
-df <- dplyr::bind_rows(data.table(x = x,
-                                  y = phenodist,
-                                  class = "pheno",
-                                  cols = 1),
-                       data.table(x = x,
-                                  y = olddist,
-                                  class = "old",
-                                  cols = 2),
-                       data.table(x = x,
-                                  y = newdist,
-                                  class = "new",
-                                  cols = 2))
-
-areadf <- data.table(x = x,
-                     y = phenodist,
-                     class = "pheno",
-                     cols = 1)
-
-the_colors <- c(rgb(0.831964, 0.810543, 0.372854),
-                rgb(0.35082, 0.595178, 0.853742))
-
-ggplot(df, aes(x = x, y = y)) + 
-  geom_line(aes(color = class,
-                linetype = class,
-                group = class),
-            linewidth = 2,
-            alpha = 0.75) +
-  scale_color_manual(values = c(rep(the_colors[1],2), the_colors[2]),
-                     labels=c("Shifted Fitness Function",
-                              "Initial Fitness Function",
-                              "Trait Distribution"),
-                     name = "") +
-  scale_linetype_manual(values = c("dotted", rep("solid",2)),
-                        labels=c("Shifted Fitness Function",
-                                 "Initial Fitness Function",
-                                 "Trait Distribution"),
-                        name = "") +
+ggplot(data = master, aes(x = time, y = error)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
   theme_bw() +
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.grid.major.y = element_blank(),
-        panel.border = element_blank(),
-        legend.position = "bottom",
-        axis.title.x = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
-  scale_x_continuous(breaks = c(0,1),
-                     labels = c("0" = "Old\nOptimum", 
-                                "1" = "New\nOptimum"),
-                     name = "Trait Value") +
-  guides(linetype = guide_legend(override.aes = list(linewidth = 2),
-                              nrow = 1)) +
-  geom_area(data = areadf, 
-            fill = the_colors[2],
-            alpha = 0.5)
+  guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("Time (Genomic Units)") +
+  scale_y_continuous("Error") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
+
+# mster <- master %>% filter(VG<=0.001)
+# ggplot(data = mster, aes(x = time, y = error)) +
+#   geom_line(aes(color = as.factor(VG)),
+#             alpha = 0.6,
+#             size = 1.5) +
+#   geom_point(aes(color = as.factor(VG)),
+#              alpha=1,
+#              size = 2.5) +
+#   theme_bw() +
+#   guides(color=guide_legend(title = "Genetic Variance",
+#                             override.aes = list(alpha=1))) +
+#   scale_x_continuous("Population Scaled Selection Coefficient") +
+#   scale_y_continuous("Absolute Error") +
+#   theme(panel.grid.minor.y = element_blank(),
+#         panel.grid.minor.x = element_blank()) +
+#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+#   scale_color_viridis(discrete = T)
+#################
+#### Error k ####
+#################
+
+rm(list = ls())
+
+setwd("~/Documents/GitHub/path_integral/results/numErrorKVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("k", "VG", "pintAUC", "numAUC")
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
+rm(tmp, file)
+
+summary(master$error)
+plot(density(master$error))
+
+ggplot(data = master, aes(x = k, y = error)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
+  theme_bw() +
+  guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("k_max") +
+  scale_y_continuous("Error") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
+
+#####################
+#### Error Start ####
+#####################
+
+rm(list = ls())
+
+setwd("~/Documents/GitHub/path_integral/results/numErrorStartVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("start", "VG", "pintAUC", "numAUC")
+master$error = (master$pintAUC - master$numAUC) / master$numAUC
+rm(tmp, file)
+
+summary(master$error)
+plot(density(master$error))
+
+ggplot(data = master, aes(x = start, y = error)) + 
+  geom_line(aes(color = as.factor(VG)),
+            alpha = 0.6,
+            size = 1.5) + 
+  geom_point(aes(color = as.factor(VG)),
+             alpha=1,
+             size = 2.5) +
+  theme_bw() +
+  guides(color=guide_legend(title = "Genetic Variance",
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("Starting Frequency",
+                     breaks = (1:9 / 10)) +
+  scale_y_continuous("Error") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) 
