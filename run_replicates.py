@@ -96,7 +96,7 @@ class Recorder:
         )
         # record last generation of full population and
         # every generation of the replicate lines
-        if pop.generation >= pop.N * burnin:
+        if pop.generation == pop.N * burnin or pop.generation == simlen:
             sampler.assign(np.arange(0, pop.N))
 
 
@@ -114,9 +114,43 @@ assert pop.generation == simlen
 
 ts = pop.dump_tables_to_tskit()
 line_time = g.demes[0].end_time
-assert ts.num_samples == pop.N * 2 * (line_time + 1)
+# assert ts.num_samples == pop.N * 2 * (line_time + 1)
 
+## find mean VG over the final N generations of the burnin
+gen = []
+mean_pheno = []
+mean_fit = []
+var_pheno = []
+for i in range(simlen): 
+    gen.append(float(recorder.data[i].generation))
+    mean_pheno.append(recorder.data[i].mean_phenotype[0])
+    mean_fit.append(recorder.data[i].mean_fitness[0])
+    var_pheno.append(recorder.data[i].var_phenotype[0])
+    
+import matplotlib.pyplot as plt
 
+f, ax = plt.subplots()
+ax.plot(gen, var_pheno, label="Genetic Variance")
+ax.set_xlabel("Generation")
+ax.set_ylabel("Value")
+plt.legend()
+plt.show()
+
+f, ax = plt.subplots()
+ax.plot(gen, mean_pheno, label="Mean Phenotype")
+ax.set_xlabel("Generation")
+ax.set_ylabel("Value")
+plt.legend()
+plt.show()
+
+f, ax = plt.subplots()
+ax.plot(gen, mean_fit, label="Mean Fitness")
+ax.set_xlabel("Generation")
+ax.set_ylabel("Value")
+plt.legend()
+plt.show()
+
+initial_VG = np.mean(var_pheno[N0 * (burnin - 1):N0 * burnin])
 
 ## The tree sequence should record all generations from the last generation
 ## prior to the split into replicate lines, keeping every individual in all
@@ -155,5 +189,6 @@ for j, t in enumerate(times):
             afs = G_sub.sum(axis=1) / 2 / Nf
             allele_frequencies[i][:, j] = afs
 
-#
+allele_frequencies[0].ndim
+
 
