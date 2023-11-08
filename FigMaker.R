@@ -32,6 +32,7 @@ library(ggbreak)
 library(ggimage)
 library(rsvg)
 library(ggrepel)
+library(shadowtext)
 dev.off()
 
 ####################################
@@ -82,14 +83,14 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
   theme_bw() +
   guides(color=guide_legend(title = "Genetic Variance",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("2 Ne \u03b1", 
-                     breaks = c(0,0.5,1,5,10, 15, 20), 
-                     labels = c(0,0.5,1,5,10, 15, 20)) +
+  scale_x_continuous("2 Ne \u03b1 \u039b / W", 
+                     breaks = c(0, 1, 5, 10, 15, 20), 
+                     labels = c(0, 1, 5, 10, 15, 20)) +
   scale_y_continuous("P(detected)") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",2),"red",rep("black",2)))) + 
+                                   colour = c(rep("black",1),"red",rep("black",4)))) + 
   scale_color_viridis(discrete = T) + 
   theme(axis.title = element_text(size=18)) + 
   geom_point(data = numDf, aes(x = popalpha, 
@@ -424,7 +425,7 @@ e3
 #### pDetected Main ####
 ########################
 
-p1 + p2 + p3 + plot_layout(guides = "collect")
+p1 + p2 + p3 + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A')
 
 ############################
 #### Convergence 20 Gen ####
@@ -951,17 +952,19 @@ ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
   scale_color_viridis(discrete = T) + 
   xlab("Number of Replicates Detected") + 
   ylab("Probability Given Detected at least Once") + 
-  geom_text(data = dfnotdetected, aes(x = reps_number,
+  geom_shadowtext(data = dfnotdetected, aes(x = reps_number,
                                       y = 1,
                                       label = pintdetected,
-                                      vjust = vjust)) + 
+                                      vjust = vjust),
+                  bg.color = "darkgrey", bg.r = 0.03) + 
   guides(color=guide_legend(title = "Selection\nCoefficient",
                             override.aes = list(alpha=1))) +
   theme(panel.grid.minor = element_blank(),
         axis.title = element_text(size=18),
         axis.text.x = element_text(size = 12),
         legend.text = element_text(size = 12)) + 
-  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1))
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 
 ########################
 #### RFS all 1 size ####
@@ -1144,12 +1147,14 @@ ggplot(dfdetected, aes(y = prob,
         legend.text = element_text(size = 12)) + 
   xlab("Number of Replicates Detected") + 
   ylab("Probability Given Detected at least Once") + 
-  geom_text(data = dfnotdetected, aes(x = reps_number,
+  geom_shadowtext(data = dfnotdetected, aes(x = reps_number,
                                       y = 1,
                                       label = pintdetected,
-                                      vjust = vjust)) + 
+                                      vjust = vjust),
+                  bg.color = "darkgrey", bg.r = 0.03) + 
   guides(color=guide_legend(title = "Effective\nPopulation\nSize",
-                            override.aes = list(alpha=1))) 
+                            override.aes = list(alpha=1))) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 
 ######################
 #### model figure ####

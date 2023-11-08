@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 from typing import List
+import random
 
 import time
 import demes
@@ -32,7 +33,11 @@ sregions = [fwdpy11.ConstantS(0, L, 1, a), fwdpy11.ConstantS(0, L, 1, -a)]
 
 # Load demographic model using demes
 os.chdir("/home/nathan/Documents/GitHub/path_integral")
-g = demes.load("subpopulations.yaml")
+g = demes.load("demo.yaml")
+
+# import demesdraw
+
+# demesdraw.tubes(g, colours=("blue"))
 burnin = 10
 model = fwdpy11.discrete_demography.from_demes(g, burnin=burnin)
 simlen = model.metadata["total_simulation_length"]
@@ -100,11 +105,44 @@ class Recorder:
             sampler.assign(np.arange(0, pop.N))
 
 
+for seed in random.sample(range(1,int(1e5)), 20):
+    recorder = Recorder(data=[])
+    print(seed)
+    ## Initialize and evolve full population
+    pop = fwdpy11.DiploidPopulation(N0, L)
+    rng = fwdpy11.GSLrng(seed)
+
+    time1 = time.time()
+    fwdpy11.evolvets(rng, pop, params, 100, recorder=recorder, suppress_table_indexing=True)
+    time2 = time.time()
+    print(f"simulation took {(time2 - time1)/60:0.2f} minutes")
+    assert pop.generation == simlen
+
+    ts = pop.dump_tables_to_tskit()
+    line_time = g.demes[0].end_time
+    
+    gen = []
+    mean_pheno = []
+    mean_fit = []
+    var_pheno = []
+    for i in range(simlen): 
+        gen.append(float(recorder.data[i].generation))
+        mean_pheno.append(recorder.data[i].mean_phenotype[0])
+        mean_fit.append(recorder.data[i].mean_fitness[0])
+        var_pheno.append(recorder.data[i].var_phenotype[0])
+    
+    initial_VG = np.mean(var_pheno[N0 * (burnin - 1):N0 * burnin])
+
+    print(initial_VG)
+    print(f"The tree sequence now has {ts.num_mutations} mutations, at "
+          f"{ts.num_sites} distinct sites.")
+
+
 recorder = Recorder(data=[])
 
 ## Initialize and evolve full population
 pop = fwdpy11.DiploidPopulation(N0, L)
-rng = fwdpy11.GSLrng(424242)
+rng = fwdpy11.GSLrng(4422)
 
 time1 = time.time()
 fwdpy11.evolvets(rng, pop, params, 100, recorder=recorder, suppress_table_indexing=True)
@@ -150,7 +188,14 @@ ax.set_ylabel("Value")
 plt.legend()
 plt.show()
 
+
 initial_VG = np.mean(var_pheno[N0 * (burnin - 1):N0 * burnin])
+print(initial_VG)
+print(min(gen[N0 * (burnin - 1):N0 * burnin]))
+print(max(gen[N0 * (burnin - 1):N0 * burnin]))
+## todo this isnt giving me the range that i want
+# 4 * 2.5e-3 / (1 + 1 /(10000 * 1e-4)) = 0.005
+## 4 * 2.5e-3 / (1 + 1 /(2000 * 1e-4)) = 0.0016666666666666668
 
 ## The tree sequence should record all generations from the last generation
 ## prior to the split into replicate lines, keeping every individual in all
@@ -190,5 +235,26 @@ for j, t in enumerate(times):
             allele_frequencies[i][:, j] = afs
 
 allele_frequencies[0].ndim
+allele_frequencies[0].shape
+
+print(ts.tables)
+print(ts.tables.mutations[0].metadata)
+print(ts.tables.mutations.metadata)
+print(pop.mutations[i].s for i in range(ts.num_mutations))
+
+effectsizes = []
+for i in range(ts.num_mutations):
+    effectsizes.append(pop.mutations[i].s)
+    
+ts.genotype_matrix().shape
+ts.tables.mutations[0].metadata['s']
+
+print(pop.tables.mutations)
+print(ts.tables.sites.position)
+len(ts.tables.sites.position) == len(ts.tables.sites.position)
+len(allele_frequencies)
+allele_frequencies.shape
 
 
+print(ts.tables.mutations)
+ts.tables.sites.position == sorted(ts.tables.sites.position)
