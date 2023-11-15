@@ -1,16 +1,18 @@
 import fwdpy11
 import numpy as np
-import pandas as pd
 from dataclasses import dataclass
 from typing import List
-import random
 
 import time
 import demes
 
 import os
+import sys
 
 ## Set up parameters
+# seed = 1
+seed = int(sys.argv[1])
+## TODO uncomment for cluster
 
 # 1 Morgan chrosome
 r = 1e-8
@@ -21,23 +23,28 @@ assert r * L == 1
 VS = 1.0
 
 # Change U in order to adjust VG
-U = 2.5e-3
+# U = 2.5e-3
+U = [float(sys.argv[2])] 
+## TODO uncomment for cluster
 
 expectedVG = 4 * U * VS
 optimum = 0.0
 shift = 1.0
 
 # Set up selected mutations
-a = 0.01
+# a = 0.01
+a = [float(sys.argv[3])]
+## TODO uncomment for cluster
+
 sregions = [fwdpy11.ConstantS(0, L, 1, a), fwdpy11.ConstantS(0, L, 1, -a)]
 
 # Load demographic model using demes
-os.chdir("/home/nathan/Documents/GitHub/path_integral")
-g = demes.load("demo.yaml")
+# os.chdir("/home/nathan/Documents/GitHub/path_integral")
+g = demes.load("subpopulations.yaml")
 
 # import demesdraw
-
 # demesdraw.tubes(g, colours=("blue"))
+
 burnin = 10
 model = fwdpy11.discrete_demography.from_demes(g, burnin=burnin)
 simlen = model.metadata["total_simulation_length"]
@@ -99,50 +106,17 @@ class Recorder:
         self.data.append(
             SimData(pop.generation, deme_ids, mean_pheno, mean_fitness, var_pheno)
         )
-        # record last generation of full population and
-        # every generation of the replicate lines
+        # record last generation of full population and of the replicate lines
         if pop.generation == pop.N * burnin or pop.generation == simlen:
             sampler.assign(np.arange(0, pop.N))
-
-
-for seed in random.sample(range(1,int(1e5)), 20):
-    recorder = Recorder(data=[])
-    print(seed)
-    ## Initialize and evolve full population
-    pop = fwdpy11.DiploidPopulation(N0, L)
-    rng = fwdpy11.GSLrng(seed)
-
-    time1 = time.time()
-    fwdpy11.evolvets(rng, pop, params, 100, recorder=recorder, suppress_table_indexing=True)
-    time2 = time.time()
-    print(f"simulation took {(time2 - time1)/60:0.2f} minutes")
-    assert pop.generation == simlen
-
-    ts = pop.dump_tables_to_tskit()
-    line_time = g.demes[0].end_time
-    
-    gen = []
-    mean_pheno = []
-    mean_fit = []
-    var_pheno = []
-    for i in range(simlen): 
-        gen.append(float(recorder.data[i].generation))
-        mean_pheno.append(recorder.data[i].mean_phenotype[0])
-        mean_fit.append(recorder.data[i].mean_fitness[0])
-        var_pheno.append(recorder.data[i].var_phenotype[0])
-    
-    initial_VG = np.mean(var_pheno[N0 * (burnin - 1):N0 * burnin])
-
-    print(initial_VG)
-    print(f"The tree sequence now has {ts.num_mutations} mutations, at "
-          f"{ts.num_sites} distinct sites.")
 
 
 recorder = Recorder(data=[])
 
 ## Initialize and evolve full population
 pop = fwdpy11.DiploidPopulation(N0, L)
-rng = fwdpy11.GSLrng(4422)
+rng = fwdpy11.GSLrng(seed)
+
 
 time1 = time.time()
 fwdpy11.evolvets(rng, pop, params, 100, recorder=recorder, suppress_table_indexing=True)
@@ -152,56 +126,27 @@ assert pop.generation == simlen
 
 ts = pop.dump_tables_to_tskit()
 line_time = g.demes[0].end_time
-# assert ts.num_samples == pop.N * 2 * (line_time + 1)
 
-## find mean VG over the final N generations of the burnin
+## find mean VG, var VG and mean pheno for the final N0 generations of the burnin
 gen = []
 mean_pheno = []
 mean_fit = []
 var_pheno = []
-for i in range(simlen): 
+# for i in range(N0 * (burnin - 1)+1, N0 * burnin+1): 
+for i in range(simlen):
     gen.append(float(recorder.data[i].generation))
     mean_pheno.append(recorder.data[i].mean_phenotype[0])
     mean_fit.append(recorder.data[i].mean_fitness[0])
     var_pheno.append(recorder.data[i].var_phenotype[0])
-    
-import matplotlib.pyplot as plt
-
-f, ax = plt.subplots()
-ax.plot(gen, var_pheno, label="Genetic Variance")
-ax.set_xlabel("Generation")
-ax.set_ylabel("Value")
-plt.legend()
-plt.show()
-
-f, ax = plt.subplots()
-ax.plot(gen, mean_pheno, label="Mean Phenotype")
-ax.set_xlabel("Generation")
-ax.set_ylabel("Value")
-plt.legend()
-plt.show()
-
-f, ax = plt.subplots()
-ax.plot(gen, mean_fit, label="Mean Fitness")
-ax.set_xlabel("Generation")
-ax.set_ylabel("Value")
-plt.legend()
-plt.show()
 
 
-initial_VG = np.mean(var_pheno[N0 * (burnin - 1):N0 * burnin])
-print(initial_VG)
-print(min(gen[N0 * (burnin - 1):N0 * burnin]))
-print(max(gen[N0 * (burnin - 1):N0 * burnin]))
-## todo this isnt giving me the range that i want
-# 4 * 2.5e-3 / (1 + 1 /(10000 * 1e-4)) = 0.005
-## 4 * 2.5e-3 / (1 + 1 /(2000 * 1e-4)) = 0.0016666666666666668
+# initial_VG = np.mean(var_pheno[N0 * (burnin - 1):N0 * burnin])
+# print(initial_VG)
 
-## The tree sequence should record all generations from the last generation
-## prior to the split into replicate lines, keeping every individual in all
-## generations after the optimum shift.
-
-print("Tree sequence has", ts.num_mutations, "mutations")
+## The tree sequence should record the last generation
+## prior to the split into replicate lines, and the final generation
+print(f"The tree sequence now has {ts.num_mutations} mutations, at "
+      f"{ts.num_sites} distinct sites.")
 mut_times = []
 for m in ts.mutations():
     mut_times.append(m.time)
@@ -216,8 +161,11 @@ for s in ts.samples():
 
 times = sorted(list(times))[::-1]
 
-allele_frequencies = {i: np.zeros((ts.num_sites, len(times))) for i in range(10)}
+# get number of replicate populations, minus 1 cause we dont want ancestral
+num_demes = len(model.metadata["deme_labels"]) - 1
 
+# calculating allele frequencies in each deme at the two generations of interest
+allele_frequencies = {i: np.zeros((ts.num_sites, len(times))) for i in range(num_demes)}
 for j, t in enumerate(times):
     print(j)
     samples = [s for s in ts.samples() if ts.node(s).time == t]
@@ -226,35 +174,62 @@ for j, t in enumerate(times):
     if t == max(times):
         # initial generation before shift in lines
         afs = G.sum(axis=1) / 2 / N0
-        for i in range(10):
+        for i in range(num_demes):
             allele_frequencies[i][:, j] = afs
     else:
-        for i in range(10):
+        for i in range(num_demes):
             G_sub = G[:, i * 2 * Nf : (i + 1) * 2 * Nf]
             afs = G_sub.sum(axis=1) / 2 / Nf
             allele_frequencies[i][:, j] = afs
 
-allele_frequencies[0].ndim
-allele_frequencies[0].shape
-
-print(ts.tables)
-print(ts.tables.mutations[0].metadata)
-print(ts.tables.mutations.metadata)
-print(pop.mutations[i].s for i in range(ts.num_mutations))
-
+# get effect sizes of each mutation
 effectsizes = []
 for i in range(ts.num_mutations):
-    effectsizes.append(pop.mutations[i].s)
+    effectsizes.append(ts.tables.mutations[i].metadata['s'])
     
-ts.genotype_matrix().shape
-ts.tables.mutations[0].metadata['s']
+# import matplotlib.pyplot as plt 
+# f, ax = plt.subplots()
+# ax.plot(gen[19900:20100], var_pheno[19900:20100], label="Genetic Variance")
+# ax.set_xlabel("Generation")
+# ax.set_ylabel("Value")
+# plt.legend()
+# plt.show()
 
-print(pop.tables.mutations)
-print(ts.tables.sites.position)
-len(ts.tables.sites.position) == len(ts.tables.sites.position)
-len(allele_frequencies)
-allele_frequencies.shape
 
+# exporting results
+import csv
 
-print(ts.tables.mutations)
-ts.tables.sites.position == sorted(ts.tables.sites.position)
+with open("start_freqs.csv", "w") as outfile:
+    writer = csv.writer(outfile)
+    deme_list = list(allele_frequencies.keys())
+    
+    writer.writerow(deme_list)
+    writer.writerow("start")
+    # iterate each column and assign the
+    # corresponding values to the column
+    for i in range(ts.num_mutations):
+            writer.writerow([allele_frequencies[x][i][0] for x in deme_list])
+            
+with open("end_freqs.csv", "w") as outfile:
+    writer = csv.writer(outfile)
+    deme_list = list(allele_frequencies.keys())
+    
+    writer.writerow(deme_list)
+    writer.writerow("end")
+    # iterate each column and assign the
+    # corresponding values to the column
+    for i in range(ts.num_mutations):
+            writer.writerow([allele_frequencies[x][i][1] for x in deme_list])
+
+with open("effect_sizes.csv","w") as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(effectsizes)
+    
+with open("popStats.csv", "w") as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(["gen","mean_pheno",  "var_pheno","mean_fit"])
+    for i in range(len(gen)):
+        writer.writerow([gen[i], mean_pheno[i], var_pheno[i], mean_fit[i]])
+        
+ts.dump("seed" + str(seed) + ".trees")
+    
