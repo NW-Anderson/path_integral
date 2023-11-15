@@ -14,6 +14,7 @@ RUN \
 	# install requirements
 	ve/bin/pip install fwdpy11
 
-# ADD analysis.py .
+ADD run_replicates.py .
+ADD subpopulations.yaml .
 
-ENTRYPOINT ["/ve/bin/python"]
+ENTRYPOINT ["/ve/bin/python", "run_replicates.py"]

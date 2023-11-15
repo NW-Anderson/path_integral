@@ -24,7 +24,7 @@ VS = 1.0
 
 # Change U in order to adjust VG
 # U = 2.5e-3
-U = [float(sys.argv[2])] 
+U = float(sys.argv[2])
 ## TODO uncomment for cluster
 
 expectedVG = 4 * U * VS
@@ -33,8 +33,10 @@ shift = 1.0
 
 # Set up selected mutations
 # a = 0.01
-a = [float(sys.argv[3])]
+a = float(sys.argv[3])
 ## TODO uncomment for cluster
+
+print(f"Using the parameters: seed: {seed}, U: {U}, a: {a}")
 
 sregions = [fwdpy11.ConstantS(0, L, 1, a), fwdpy11.ConstantS(0, L, 1, -a)]
 
