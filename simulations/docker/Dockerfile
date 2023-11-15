@@ -19,4 +19,4 @@ ADD subpopulations.yaml /opt
 
 WORKDIR /opt
 
-ENTRYPOINT ["/ve/bin/python", "run_replicates.py"]
+ENTRYPOINT ["/ve/bin/python", "/opt/run_replicates.py"]
