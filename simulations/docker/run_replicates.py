@@ -8,6 +8,7 @@ import demes
 
 import os
 import sys
+import tarfile
 
 ## Set up parameters
 # seed = 1
@@ -200,8 +201,20 @@ for i in range(ts.num_mutations):
 
 # exporting results
 import csv
+from pathlib import Path
 
-with open("start_freqs.csv", "w") as outfile:
+out_dir = Path(f"result_{seed}")
+out_dir.mkdir()
+
+out_files = {
+    "start_freqs": out_dir / "start_freqs.csv",
+    "end_freqs": out_dir / "end_freqs.csv",
+    "effect_sizes": out_dir / "effect_sizes.csv",
+    "popstats": out_dir / "popStats.csv",
+    "trees": out_dir / "simulation.trees",
+}
+
+with open(out_files["start_freqs"], "w") as outfile:
     writer = csv.writer(outfile)
     deme_list = list(allele_frequencies.keys())
     
@@ -212,7 +225,7 @@ with open("start_freqs.csv", "w") as outfile:
     for i in range(ts.num_mutations):
             writer.writerow([allele_frequencies[x][i][0] for x in deme_list])
             
-with open("end_freqs.csv", "w") as outfile:
+with open(out_files["end_freqs"], "w") as outfile:
     writer = csv.writer(outfile)
     deme_list = list(allele_frequencies.keys())
     
@@ -223,15 +236,23 @@ with open("end_freqs.csv", "w") as outfile:
     for i in range(ts.num_mutations):
             writer.writerow([allele_frequencies[x][i][1] for x in deme_list])
 
-with open("effect_sizes.csv","w") as outfile:
+with open(out_files["effect_sizes"],"w") as outfile:
     writer = csv.writer(outfile)
     writer.writerow(effectsizes)
     
-with open("popStats.csv", "w") as outfile:
+with open(out_files["popstats"], "w") as outfile:
     writer = csv.writer(outfile)
     writer.writerow(["gen","mean_pheno",  "var_pheno","mean_fit"])
     for i in range(len(gen)):
         writer.writerow([gen[i], mean_pheno[i], var_pheno[i], mean_fit[i]])
         
-ts.dump("seed" + str(seed) + ".trees")
-    
+ts.dump(str(out_files["trees"]))
+
+with tarfile.open(f"result_{seed}.tar.gz", mode="w:gz") as tar:
+    for out_name in out_files.values():
+        tar.add(out_name)
+
+for out_name in out_files.values():
+    out_name.unlink()
+
+out_dir.rmdir()
