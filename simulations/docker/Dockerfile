@@ -15,7 +15,7 @@ RUN \
 	ve/bin/pip install fwdpy11
 
 ADD run_replicates.py /opt
-ADD subpopulations.yaml /opt
+ADD demo.yaml /opt
 
 WORKDIR /opt
 
