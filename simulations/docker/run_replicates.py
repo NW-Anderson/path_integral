@@ -43,7 +43,7 @@ sregions = [fwdpy11.ConstantS(0, L, 1, a), fwdpy11.ConstantS(0, L, 1, -a)]
 
 # Load demographic model using demes
 # os.chdir("/home/nathan/Documents/GitHub/path_integral")
-g = demes.load("/opt/subpopulations.yaml")
+g = demes.load("/opt/demo.yaml")
 
 # import demesdraw
 # demesdraw.tubes(g, colours=("blue"))
