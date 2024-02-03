@@ -4,14 +4,14 @@ library(data.table)
 library(logger)
 library(ggplot2)
 
-results_base <- "/home/lkirk/Downloads/simulations/out"
+results_base <- "/media/nathan/T7/path_integral/simulations/out"
 ## start_freqs_filename <- "start_freqs.csv.gz"
 ## end_freqs_filename <- "end_freqs.csv.gz"
 allele_freqs_filename <- "allele_frequencies.csv.gz"
 pop_stats_filename <- "pop_stats.csv.gz"
 
 params <- fread(
-    "/home/lkirk/repo/path_integral/simulations/params.txt",
+    "~/Documents/GitHub/path_integral/simulations/params.txt",
     col.names = c("seed", "mut_rate", "effect_size")
 )
 setorder(params, mut_rate, effect_size)
