@@ -33,7 +33,7 @@ effect_sizes = [float(params[i][2]) for i in range(len(params))]
 del(csvreader, file, params, row)
 
 # working directory is where i exported all the trees from the original simulations
-os.chdir("/media/nathan/T7/path_integral/simulations/out/trees")
+os.chdir("/media/nathan/T7/path_integral/simulations/out/trees(neut)")
 
 # path = os.listdir()[1]
 count = 0
@@ -66,7 +66,7 @@ for path in os.listdir():
     
     allele_frequencies = {i: np.zeros((ts.num_sites, len(times))) for i in range(num_demes)}
     for j, t in enumerate(times):
-        print(j)
+        print(str(j) + " : " + str(t))
         samples = [s for s in ts.samples() if ts.node(s).time == t]
         ts_slice = ts.simplify(samples, filter_sites=False)
         G = ts_slice.genotype_matrix()
@@ -97,7 +97,7 @@ for path in os.listdir():
         # iterate each column and assign the
         # corresponding values to the column
         for i in range(ts.num_mutations):
-                writer.writerow([allele_frequencies[x][i][0] for x in deme_list])
+                writer.writerow([allele_frequencies[x][i][1] for x in deme_list])
                 
     with open(out_files["end_freqs"], "w") as outfile:
         writer = csv.writer(outfile)
@@ -108,4 +108,4 @@ for path in os.listdir():
         # iterate each column and assign the
         # corresponding values to the column
         for i in range(ts.num_mutations):
-                writer.writerow([allele_frequencies[x][i][1] for x in deme_list])
+                writer.writerow([allele_frequencies[x][i][0] for x in deme_list])
