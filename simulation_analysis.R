@@ -136,7 +136,6 @@ ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
 ## Neutral ##
 #############
 
-
 setwd("/media/nathan/T7/path_integral/simulations/out")
 
 allele_freqs <- fread("linked_neutral_09_11.csv.gz")  %>% mutate(clr = "1")
@@ -153,8 +152,15 @@ setwd("/media/nathan/T7/path_integral/simulations/out/KimuraComparison")
 pints <- fread("linked_sim_kimura_densities.csv") %>% 
   mutate(clr = "2")
 
+setwd("/media/nathan/T7/path_integral/trueNeutralSims")
+
+true_neut <- fread("trueNeutralMaster.csv.gz") %>%
+  mutate(clr = "3")
+
+
 pints <- pints %>% filter(end_freq <= 0.5, end_freq > 0)
 allele_freqs <- allele_freqs %>% filter(end_freq <= 0.5, end_freq > 0)
+true_neut <- true_neut %>% filter(freq <= 0.5, freq > 0)
 
 pint_means <- pints %>% group_by(Scenario) %>% 
   mutate(total_dens = sum(Dens)) %>% 
@@ -164,31 +170,43 @@ pint_means <- pints %>% group_by(Scenario) %>%
 group_means <- allele_freqs %>% group_by(par) %>%
   summarize(mn = mean(end_freq))
 
+true_neut_means <- true_neut %>% summarize(mn = mean(freq))
+
 ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) + 
   geom_density(show.legend = F, size = 1.25,
-               alpha = 1.75) + 
+               alpha = 0.75) +
+  geom_vline(data = group_means, aes(xintercept = mn),
+             linetype = "dashed",
+             color = turbo(11)[11]) +
   xlim(0,1) + 
   labs(
-    title = "Neutral: Ending Frequency for Alleles Starting Between 0.09 and 0.10") +
+    title = "Neutral: Ending Frequency for Alleles Starting Between 0.09 and 0.11") +
   scale_x_continuous("Ending Frequency",
                      breaks = seq(0,1,0.2)) + 
   scale_y_continuous("Density") + 
   facet_wrap(vars(par)) + 
   theme_bw() +
-  geom_vline(data = group_means, aes(xintercept = mn), 
-             linetype = "dashed",
-             color = turbo(11)[11]) + 
   geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
             size = 1.25,
             alpha = 0.75) +
-  scale_color_manual(values = c(turbo(11)[11], turbo(11)[2]),
-                     name = "",
-                     labels = c("Simulation",
-                                "Kimura's Solution")) + 
-  theme(legend.position = "bottom") + 
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
              color = turbo(11)[2]) +
+  geom_density(data = true_neut, aes(x = freq, color =clr),
+            size = 1.25,
+            alpha = 0.75,
+            show.legend = F) +
+  geom_vline(data = true_neut_means, aes(xintercept = mn),
+             linetype = "dashed",
+             color = turbo(11)[7]) +
+  scale_color_manual(values = c(turbo(11)[11],  
+                                turbo(11)[7], 
+                                turbo(11)[2]),
+                     name = "",
+                     labels = c("Linked Selection\n Simulation",
+                                "True Neutral\n Simulation",
+                                "Kimura's Solution")) + 
+  theme(legend.position = "bottom") + 
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),

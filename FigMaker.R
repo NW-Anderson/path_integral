@@ -39,7 +39,7 @@ dev.off()
 ####### pDetection Alpha VG #######
 ####################################
 
-# rm(list=ls())
+rm(list=ls())
 
 setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
 list.files()
@@ -81,9 +81,9 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("2 Ne \u03b1 \u039b / W", 
+  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20)) +
   scale_y_continuous("P(detected)") +
@@ -92,7 +92,10 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
                                    colour = c(rep("black",1),"red",rep("black",4)))) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) + 
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
   geom_point(data = numDf, aes(x = popalpha, 
                                y = yval,
                                color = as.factor(VG)),
@@ -146,17 +149,20 @@ e1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
   # scale_x_continuous("Population Scaled Selection Coefficient") +
   # scale_y_continuous("Error") +
-  xlab("2 Ne \u03b1") + 
+  xlab(bquote(2 * N[e] * "\u03b1 \u039b / W")) + 
   ylab("Statistical Distance") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) +
@@ -218,6 +224,9 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
   theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
         axis.title.y = element_blank()) +
   geom_point(data = numDf, aes(x = time,
                                y = yval,
@@ -274,7 +283,7 @@ e2 <- ggplot(data = master, aes(x = time, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
   # scale_x_continuous("Population Scaled Selection Coefficient") +
   # scale_y_continuous("Error") +
@@ -284,7 +293,10 @@ e2 <- ggplot(data = master, aes(x = time, y = statDist)) +
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) +
@@ -346,20 +358,23 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
   theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
         axis.title.y = element_blank()) +
   guides(color = F)
-  # geom_point(data = numDf, aes(x = time,
-  #                              y = yval,
-  #                              color = as.factor(VG)),
-  #            alpha=c(0,1),
-  #            size = 2.5,
-  #            shape = 17) +
-  # geom_line(data = numDf, aes(x = time,
-  #                             y = yval,
-  #                             color = as.factor(VG)),
-  #           alpha = 0.6,
-  #           size = 1.5,
-  #           linetype = "dashed")
+# geom_point(data = numDf, aes(x = time,
+#                              y = yval,
+#                              color = as.factor(VG)),
+#            alpha=c(0,1),
+#            size = 2.5,
+#            shape = 17) +
+# geom_line(data = numDf, aes(x = time,
+#                             y = yval,
+#                             color = as.factor(VG)),
+#           alpha = 0.6,
+#           size = 1.5,
+#           linetype = "dashed")
 
 p3
 
@@ -401,7 +416,7 @@ e3 <- ggplot(data = master, aes(x = start, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
   # scale_x_continuous("Population Scaled Selection Coefficient") +
   # scale_y_continuous("Error") +
@@ -411,11 +426,14 @@ e3 <- ggplot(data = master, aes(x = start, y = statDist)) +
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
-  # scale_y_break(c(0.02,0.05), scales = 1)
+# scale_y_break(c(0.02,0.05), scales = 1)
 
 ## idk if i like the break?
 
@@ -425,7 +443,9 @@ e3
 #### pDetected Main ####
 ########################
 
-p1 + p2 + p3 + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A')
+p1 + p2 + p3 + plot_layout(guides = "collect") + 
+  plot_annotation(tag_levels = 'A')  & 
+  theme(plot.tag = element_text(size = 24))
 
 ############################
 #### Convergence 20 Gen ####
@@ -433,288 +453,245 @@ p1 + p2 + p3 + plot_layout(guides = "collect") + plot_annotation(tag_levels = 'A
 
 rm(list = ls())
 
-setwd("~/Documents/GitHub/path_integral/results/convergence20gen")
+setwd("/media/nathan/T7/path_integral/comparison20gen")
 
-df <- data.frame(sel=c(),
-                 geg=c(),
-                 fig=c())
-
-for(sel in c(1, 5,10)){
-  for(geg in c(10,30,50)){
-    df <- dplyr::bind_rows(df,
-                           data.frame(sel,
-                                      geg,
-                                      path.expand(paste("2na",sel,"_", geg,"geg","_0.02time.svg",sep=""))))
+master <- data.frame()
+count <- 0
+for(file in list.files()){
+  count <- count + 1
+  print(paste(count, ":", file))
+  
+  param <- strsplit(file, "_")[[1]]
+  selcoef <- param[1] %>% gsub("2na", "", .) %>%
+    as.numeric()
+  geg <- param[2] %>% gsub("geg", "", .) %>%
+    as.numeric()
+  time <- param[3] %>% gsub("time", "", .) %>%
+    as.numeric()
+  end <- param[4] %>% gsub("end.csv", "", .) %>%
+    as.numeric()
+  
+  tmp <- fread(file)
+  
+  if(nrow(tmp) == 0){
+    tmp <- names(tmp)
   }
+  
+  tmp <- unlist(tmp) %>%
+    gsub('\"', "", .) %>%
+    gsub('[{}]', '', .) %>%
+    gsub("\\*\\^", "e", .) %>%
+    as.numeric()
+  df <- data.frame(dens = tmp,
+                   k = c(0:5, "num"),
+                   time = time,
+                   geg = paste("geg",geg,sep=""),
+                   end = end, 
+                   selcoef = selcoef)
+  
+  if(sum(is.na(df)) > 0) break()
+  
+  master <- dplyr::bind_rows(master, df)
 }
 
-df <- df %>% rename(fig = path.expand.paste..2na...sel..._...geg...geg...._0.02time.svg...,
-                    m_max = geg,
-                    PopScaledSelection = sel)
+my_labeller = as_labeller(
+  c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
+    "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
+    "geg10" = "m[max]==10",
+    "geg50" = "m[max]==50"),
+  default = label_parsed
+)
 
-the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
-                rgb(0.64274, 0.330577, 0.1540755),
-                rgb(0.726732, 0.538136, 0.31593),
-                rgb(0.817882, 0.7260905, 0.426991),
-                rgb(0.831964, 0.810543, 0.372854),
-                rgb(0.6419975, 0.7183185, 0.366907),
-                rgb(0.35082, 0.595178, 0.853742))
+ggplot(master, aes(x = end, y = dens)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) +
+  geom_line(aes(color = k),
+            alpha = 0.6,
+            linewidth = 1.5) + 
+  facet_grid(rows=vars(geg),
+             cols=vars(selcoef),
+             labeller = my_labeller) +
+  coord_cartesian(ylim=c(-2,10)) +
+  theme_bw() + 
+  scale_color_viridis(discrete = T) +
+  guides(color=guide_legend(title = bquote(k[max]))) +
+  xlab("Ending Frequency") + 
+  ylab("Density") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12))
 
-pointdf <- data.table(x = 1,
-                      y = 1,
-                      cols = c(0:5, "NDSolve"),
-                      lntyp = c(rep(1,6), 2)) 
-ggplot(df) +
-  geom_image(aes(x=1,
-                 y=1,
-                 image=fig),
-             size=Inf) +
-  facet_grid(rows=vars(m_max),
-             cols=vars(PopScaledSelection),
-             scales = "free",
-             labeller = label_both) +
-  theme_bw() +
-  theme(axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        legend.position="bottom") + 
-  xlab("Ending Frequency") +
-  ylab("Density") + 
-  scale_color_manual(limits = names(the_colors), 
-                     values = the_colors) +
-  geom_line(data = pointdf, aes(x = x, 
-                                y = y,
-                                color = cols,
-                                linetype = cols),
-            alpha = 0) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1),
-                              nrow = 1)) +
-  labs(color = "k_max",
-       linetype = "k_max") + 
-  scale_color_manual(values = the_colors, 
-                     name = "k_max") +
-  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
-                        name="k_max") + 
-  theme(axis.title = element_text(size=18))
-
-
-
-# ggplot(pointdf, aes(x = x, y = y, color = cols)) +
-#   geom_line(aes(linetype = cols),
-#              alpha = 0) + 
-#   guides(color = guide_legend(override.aes = list(alpha = 1),
-#                               nrow = 1)) +
-#   theme_bw() + 
-#   labs(color = "k_max",
-#        linetype = "k_max") + 
-#   scale_color_manual(values = the_colors, name = "k_max") +
-#   scale_linetype_manual(values=c(rep("solid",6), "dashed"), name="k_max") + 
-#   theme(legend.position="bottom") 
 ##############################
 #### Convergence Alpha VG ####
 ##############################
 
 rm(list = ls())
-setwd("~/Documents/GitHub/path_integral/results/convergenceAlphaVG")
-df <- data.frame(sel=c(),
-                 genVar=c(),
-                 fig=c())
-for(sel in c(1, 5,10)){
-  for(genVar in c("0.0001","0.001","0.01")){
-    df <- dplyr::bind_rows(df,
-                           data.frame(sel,
-                                      genVar,
-                                      path.expand(paste("2na",sel,"._50geg","_",genVar,"VG.svg",sep=""))))
-  }
-}
-df <- df %>% rename(fig = path.expand.paste..2na...sel...._50geg...._...genVar...VG.svg...,
-                    VG = genVar,
-                    PopScaledSelection = sel)
 
-the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
-                rgb(0.64274, 0.330577, 0.1540755),
-                rgb(0.726732, 0.538136, 0.31593),
-                rgb(0.817882, 0.7260905, 0.426991),
-                rgb(0.831964, 0.810543, 0.372854),
-                rgb(0.6419975, 0.7183185, 0.366907),
-                rgb(0.35082, 0.595178, 0.853742))
+setwd("/media/nathan/T7/path_integral/comparisonAlphaVG")
 
-pointdf <- data.table(x = 1,
-                      y = 1,
-                      cols = c(0:5, "NDSolve"),
-                      lntyp = c(rep(1,6), 2)) 
-ggplot(df) +
-  geom_image(aes(x=1,
-                 y=1,
-                 image=fig),
-             size=Inf) +
-  facet_grid(rows=vars(VG),
-             cols=vars(PopScaledSelection),
-             scales = "free",
-             labeller = label_both) +
-  theme_bw() +
-  theme(axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        legend.position="bottom") +
-  xlab("Ending Frequency") +
-  ylab("Density") + 
-  scale_color_manual(limits = names(the_colors), 
-                     values = the_colors) +
-  geom_line(data = pointdf, aes(x = x, 
-                                y = y,
-                                color = cols,
-                                linetype = cols),
-            alpha = 0) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1),
-                              nrow = 1)) +
-  labs(color = "k_max",
-       linetype = "k_max") + 
-  scale_color_manual(values = the_colors, 
-                     name = "k_max") +
-  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
-                        name="k_max") + 
-  theme(axis.title = element_text(size=18))
 
 ############################
 #### Convergence 2Na 5 ####
 ############################
 
 rm(list = ls())
-setwd("~/Documents/GitHub/path_integral/results/convergence2Na5")
-list.files()
-df <- data.frame(tme=c(),
-                 geg=c(),
-                 fig=c())
-for(tme in c(0.5, 0.25, 0.75)){
-  for(geg in c(10,30,50)){
-    df <- dplyr::bind_rows(df,
-                           data.frame(tme,
-                                      geg,
-                                      path.expand(paste("2na5_", geg,"geg","_",tme,"time.svg",sep=""))))
+
+setwd("/media/nathan/T7/path_integral/comparison2na5")
+
+master <- data.frame()
+count <- 0
+for(file in list.files()){
+  count <- count + 1
+  print(paste(count, ":", file))
+  
+  param <- strsplit(file, "_")[[1]]
+  selcoef <- param[1] %>% gsub("2na", "", .) %>%
+    as.numeric()
+  geg <- param[2] %>% gsub("geg", "", .) %>%
+    as.numeric()
+  if(geg == 5) geg <- 10
+  time <- param[3] %>% gsub("time", "", .) %>%
+    as.numeric()
+  end <- param[4] %>% gsub("end.csv", "", .) %>%
+    as.numeric()
+  
+  tmp <- fread(file)
+  
+  if(nrow(tmp) == 0){
+    tmp <- names(tmp)
   }
+  
+  tmp <- unlist(tmp) %>%
+    gsub('\"', "", .) %>%
+    gsub('[{}]', '', .) %>%
+    gsub("\\*\\^", "e", .) %>%
+    as.numeric()
+  df <- data.frame(dens = tmp,
+                   k = c(0:5, "num"),
+                   time = time,
+                   geg = paste("geg",geg,sep=""),
+                   end = end, 
+                   selcoef = selcoef)
+  
+  if(sum(is.na(df)) > 0) break()
+  
+  master <- dplyr::bind_rows(master, df)
 }
-df <- df %>% rename(fig = path.expand.paste..2na5_...geg...geg...._...tme...time.svg...,
-                    m_max = geg,
-                    Time = tme)
 
-the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
-                rgb(0.64274, 0.330577, 0.1540755),
-                rgb(0.726732, 0.538136, 0.31593),
-                rgb(0.817882, 0.7260905, 0.426991),
-                rgb(0.831964, 0.810543, 0.372854),
-                rgb(0.6419975, 0.7183185, 0.366907),
-                rgb(0.35082, 0.595178, 0.853742))
+my_labeller = as_labeller(
+  c("0.25" = "t==0.25",
+    "0.75" = "t==0.75",
+    "geg10" = "m[max]==10",
+    "geg50" = "m[max]==50"),
+  default = label_parsed
+)
 
-pointdf <- data.table(x = 1,
-                      y = 1,
-                      cols = c(0:5, "NDSolve"),
-                      lntyp = c(rep(1,6), 2)) 
-
-ggplot(df) +
-  geom_image(aes(x=1,
-                 y=1,
-                 image=fig),
-             size=Inf) +
-  facet_grid(rows=vars(m_max),
-             cols=vars(Time),
-             scales = "free",
-             labeller = label_both) +
-  theme_bw() +
-  theme(axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        legend.position="bottom") +
-  xlab("Ending Frequency") +
-  ylab("Density") + 
-  scale_color_manual(limits = names(the_colors), 
-                     values = the_colors) +
-  geom_line(data = pointdf, aes(x = x, 
-                                y = y,
-                                color = cols,
-                                linetype = cols),
-            alpha = 0) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1),
-                              nrow = 1)) +
-  labs(color = "k_max",
-       linetype = "k_max") + 
-  scale_color_manual(values = the_colors, 
-                     name = "k_max") +
-  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
-                        name="k_max") + 
-  theme(axis.title = element_text(size=18))
+ggplot(master, aes(x = end, y = dens)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) +
+  geom_line(aes(color = k),
+            alpha = 0.6,
+            linewidth = 1.5) + 
+  facet_grid(rows=vars(geg),
+             cols=vars(time),
+             labeller = my_labeller) +
+  coord_cartesian(ylim=c(-1,2)) +
+  theme_bw() + 
+  scale_color_viridis(discrete = T) +
+  guides(color=guide_legend(title = bquote(k[max]))) +
+  xlab("Ending Frequency") + 
+  ylab("Density") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12))
 
 ############################
 #### Convergence 2Na 10 ####
 ############################
 
 rm(list = ls())
-setwd("~/Documents/GitHub/path_integral/results/convergence2Na10")
+
+setwd("/media/nathan/T7/path_integral/comparison2na10")
+
 list.files()
-df <- data.frame(tme=c(),
-                 geg=c(),
-                 fig=c())
-for(tme in c(0.05, 0.1, 0.15)){
-  for(geg in c(10,30,50)){
-    df <- dplyr::bind_rows(df,
-                           data.frame(tme,
-                                      geg,
-                                      path.expand(paste("2na10_", geg,"geg","_",tme,"time.svg",sep=""))))
+
+master <- data.frame()
+count <- 0
+for(file in list.files()){
+  count <- count + 1
+  print(paste(count, ":", file))
+  
+  param <- strsplit(file, "_")[[1]]
+  geg <- param[2] %>% gsub("geg", "", .) %>%
+    as.numeric()
+  time <- param[3] %>% gsub("time", "", .) %>%
+    as.numeric()
+  end <- param[4] %>% gsub("end.csv", "", .) %>%
+    as.numeric()
+  
+  tmp <- fread(file)
+  
+  if(nrow(tmp) == 0){
+    tmp <- names(tmp)
   }
+  
+  tmp <- unlist(tmp) %>%
+    gsub('\"', "", .) %>%
+    gsub('[{}]', '', .) %>%
+    gsub("\\*\\^", "e", .) %>%
+    as.numeric()
+  df <- data.frame(dens = tmp,
+                   k = c(0:5, "num"),
+                   time = time,
+                   geg = geg,
+                   end = end)
+  
+  if(sum(is.na(df)) > 0) break()
+  
+  master <- dplyr::bind_rows(master, df)
 }
-df <- df %>% rename(fig = path.expand.paste..2na10_...geg...geg...._...tme...time.svg...,
-                    m_max = geg,
-                    Time = tme)
 
-the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
-                rgb(0.64274, 0.330577, 0.1540755),
-                rgb(0.726732, 0.538136, 0.31593),
-                rgb(0.817882, 0.7260905, 0.426991),
-                rgb(0.831964, 0.810543, 0.372854),
-                rgb(0.6419975, 0.7183185, 0.366907),
-                rgb(0.35082, 0.595178, 0.853742))
+my_labeller = as_labeller(
+  c("0.05" = "t==0.05",
+    "0.15" = "t==0.15",
+    "10" = "m[max]==10",
+    "50" = "m[max]==50"), 
+  default = label_parsed
+)
 
-pointdf <- data.table(x = 1,
-                      y = 1,
-                      cols = c(0:5, "NDSolve"),
-                      lntyp = c(rep(1,6), 2)) 
-
-ggplot(df) +
-  geom_image(aes(x=1,
-                 y=1,
-                 image=fig),
-             size=Inf) +
-  facet_grid(rows=vars(m_max),
-             cols=vars(Time),
-             scales = "free",
-             labeller = label_both) +
-  theme_bw() +
-  theme(axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        legend.position="bottom") +
-  xlab("Ending Frequency") +
-  ylab("Density") + 
-  scale_color_manual(limits = names(the_colors), 
-                     values = the_colors) +
-  geom_line(data = pointdf, aes(x = x, 
-                                y = y,
-                                color = cols,
-                                linetype = cols),
-            alpha = 0) + 
-  guides(color = guide_legend(override.aes = list(alpha = 1),
-                              nrow = 1)) +
-  labs(color = "k_max",
-       linetype = "k_max") + 
-  scale_color_manual(values = the_colors, 
-                     name = "k_max") +
-  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
-                        name="k_max") + 
-  theme(axis.title = element_text(size=18))
+ggplot(master, aes(x = end, y = dens)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) +
+  geom_line(aes(color = k),
+            alpha = 0.6,
+            linewidth = 1.5) + 
+  facet_grid(rows=vars(geg),
+             cols=vars(time),
+             labeller = my_labeller) + 
+  coord_cartesian(ylim=c(-2,6)) +
+  theme_bw() + 
+  scale_color_viridis(discrete = T) +
+  guides(color=guide_legend(title = bquote(k[max]))) +
+  xlab("Ending Frequency") + 
+  ylab("Density") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12))
 
 #######################
 #### pDetection Ne ####
@@ -746,7 +723,7 @@ ggplot(data = master, aes(x = Ne, y = pintdetected)) +
   #            linetype="dashed", 
   #            color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
-  guides(color=guide_legend(title = "Selection\nCoefficient",
+  guides(color=guide_legend(title = "\u03b1",
                             override.aes = list(alpha=1))) +
   scale_x_continuous(breaks = c(200, 250, 500, 1000)) +
   # scale_x_continuous("Selection Coefficient", 
@@ -754,11 +731,16 @@ ggplot(data = master, aes(x = Ne, y = pintdetected)) +
   #                    limits = c(0, 1e-02),
   #                    labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
   scale_y_continuous("P(detected)") +
+  scale_x_continuous(bquote(N[e])) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18))
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12))
 
 ##################
 #### Error Ne ####
@@ -792,7 +774,7 @@ ggplot(data = master, aes(x = Ne, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Selection\nCoefficient",
+  guides(color=guide_legend(title = "\u03b1",
                             override.aes = list(alpha=1))) +
   scale_x_continuous(breaks = c(200, 250, 500, 1000)) +
   # scale_x_continuous("Selection Coefficient", 
@@ -800,11 +782,16 @@ ggplot(data = master, aes(x = Ne, y = statDist)) +
   #                    limits = c(0, 1e-02),
   #                    labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
   scale_y_continuous("Statistical Distance") +
+  scale_x_continuous(bquote(N[e])) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
@@ -901,9 +888,7 @@ for(i in 1:nrow(master)){
   tmp <- master[i,]
   for(j in 0:tmp$reps){
     foo <- data.table(Ne = tmp$Ne,
-                      reps = paste(tmp$reps, 
-                                   " Replicates of Size ", 
-                                   tmp$Ne),
+                      reps = paste(tmp$reps),
                       selCoef = tmp$selCoef,
                       reps_number = tmp$reps,
                       bin = j,
@@ -929,10 +914,10 @@ dfnotdetected <- df %>% filter(bin == 0) %>%
          selCoef = as.factor(selCoef),
          pintdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
   mutate(pintdetected = as.factor(pintdetected))
-dfnotdetected$reps_number <- rep(c(3.25,
-                                   15,
-                                   12,
-                                   6.25),
+dfnotdetected$reps_number <- rep(c(3,
+                                   13.6,
+                                   11,
+                                   5.7),
                                  each = 5)
 dfnotdetected$vjust = rep((1.5 * c(2,3,4,5,1)), 4)
 
@@ -940,29 +925,52 @@ breaksfun <- function(x){
   1:max(x)
 }
 
+# my_labeller = as_labeller(
+#   c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
+#     "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
+#     "geg10" = "m[max]==10",
+#     "geg50" = "m[max]==50"),
+#   default = label_parsed
+# )
+
+my_labeller = as_labeller(
+  c("4" = "4 ~ `Replicates,` ~ N[e] == 1000",
+    "8" = "8 ~ `Replicates,` ~ N[e] == 500",
+    "16" = "16 ~ `Replicates,` ~ N[e] == 250",
+    "20" = "20 ~ `Replicates,` ~ N[e] == 200"),
+  default = label_parsed
+)
+
 ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
                        group = selCoef)) + 
   geom_line(alpha = 0.6,
             size = 1.5) + 
   geom_point(alpha=1,
              size = 2.5) +
-  facet_wrap(~ factor(reps, levels = unique(dfdetected$reps)[c(1,4,3,2)]), scales="free_x") + 
+  facet_wrap(~ factor(reps, 
+                      levels = unique(dfdetected$reps)[c(1,4,3,2)]), 
+             scales="free_x",
+             labeller = my_labeller) + 
   theme_bw() + 
   scale_x_continuous(breaks = breaksfun) + 
   scale_color_viridis(discrete = T) + 
   xlab("Number of Replicates Detected") + 
   ylab("Probability Given Detected at least Once") + 
   geom_shadowtext(data = dfnotdetected, aes(x = reps_number,
-                                      y = 1,
-                                      label = pintdetected,
-                                      vjust = vjust),
-                  bg.color = "darkgrey", bg.r = 0.03) + 
-  guides(color=guide_legend(title = "Selection\nCoefficient",
+                                            y = 1,
+                                            label = pintdetected,
+                                            vjust = vjust), 
+                  size = 6.5,
+                  bg.color = "darkgrey", bg.r = 0.03,
+                  show.legend = F) + 
+  guides(color=guide_legend(title = "\u03b1",
                             override.aes = list(alpha=1))) +
   theme(panel.grid.minor = element_blank(),
         axis.title = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) + 
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 
@@ -1033,7 +1041,7 @@ dfnotdetected$reps_number <- rep(c(3.5,
                                    13),
                                  6)
 dfnotdetected$vjust = rep((1.5 * 1:6), each = 4)
- 
+
 
 breaksfun <- function(x){
   1:max(x)
@@ -1062,7 +1070,7 @@ ggplot(dfdetected, aes(y = prob,
                                       vjust = vjust)) + 
   guides(color=guide_legend(title = "Selection\nCoefficient",
                             override.aes = list(alpha=1))) 
-  
+
 #############
 #### RFS ####
 #############
@@ -1124,7 +1132,7 @@ dfnotdetected$reps_number <- rep(c(3.5,
                                    13),
                                  4)
 dfnotdetected$vjust = rep((1.5 * c(4,1,2,3)), each = 4)
- 
+
 
 breaksfun <- function(x){
   1:max(x)
@@ -1148,13 +1156,21 @@ ggplot(dfdetected, aes(y = prob,
   xlab("Number of Replicates Detected") + 
   ylab("Probability Given Detected at least Once") + 
   geom_shadowtext(data = dfnotdetected, aes(x = reps_number,
-                                      y = 1,
-                                      label = pintdetected,
-                                      vjust = vjust),
-                  bg.color = "darkgrey", bg.r = 0.03) + 
-  guides(color=guide_legend(title = "Effective\nPopulation\nSize",
+                                            y = 1,
+                                            label = pintdetected,
+                                            vjust = vjust),
+                  size = 6.5,
+                  bg.color = "darkgrey", 
+                  bg.r = 0.03,
+                  show.legend = F) + 
+  guides(color=guide_legend(title = bquote(N[e]),
                             override.aes = list(alpha=1))) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12))
 
 ######################
 #### model figure ####
@@ -1201,14 +1217,14 @@ ggplot(df, aes(x = x, y = y)) +
             linewidth = 2,
             alpha = 0.75) +
   scale_color_manual(values = c(rep(the_colors[1],2), the_colors[2]),
-                     labels=c("Shifted Fitness Function",
-                              "Initial Fitness Function",
-                              "Trait Distribution"),
+                     labels=c("Shifted Fitness\n Function",
+                              "Initial Fitness\n Function",
+                              "Initial Trait\n Distribution"),
                      name = "") +
   scale_linetype_manual(values = c("dotted", rep("solid",2)),
-                        labels=c("Shifted Fitness Function",
-                                 "Initial Fitness Function",
-                                 "Trait Distribution"),
+                        labels=c("Shifted Fitness\n Function",
+                                 "Initial Fitness\n Function",
+                                 "Initial Trait\n Distribution"),
                         name = "") +
   theme_bw() +
   theme(axis.title.y = element_blank(),
@@ -1259,15 +1275,19 @@ ggplot(data = master, aes(x = popalpha, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
-  xlab("2 Ne \u03b1") +
+  xlab(bquote(2 * N[e] * "\u03b1 \u039b / W")) +
   ylab("Statistical Distance") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) +
@@ -1304,7 +1324,7 @@ ggplot(data = master, aes(x = time, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
   xlab("Time (Genomic Units)") +
   ylab("Statistical Distance") +
@@ -1312,7 +1332,11 @@ ggplot(data = master, aes(x = time, y = statDist)) +
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
@@ -1364,15 +1388,19 @@ ggplot(data = master, aes(x = k, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("k_max") +
+  scale_x_continuous(bquote(k[max])) +
   scale_y_continuous("Statistical Distance") +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
@@ -1407,7 +1435,7 @@ ggplot(data = master, aes(x = start, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "Genetic Variance",
+  guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
   scale_x_continuous("Starting Frequency",
                      breaks = (1:9 / 10)) +
@@ -1416,7 +1444,11 @@ ggplot(data = master, aes(x = start, y = statDist)) +
         panel.grid.minor.x = element_blank()) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18)) +
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
@@ -1758,3 +1790,292 @@ ggplot(data = master, aes(x = start, y = error)) +
   geom_hline(yintercept=0, 
              linetype="dashed", 
              color = turbo(11)[11], size  = 0.75) 
+
+############################
+#### Convergence 20 Gen ####
+############################
+
+rm(list = ls())
+
+setwd("~/Documents/GitHub/path_integral/results/convergence20gen")
+
+df <- data.frame(sel=c(),
+                 geg=c(),
+                 fig=c())
+
+for(sel in c(1, 5,10)){
+  for(geg in c(10,30,50)){
+    df <- dplyr::bind_rows(df,
+                           data.frame(sel,
+                                      geg,
+                                      path.expand(paste("2na",sel,"_", geg,"geg","_0.02time.svg",sep=""))))
+  }
+}
+
+df <- df %>% rename(fig = path.expand.paste..2na...sel..._...geg...geg...._0.02time.svg...,
+                    m_max = geg,
+                    PopScaledSelection = sel)
+
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(m_max),
+             cols=vars(PopScaledSelection),
+             scales = "free",
+             labeller = label_both) +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") + 
+  xlab("Ending Frequency") +
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
+
+
+
+# ggplot(pointdf, aes(x = x, y = y, color = cols)) +
+#   geom_line(aes(linetype = cols),
+#              alpha = 0) + 
+#   guides(color = guide_legend(override.aes = list(alpha = 1),
+#                               nrow = 1)) +
+#   theme_bw() + 
+#   labs(color = "k_max",
+#        linetype = "k_max") + 
+#   scale_color_manual(values = the_colors, name = "k_max") +
+#   scale_linetype_manual(values=c(rep("solid",6), "dashed"), name="k_max") + 
+#   theme(legend.position="bottom") 
+##############################
+#### Convergence Alpha VG ####
+##############################
+
+rm(list = ls())
+setwd("~/Documents/GitHub/path_integral/results/convergenceAlphaVG")
+df <- data.frame(sel=c(),
+                 genVar=c(),
+                 fig=c())
+for(sel in c(1, 5,10)){
+  for(genVar in c("0.0001","0.001","0.01")){
+    df <- dplyr::bind_rows(df,
+                           data.frame(sel,
+                                      genVar,
+                                      path.expand(paste("2na",sel,"._50geg","_",genVar,"VG.svg",sep=""))))
+  }
+}
+df <- df %>% rename(fig = path.expand.paste..2na...sel...._50geg...._...genVar...VG.svg...,
+                    VG = genVar,
+                    PopScaledSelection = sel)
+
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(VG),
+             cols=vars(PopScaledSelection),
+             scales = "free",
+             labeller = label_both) +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") +
+  xlab("Ending Frequency") +
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
+
+############################
+#### Convergence 2Na 5 ####
+############################
+
+rm(list = ls())
+setwd("~/Documents/GitHub/path_integral/results/convergence2Na5")
+list.files()
+df <- data.frame(tme=c(),
+                 geg=c(),
+                 fig=c())
+for(tme in c(0.5, 0.25, 0.75)){
+  for(geg in c(10,30,50)){
+    df <- dplyr::bind_rows(df,
+                           data.frame(tme,
+                                      geg,
+                                      path.expand(paste("2na5_", geg,"geg","_",tme,"time.svg",sep=""))))
+  }
+}
+df <- df %>% rename(fig = path.expand.paste..2na5_...geg...geg...._...tme...time.svg...,
+                    m_max = geg,
+                    Time = tme)
+
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
+
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(m_max),
+             cols=vars(Time),
+             scales = "free",
+             labeller = label_both) +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") +
+  xlab("Ending Frequency") +
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))
+
+############################
+#### Convergence 2Na 10 ####
+############################
+
+rm(list = ls())
+setwd("~/Documents/GitHub/path_integral/results/convergence2Na10")
+list.files()
+df <- data.frame(tme=c(),
+                 geg=c(),
+                 fig=c())
+for(tme in c(0.05, 0.1, 0.15)){
+  for(geg in c(10,30,50)){
+    df <- dplyr::bind_rows(df,
+                           data.frame(tme,
+                                      geg,
+                                      path.expand(paste("2na10_", geg,"geg","_",tme,"time.svg",sep=""))))
+  }
+}
+df <- df %>% rename(fig = path.expand.paste..2na10_...geg...geg...._...tme...time.svg...,
+                    m_max = geg,
+                    Time = tme)
+
+the_colors <- c(rgb(0.396811, 0.31014, 0.2041), 
+                rgb(0.64274, 0.330577, 0.1540755),
+                rgb(0.726732, 0.538136, 0.31593),
+                rgb(0.817882, 0.7260905, 0.426991),
+                rgb(0.831964, 0.810543, 0.372854),
+                rgb(0.6419975, 0.7183185, 0.366907),
+                rgb(0.35082, 0.595178, 0.853742))
+
+pointdf <- data.table(x = 1,
+                      y = 1,
+                      cols = c(0:5, "NDSolve"),
+                      lntyp = c(rep(1,6), 2)) 
+
+ggplot(df) +
+  geom_image(aes(x=1,
+                 y=1,
+                 image=fig),
+             size=Inf) +
+  facet_grid(rows=vars(m_max),
+             cols=vars(Time),
+             scales = "free",
+             labeller = label_both) +
+  theme_bw() +
+  theme(axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        legend.position="bottom") +
+  xlab("Ending Frequency") +
+  ylab("Density") + 
+  scale_color_manual(limits = names(the_colors), 
+                     values = the_colors) +
+  geom_line(data = pointdf, aes(x = x, 
+                                y = y,
+                                color = cols,
+                                linetype = cols),
+            alpha = 0) + 
+  guides(color = guide_legend(override.aes = list(alpha = 1),
+                              nrow = 1)) +
+  labs(color = "k_max",
+       linetype = "k_max") + 
+  scale_color_manual(values = the_colors, 
+                     name = "k_max") +
+  scale_linetype_manual(values=c(rep("solid",6), "dashed"),
+                        name="k_max") + 
+  theme(axis.title = element_text(size=18))

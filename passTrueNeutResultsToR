@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb 13 16:22:25 2024
+
+@author: nathan
+"""
+import os
+import numpy as np
+
+os.chdir("/media/nathan/T7/path_integral/trueNeutralSims")
+
+fs = np.load("fs_slice_4.npz")["arr_0"]
+
+import csv
+
+with open("trueNeutralSFS_4.csv", "w") as outfile:
+    writer = csv.writer(outfile)
+    # iterate each column and assign the
+    # corresponding values to the column
+    writer.writerow(fs[i] for i in range(len(fs)))
+
