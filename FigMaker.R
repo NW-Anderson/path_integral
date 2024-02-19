@@ -515,16 +515,19 @@ ggplot(master, aes(x = end, y = dens)) +
   coord_cartesian(ylim=c(-2,10)) +
   theme_bw() + 
   scale_color_viridis(discrete = T) +
-  guides(color=guide_legend(title = bquote(k[max]))) +
+  guides(color=guide_legend(title = bquote(k[max]),
+                            nrow = 1)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
+  labs(title = "20 Generations") +
   theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.title = element_text(size=18),
+        panel.grid.minor.x = element_blank(),
+        axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12))
+        strip.text = element_text(size = 12),
+        legend.position="bottom")
 
 ##############################
 #### Convergence Alpha VG ####
@@ -534,6 +537,79 @@ rm(list = ls())
 
 setwd("/media/nathan/T7/path_integral/comparisonAlphaVG")
 
+master <- data.frame()
+count <- 0
+for(file in list.files()){
+  count <- count + 1
+  print(paste(count, ":", file))
+  
+  param <- strsplit(file, "_")[[1]]
+  selcoef <- param[1] %>% gsub("2na", "", .) %>%
+    as.numeric()
+  geg <- param[2] %>% gsub("geg", "", .) %>%
+    as.numeric()
+  vg <- param[3] %>% gsub("VG", "", .) %>%
+    as.numeric()
+  end <- param[4] %>% gsub("end.csv", "", .) %>%
+    as.numeric()
+  
+  tmp <- fread(file)
+  
+  if(nrow(tmp) == 0){
+    tmp <- names(tmp)
+  }
+  
+  tmp <- unlist(tmp) %>%
+    gsub('\"', "", .) %>%
+    gsub('[{}]', '', .) %>%
+    gsub("\\*\\^", "e", .) %>%
+    as.numeric()
+  df <- data.frame(dens = tmp,
+                   k = c(0:5, "num"),
+                   vg = vg,
+                   geg = paste("geg",geg,sep=""),
+                   end = end, 
+                   selcoef = selcoef)
+  
+  if(sum(is.na(df)) > 0) break()
+  
+  master <- dplyr::bind_rows(master, df)
+}
+
+my_labeller = as_labeller(
+  c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
+    "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
+    "1e-04" = "V[G] == 10^-4",
+    "0.01" = "V[G] == 10^-2"),
+  default = label_parsed
+)
+
+ggplot(master, aes(x = end, y = dens)) +
+  geom_hline(yintercept=0, 
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) +
+  geom_line(aes(color = k),
+            alpha = 0.6,
+            linewidth = 1.5) + 
+  facet_grid(rows=vars(vg),
+             cols=vars(selcoef),
+             labeller = my_labeller) +
+  coord_cartesian(ylim=c(-2,10)) +
+  theme_bw() + 
+  scale_color_viridis(discrete = T) +
+  guides(color=guide_legend(title = bquote(k[max]),
+                            nrow = 1)) +
+  xlab("Ending Frequency") + 
+  ylab("Density") +
+  labs(title = "200 Generations") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12),
+        legend.position="bottom")
 
 ############################
 #### Convergence 2Na 5 ####
@@ -604,16 +680,19 @@ ggplot(master, aes(x = end, y = dens)) +
   coord_cartesian(ylim=c(-1,2)) +
   theme_bw() + 
   scale_color_viridis(discrete = T) +
-  guides(color=guide_legend(title = bquote(k[max]))) +
+  guides(color=guide_legend(title = bquote(k[max]),
+                            nrow = 1)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
+  labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 5")) +
   theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.title = element_text(size=18),
+        panel.grid.minor.x = element_blank(),
+        axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12))
+        strip.text = element_text(size = 12),
+        legend.position = "bottom")
 
 ############################
 #### Convergence 2Na 10 ####
@@ -682,16 +761,19 @@ ggplot(master, aes(x = end, y = dens)) +
   coord_cartesian(ylim=c(-2,6)) +
   theme_bw() + 
   scale_color_viridis(discrete = T) +
-  guides(color=guide_legend(title = bquote(k[max]))) +
+  guides(color=guide_legend(title = bquote(k[max]),
+                            nrow = 1)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
+  labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 10")) +
   theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.title = element_text(size=18),
+        panel.grid.minor.x = element_blank(),
+        axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12))
+        strip.text = element_text(size = 12),
+        legend.position = "bottom")
 
 #######################
 #### pDetection Ne ####
@@ -719,24 +801,22 @@ ggplot(data = master, aes(x = Ne, y = pintdetected)) +
   geom_point(aes(color = as.factor(selCoef)),
              alpha=1,
              size = 2.5) +
-  # geom_hline(yintercept=0.01, 
-  #            linetype="dashed", 
-  #            color = turbo(11)[11], size  = 0.75) + 
+  geom_hline(yintercept=0.01,
+             linetype="dashed",
+             color = turbo(11)[11], size  = 0.75) +
   theme_bw() +
   guides(color=guide_legend(title = "\u03b1",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous(breaks = c(200, 250, 500, 1000)) +
-  # scale_x_continuous("Selection Coefficient", 
-  #                    breaks = c(0, 5e-04, 1e-03, 5e-03, 1e-02), 
-  #                    limits = c(0, 1e-02),
-  #                    labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
+  scale_x_continuous(bquote(N[e]),
+                     breaks = c(200, 250, 500, 1000)) +
   scale_y_continuous("P(detected)") +
-  scale_x_continuous(bquote(N[e])) +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust=1),
+        axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
@@ -776,18 +856,16 @@ ggplot(data = master, aes(x = Ne, y = statDist)) +
   theme_bw() +
   guides(color=guide_legend(title = "\u03b1",
                             override.aes = list(alpha=1))) +
-  scale_x_continuous(breaks = c(200, 250, 500, 1000)) +
-  # scale_x_continuous("Selection Coefficient", 
-  #                    breaks = c(0, 5e-04, 1e-03, 5e-03, 1e-02), 
-  #                    limits = c(0, 1e-02),
-  #                    labels = c(0, 5e-04, 1e-03, 5e-03, 1e-02)) +
+  scale_x_continuous(bquote(N[e]),
+                     breaks = c(200, 250, 500, 1000)) +
   scale_y_continuous("Statistical Distance") +
-  scale_x_continuous(bquote(N[e])) +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
   scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust=1),
+        axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
@@ -953,6 +1031,7 @@ ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
              labeller = my_labeller) + 
   theme_bw() + 
   scale_x_continuous(breaks = breaksfun) + 
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
   scale_color_viridis(discrete = T) + 
   xlab("Number of Replicates Detected") + 
   ylab("Probability Given Detected at least Once") + 
@@ -964,15 +1043,18 @@ ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
                   bg.color = "darkgrey", bg.r = 0.03,
                   show.legend = F) + 
   guides(color=guide_legend(title = "\u03b1",
-                            override.aes = list(alpha=1))) +
+                            override.aes = list(alpha=1),
+                            nrow = 1)) +
   theme(panel.grid.minor = element_blank(),
         axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12)) + 
-  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+        strip.text = element_text(size = 12),
+        axis.text.x = element_text(angle = 45, 
+                                   vjust = 1, 
+                                   hjust=1),
+        legend.position = "bottom") 
 
 ########################
 #### RFS all 1 size ####
@@ -1164,13 +1246,15 @@ ggplot(dfdetected, aes(y = prob,
                   bg.r = 0.03,
                   show.legend = F) + 
   guides(color=guide_legend(title = bquote(N[e]),
-                            override.aes = list(alpha=1))) +
+                            override.aes = list(alpha=1),
+                            nrow = 1)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12))
+        strip.text = element_text(size = 12),
+        legend.position = "bottom")
 
 ######################
 #### model figure ####
