@@ -445,7 +445,8 @@ e3
 
 p1 + p2 + p3 + plot_layout(guides = "collect") + 
   plot_annotation(tag_levels = 'A')  & 
-  theme(plot.tag = element_text(size = 24))
+  theme(plot.tag = element_text(size = 24),
+        legend.position = "bottom")
 
 ############################
 #### Convergence 20 Gen ####
