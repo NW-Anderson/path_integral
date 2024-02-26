@@ -35,6 +35,50 @@ library(ggrepel)
 library(shadowtext)
 dev.off()
 
+####################
+#### Comparison ####
+####################
+rm(list=ls())
+
+setwd("/media/nathan/T7/path_integral/mainComparison/x-0.2")
+
+master <- data.frame()
+for(file in list.files()){
+  end <- file %>% strsplit(., split = "_")
+  end <- end[[1]][2] %>% 
+    gsub(".csv", "", .) %>% 
+    as.numeric()
+  
+  tmp <- fread(file) %>% unlist()
+  master <- dplyr::bind_rows(master, 
+                             data.frame(dens = tmp,
+                                        vg = factor(c(1e-4, 1e-3, 1e-2, 
+                                                      1e-1, "Genic", "Neutral"),
+                                                    levels = c("Genic", 1e-4, 1e-3, 1e-2, 
+                                                               1e-1, "Neutral")),
+                                        end = end))
+}
+
+ggplot(master, aes(x = end, y = dens)) + 
+  geom_line(aes(color = vg),
+            alpha = 0.75,
+            size = 1.5) +
+  geom_hline(aes(yintercept = 0),
+             linetype="dashed", 
+             color = turbo(11)[11], size  = 0.75) + 
+  theme_bw() +
+  guides(color=guide_legend(title = bquote(V[G]),
+                            override.aes = list(alpha=1))) +
+  scale_x_continuous("Ending Frequency") + 
+  scale_y_continuous("Density") + 
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  scale_color_viridis(discrete = T) + 
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) 
+
 ####################################
 ####### pDetection Alpha VG #######
 ####################################

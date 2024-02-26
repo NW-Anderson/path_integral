@@ -3,6 +3,7 @@ library(ggplot2)
 library(dplyr)
 library(patchwork)
 library(viridis)
+library(reshape2)
 
 ################
 #### Linked ####
@@ -29,19 +30,21 @@ setwd("/media/nathan/T7/path_integral/genicSimComparison")
 
 genic <- data.frame()
 for(file in list.files()){
-  params <- strsplit(file, split = "_")[[1]] 
-  end <- params[2] %>% 
-    gsub("end", "", .) %>% 
-    as.numeric()
-  selCoef <- params[3] %>% 
-    gsub("selCoef.csv", "", .) %>% 
-    as.numeric()
-  
-  tmp <- fread(file) %>%
-    unlist()
-  genic <- dplyr::bind_rows(genic, data.frame(dens = tmp,
-                                              end = end, 
-                                              selCoef = selCoef))
+  if(file != "k=5"){
+    params <- strsplit(file, split = "_")[[1]] 
+    end <- params[2] %>% 
+      gsub("end", "", .) %>% 
+      as.numeric()
+    selCoef <- params[3] %>% 
+      gsub("selCoef.csv", "", .) %>% 
+      as.numeric()
+    
+    tmp <- fread(file) %>%
+      unlist()
+    genic <- dplyr::bind_rows(genic, data.frame(dens = tmp,
+                                                end = end, 
+                                                selCoef = selCoef))
+  }
 }
 
 genic <- genic %>% 
@@ -87,26 +90,26 @@ ggplot(data = allele_freqs, aes(x = end, color = clr)) +
   theme_bw() +
   geom_vline(data = group_means, aes(xintercept = mn), 
              linetype = "dashed",
-             color = turbo(11)[11]) + 
+             color = turbo(10)[1]) + 
   geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
             size = 1.25,
             alpha = 0.75) +
-  scale_color_manual(values = c(turbo(11)[11],  
-                                turbo(11)[7], 
-                                turbo(11)[2]),
+  scale_color_manual(values = c(turbo(10)[1],
+                                turbo(10)[8],  
+                                turbo(10)[5]),
                      name = "",
-                     labels = c("Simulation",
+                     labels = c("Linked\n Simulation",
                                 "Hayward",
                                 "Genic")) + 
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[7]) + 
+             color = turbo(10)[8]) + 
   geom_line(data = genic, aes(x = end, y = dens, color = clr),
             size = 1.25,
             alpha = 0.75) + 
   geom_vline(data = genic_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[2]) + 
+             color = turbo(10)[5]) + 
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
@@ -118,11 +121,14 @@ ggplot(data = allele_freqs, aes(x = end, color = clr)) +
 ########
 
 allele_freqs <- allele_freqs %>% 
-  filter(group_id == "U=0.025_a=0.01")
+  filter(group_id == "U=0.025_a=0.01",
+         end <= 0.5)
 
-pints <- pints %>% filter(Scenario == 4)
+pints <- pints %>% filter(Scenario == 4,
+                          end_freq <= 0.5)
 
-genic <- genic %>% filter(selCoef == "α = 0.01")
+genic <- genic %>% filter(selCoef == "α = 0.01",
+                          end <= 0.5)
 genic_means <-  genic_means %>% filter(selCoef == "α = 0.01")
 group_means <- group_means %>% filter(bigU == "U = 0.025",
                                       selCoef == "α = 0.01")
@@ -141,26 +147,26 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
   theme_bw() +
   geom_vline(data = group_means, aes(xintercept = mn), 
              linetype = "dashed",
-             color = turbo(11)[11]) + 
+             color = turbo(10)[1]) + 
   geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
             size = 1.25,
             alpha = 0.75) +
-  scale_color_manual(values = c(turbo(11)[11],  
-                                turbo(11)[7], 
-                                turbo(11)[2]),
+  scale_color_manual(values = c(turbo(10)[1], 
+                                turbo(10)[8],  
+                                turbo(10)[5]),
                      name = "",
-                     labels = c("Simulation",
+                     labels = c("Linked\n Simulation",
                                 "Hayward",
                                 "Genic")) + 
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[7]) + 
+             color = turbo(10)[8]) + 
   geom_line(data = genic, aes(x = end, y = dens, color = clr),
             size = 1.25,
             alpha = 0.75) + 
   geom_vline(data = genic_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[2]) + 
+             color = turbo(10)[5]) + 
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
@@ -195,19 +201,21 @@ setwd("/media/nathan/T7/path_integral/genicSimComparison")
 
 genic <- data.frame()
 for(file in list.files()){
-  params <- strsplit(file, split = "_")[[1]] 
-  end <- params[2] %>% 
-    gsub("end", "", .) %>% 
-    as.numeric()
-  selCoef <- params[3] %>% 
-    gsub("selCoef.csv", "", .) %>% 
-    as.numeric()
-  
-  tmp <- fread(file) %>%
-    unlist()
-  genic <- dplyr::bind_rows(genic, data.frame(dens = tmp,
-                                              end = end, 
-                                              selCoef = selCoef))
+  if(file != "k=5"){
+    params <- strsplit(file, split = "_")[[1]] 
+    end <- params[2] %>% 
+      gsub("end", "", .) %>% 
+      as.numeric()
+    selCoef <- params[3] %>% 
+      gsub("selCoef.csv", "", .) %>% 
+      as.numeric()
+    
+    tmp <- fread(file) %>%
+      unlist()
+    genic <- dplyr::bind_rows(genic, data.frame(dens = tmp,
+                                                end = end, 
+                                                selCoef = selCoef))
+  }
 }
 
 genic <- genic %>% 
@@ -252,26 +260,26 @@ ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
   theme_bw() +
   geom_vline(data = group_means, aes(xintercept = mn), 
              linetype = "dashed",
-             color = turbo(11)[11]) + 
+             color = turbo(10)[2]) + 
   geom_line(data = pints, aes(x = end_freq, y = density, color = clr),
             size = 1.25,
             alpha = 0.75) +
-  scale_color_manual(values = c(turbo(11)[11],  
-                                turbo(11)[7], 
-                                turbo(11)[2]),
+  scale_color_manual(values = c(turbo(10)[2],  
+                                turbo(10)[8], 
+                                turbo(10)[5]),
                      name = "",
-                     labels = c("Simulation",
+                     labels = c("Unlinked\n Simulation",
                                 "Hayward",
                                 "Genic")) + 
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[7]) + 
+             color = turbo(10)[8]) + 
   geom_line(data = genic, aes(x = end, y = dens, color = clr),
             size = 1.25,
             alpha = 0.75) + 
   geom_vline(data = genic_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[2]) +
+             color = turbo(10)[5]) +
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
@@ -284,11 +292,14 @@ ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
 
 
 allele_freqs <- allele_freqs %>% 
-  filter(group_id == "mu_0.025.a_0.01")
+  filter(group_id == "mu_0.025.a_0.01",
+         end_freqs <= 0.5)
 
-pints <- pints %>% filter(scenario == 4)
+pints <- pints %>% filter(scenario == 4,
+                          end_freq <= 0.5)
 
-genic <- genic %>% filter(selCoef == "α = 0.01")
+genic <- genic %>% filter(selCoef == "α = 0.01",
+                          end <= 0.5)
 genic_means <-  genic_means %>% filter(selCoef == "α = 0.01")
 group_means <- group_means %>% filter(bigU == "U = 0.025",
                                       selCoef == "α = 0.01")
@@ -307,26 +318,26 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
   theme_bw() +
   geom_vline(data = group_means, aes(xintercept = mn), 
              linetype = "dashed",
-             color = turbo(11)[11]) + 
+             color = turbo(10)[2]) + 
   geom_line(data = pints, aes(x = end_freq, y = density, color = clr),
             size = 1.25,
             alpha = 0.75) +
-  scale_color_manual(values = c(turbo(11)[11],  
-                                turbo(11)[7], 
-                                turbo(11)[2]),
+  scale_color_manual(values = c(turbo(10)[2],  
+                                turbo(10)[8], 
+                                turbo(10)[5]),
                      name = "",
-                     labels = c("Simulation",
+                     labels = c("Unlinked\n Simulation",
                                 "Hayward",
                                 "Genic")) + 
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[7]) + 
+             color = turbo(10)[8]) + 
   geom_line(data = genic, aes(x = end, y = dens, color = clr),
             size = 1.25,
             alpha = 0.75) + 
   geom_vline(data = genic_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[2]) +
+             color = turbo(10)[5]) +
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
@@ -387,7 +398,7 @@ ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
                alpha = 0.75) +
   geom_vline(data = group_means, aes(xintercept = mn),
              linetype = "dashed",
-             color = turbo(11)[11]) +
+             color = turbo(10)[10]) +
   xlim(0,1) + 
   labs(
     title = "Neutral: Ending Frequency for Alleles Starting Between 0.09 and 0.11") +
@@ -402,17 +413,17 @@ ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
             alpha = 0.75) +
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[2]) +
+             color = turbo(10)[4]) +
   geom_density(data = true_neut, aes(x = freq, color =clr),
             size = 1.25,
             alpha = 0.75,
             show.legend = F) +
   geom_vline(data = true_neut_means, aes(xintercept = mn),
              linetype = "dashed",
-             color = turbo(11)[7]) +
-  scale_color_manual(values = c(turbo(11)[11],  
-                                turbo(11)[7], 
-                                turbo(11)[2]),
+             color = turbo(10)[7]) +
+  scale_color_manual(values = c(turbo(10)[10],  
+                                turbo(10)[7], 
+                                turbo(10)[4]),
                      name = "",
                      labels = c("Linked Selection\n Simulation",
                                 "True Neutral\n Simulation",
@@ -436,7 +447,7 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
                alpha = 0.75) +
   geom_vline(data = group_means, aes(xintercept = mn),
              linetype = "dashed",
-             color = turbo(11)[10]) +
+             color = turbo(10)[10]) +
   xlim(0,1) + 
   labs(
     title = "Neutral") +
@@ -449,17 +460,17 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
             alpha = 0.75) +
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
-             color = turbo(11)[1]) +
+             color = turbo(10)[4]) +
   geom_density(data = true_neut, aes(x = freq, color =clr),
                size = 1.25,
                alpha = 0.75,
                show.legend = F) +
   geom_vline(data = true_neut_means, aes(xintercept = mn),
              linetype = "dashed",
-             color = turbo(11)[6]) +
-  scale_color_manual(values = c(turbo(11)[10],  
-                                turbo(11)[6], 
-                                turbo(11)[1]),
+             color = turbo(10)[7]) +
+  scale_color_manual(values = c(turbo(10)[10],  
+                                turbo(10)[7], 
+                                turbo(10)[4]),
                      name = "",
                      labels = c("Neutral + Linked\n Selection Simulation",
                                 "Neutral\n Simulation",
@@ -485,12 +496,212 @@ p4 <- data.frame(x = 1,
         panel.border = element_blank(),
         panel.grid = element_blank(),
         axis.title = element_blank())
+ 
+# (p1 + p2) / (p4 + p3) + plot_layout(guides = "collect") +
+#   plot_annotation(tag_levels = 'A')  &
+#   theme(plot.tag = element_text(size = 24),
+#         legend.position = "bottom")
 
-(p1 + p2) / (p4 + p3) + plot_layout(guides = "collect") +
+################
+#### LD Fig ####
+################
+
+setwd("/home/nathan/Documents/GitHub/path_integral/simulations")
+
+params  <- fread("params.txt")
+
+setwd("/media/nathan/T7/path_integral/sigmaD")
+
+master <- data.frame()
+count <- 0
+for(file in list.files()){
+  count <- count + 1
+  print(paste(count, "XXX", file))
+  
+  cur_seed <- strsplit(file, split = "_")[[1]][2]
+  
+  par <- params %>% filter(V1 == cur_seed)
+  
+  df <- fread(file) %>% 
+    select(-c("pos_bincount", 
+              "neg_bincount",
+              "posneg_bincount")) %>% 
+    melt(id.vars = c("bin_start"),
+         variable.name = "class") %>% 
+    mutate(bigU = par$V2,
+           selCoef = par$V3)
+  
+  master <- dplyr::bind_rows(master, df)
+}
+
+master$bin_start <- master$bin_start / 1e6 + 0.5
+
+master <- master %>% group_by(class, 
+                               bin_start, 
+                               bigU, 
+                               selCoef) %>%
+  summarise(mn = mean(value)) %>%
+  mutate(bigU = paste("U = ", bigU, sep = ""),
+         selCoef = paste("\u03b1 = ", selCoef, sep = ""))
+
+# master <- master %>% filter(bin_start <= 5e7)
+
+ggplot(master, aes(x = bin_start, y = mn, color = class)) + 
+  geom_line(size = 1.25,
+            alpha = 0.75) + 
+  facet_grid(cols = vars(selCoef),
+             rows = vars(bigU)) + 
+  theme_bw() + 
+  xlab("Recombination Distance (cM)") + 
+  ylab(bquote(bar(sigma)[D]^1)) +
+  labs(title = "Linkage Disequilibrium") + 
+  theme(legend.position = "bottom") + 
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) +
+  scale_color_manual(values = c(turbo(10)[9],  
+                                turbo(10)[6], 
+                                turbo(10)[3]),
+                     name = "",
+                     labels = c("+/+",
+                                "-/-",
+                                "+/-"))
+########
+# Main #
+########
+
+master <- master %>% filter(bigU == "U = 0.025",
+           selCoef == "α = 0.01")
+
+p4 <- ggplot(master, aes(x = bin_start, y = mn, color = class)) + 
+  geom_line(size = 1.25,
+            alpha = 0.75) + 
+  theme_bw() + 
+  xlab("Recombination Distance (cM)") + 
+  ylab(bquote(bar(sigma)[D]^1)) +
+  labs(title = "Linkage Disequilibrium") + 
+  theme(legend.position = "bottom") + 
+  theme(axis.title = element_text(size=18),
+        title = element_text(size = 15),
+        axis.text = element_text(size = 12),
+        legend.text = element_text(size = 12)) +
+  scale_color_manual(values = c(turbo(10)[9],  
+                                turbo(10)[6], 
+                                turbo(10)[3]),
+                     name = "",
+                     labels = c("+/+",
+                                "-/-",
+                                "+/-"))
+
+p4
+
+(p1 + p2) / (p4 + p3) + 
   plot_annotation(tag_levels = 'A')  &
   theme(plot.tag = element_text(size = 24),
         legend.position = "bottom")
 
+# setwd("/media/nathan/T7/path_integral")
+# 
+# eff_master <- fread("effect_sizes.csv")
+# 
+# setwd("/media/nathan/T7/path_integral/LD-matricies-linked/results")
+# 
+# breaks <- 0:100 * 10^6
+# 
+# completed_seeds <- c()
+# master <- data.frame()
+# count <- 0
+# for(file in list.files()){
+#   
+#   #find out current seed
+#   cur_seed <- strsplit(file, split = "_")[[1]][2]
+#   
+#   if(!cur_seed %in% completed_seeds){
+#     count <- count + 1
+#     completed_seeds <- c(completed_seeds, cur_seed)
+#     
+#     print(paste(count, "XXX", cur_seed))
+#     
+#     # read in site info 
+#     sites <- fread(paste("result", cur_seed, "sites.csv.gz", sep = "_"))
+#     sites$site_id <- sites$site_id + 1
+#     
+#     # filter effect sizes for current seed, and for the sites in site info and merge
+#     eff <- eff_master %>% filter(seed == cur_seed,
+#                                  site %in% sites$site_id) %>% 
+#       merge(., sites, by.x = "site", by.y = "site_id")
+#     
+#     rm(sites)
+#     
+#     # read in ld matrix, reshape into data frame and filter for lower triangle
+#     d <- fread(paste("result", 
+#                      cur_seed, 
+#                      "D.csv.gz", 
+#                      sep = "_")) %>% 
+#       as.matrix() %>% 
+#       reshape2::melt(value.name = "d") %>%
+#       mutate(Var2 = as.integer(Var2)) %>%
+#       filter(Var1 > Var2)
+#     
+#     # read in pi2 matrix, reshape into data frame and filter for lower triangle
+#     pi2 <- fread(paste("result", 
+#                        cur_seed, 
+#                        "pi2.csv.gz", 
+#                        sep = "_")) %>% 
+#       as.matrix() %>% 
+#       reshape2::melt(value.name = "pi2") %>%
+#       mutate(Var2 = as.integer(Var2)) %>%
+#       filter(Var1 > Var2)
+#     
+#     # merge (col are in same order)
+#     d$pi2 <- pi2$pi2
+#     
+#     # clean up memory
+#     rm(pi2)
+#     gc()
+#     
+#     # filter fixed sites
+#     d <- d %>% filter(pi2 > 0)
+#     
+#     # merge with effect size info for each site
+#     d <- d %>% mutate(site_i = eff$site[Var1],
+#                       eff_i = eff$effect_size[Var1],
+#                       pos_i = eff$site_position[Var1],
+#                       site_j = eff$site[Var2],
+#                       eff_j = eff$effect_size[Var2],
+#                       pos_j = eff$site_position[Var2]) %>%
+#       select(-c("Var1", "Var2")) %>% 
+#       mutate(dist = pos_i - pos_j)
+#     
+#     d$bin <- 10^6 * (cut(d$dist, breaks = breaks, labels = F) - 1) + 5e5
+#     
+#     d <- d %>% mutate(group = case_when(eff_i > 0 & eff_j > 0 ~ "+/+",
+#                                         eff_i > 0 & eff_j < 0 ~ "+/-",
+#                                         eff_i < 0 & eff_j > 0 ~ "+/-",
+#                                         eff_i < 0 & eff_j < 0 ~ "-/-")) %>%
+#       group_by(bin, group) %>% 
+#       summarize(sigma = sum(d)/ sum(pi2)) %>% 
+#       mutate(seed = cur_seed)
+#     
+#     master <- dplyr::bind_rows(master, d)
+#     
+#     fwrite(d, file = paste("../results_",
+#                            cur_seed,
+#                            ".csv",
+#                            sep = ""))
+#   }else{
+#     print("womp")
+#   }
+# }
+# 
+# # ggplot(d_sum, aes(x = bin, y = sigma, color = group)) + 
+# #   geom_line()
+# 
+# 
+# 
+# fwrite(master, file = "../master.csv")
+# table(master$bin)
 
 
 
