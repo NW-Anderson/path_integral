@@ -33,6 +33,7 @@ library(ggimage)
 library(rsvg)
 library(ggrepel)
 library(shadowtext)
+library(Cairo)
 dev.off()
 
 ####################
@@ -63,21 +64,22 @@ ggplot(master, aes(x = end, y = dens)) +
   geom_line(aes(color = vg),
             alpha = 0.75,
             size = 1.5) +
-  geom_hline(aes(yintercept = 0),
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
   theme_bw() +
   guides(color=guide_legend(title = bquote(V[G]),
                             override.aes = list(alpha=1))) +
   scale_x_continuous("Ending Frequency") + 
   scale_y_continuous("Density") + 
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) 
+  scale_color_manual(values = turbo(10)[c(2,3,4,7,8,9)]) + 
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.justification = c("right", "top"),
+        legend.position = c(.98,.98),
+        legend.box.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
 
 ####################################
 ####### pDetection Alpha VG #######
@@ -120,38 +122,49 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
              size = 2.5) +
   geom_hline(yintercept=0.01, 
              linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
+             size  = 0.75) + 
   geom_vline(xintercept=1, 
              linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
+             size  = 0.75) + 
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
   scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20)) +
   scale_y_continuous("P(detected)") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",1),"red",rep("black",4)))) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
   geom_point(data = numDf, aes(x = popalpha, 
                                y = yval,
                                color = as.factor(VG)),
              alpha=c(0,1),
              size = 2.5,
-             shape = 17) +
+             shape = 17,
+             show.legend = F) +
   geom_line(data = numDf, aes(x = popalpha, 
                               y = yval,
                               color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5,
-            linetype = "dashed") 
+            linetype = "dashed")  + 
+  guides(color=guide_legend(title = bquote(V[G]),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  theme(axis.title = element_text(size=12),
+      title = element_text(size = 12),
+      axis.text = element_text(size = 10),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                 colour = c(rep("black",1),
+                                            "red",
+                                            rep("black",4))),
+      legend.text = element_text(size = 8),
+      legend.title = element_text(size = 10),
+      legend.justification = c("left", "top"),
+      legend.position = c(.01,.99),
+      legend.box.background = element_rect(colour = "black"),
+      legend.spacing.y = unit(0, 'cm'),
+      legend.key.size = unit(0.8, "line"),
+      panel.grid.minor.y = element_blank(),
+      panel.grid.minor.x = element_blank()) 
 
 p1
 
@@ -181,7 +194,7 @@ master$statDist <- statDist <- master$statDist %>%
   as.numeric()
 
 summary(master$statDist)
-plot(density(master$statDist))
+# plot(density(master$statDist))
 
 # master <- master %>% filter(VG != 1e-04)
 
@@ -194,25 +207,31 @@ e1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) +
              size = 2.5) +
   theme_bw() +
   guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
-  # scale_x_continuous("Population Scaled Selection Coefficient") +
-  # scale_y_continuous("Error") +
-  xlab(bquote(2 * N[e] * "\u03b1 \u039b / W")) + 
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
+  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
+                     breaks = c(0, 1, 5, 10, 15, 20), 
+                     labels = c(0, 1, 5, 10, 15, 20)) +
   ylab("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
-  scale_y_break(c(0.05,1.2), scales = 1)
-
-## idk if i like the break?
+  scale_y_log10() + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  theme(axis.title = element_text(size=12),
+      title = element_text(size = 12),
+      axis.text = element_text(size = 10),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                 colour = c(rep("black",1),
+                                            "red",
+                                            rep("black",4))),
+      legend.text = element_text(size = 8),
+      legend.title = element_text(size = 10),
+      legend.justification = c("left", "top"),
+      legend.position = c(.01,.99),
+      legend.box.background = element_rect(colour = "black"),
+      legend.spacing.y = unit(0, 'cm'),
+      legend.key.size = unit(0.8, "line"),
+      panel.grid.minor.x = element_blank())  + 
+  annotation_logticks(sides = "l") 
 
 e1
 
@@ -259,25 +278,17 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
              size = 2.5) +
   geom_hline(yintercept=0.01, 
              linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
+             size  = 0.75) + 
   theme_bw() +
-  scale_x_continuous("Time (Genomic Units)") +
+  scale_x_continuous("Time\n(Genomic Units)") +
   scale_y_continuous("P(detected)") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        axis.title.y = element_blank()) +
   geom_point(data = numDf, aes(x = time,
                                y = yval,
                                color = as.factor(VG)),
              alpha=c(0,1),
              size = 2.5,
-             shape = 17) +
+             shape = 17,
+             show.legend = F) +
   geom_line(data = numDf, aes(x = time,
                               y = yval,
                               color = as.factor(VG)),
@@ -285,7 +296,20 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
             size = 1.5,
             linetype = "dashed") +
   guides(color = F,
-         shape = F)
+         shape = F) +
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.justification = c("left", "top"),
+        legend.position = c(.02,.98),
+        legend.box.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
 
 p2
 
@@ -315,7 +339,7 @@ master$statDist <- statDist <- master$statDist %>%
   as.numeric()
 
 summary(master$statDist)
-plot(density(master$statDist))
+# plot(density(master$statDist))
 
 # master <- master %>% filter(VG != 1e-04)
 
@@ -327,26 +351,25 @@ e2 <- ggplot(data = master, aes(x = time, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
-  # scale_x_continuous("Population Scaled Selection Coefficient") +
-  # scale_y_continuous("Error") +
-  xlab("Time (Genomic Units)") + 
+  guides(color = F) +
+  xlab("Time\n(Genomic Units)") + 
   ylab("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
-  scale_y_break(c(0.02,0.05), scales = 1)
+  scale_y_log10() + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.justification = c("left", "top"),
+        legend.position = c(.02,.98),
+        legend.box.background = element_rect(colour = "black"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank())  + 
+  annotation_logticks(sides = "l") 
 
-## idk if i like the break?
 
 e2 
 
@@ -390,35 +413,28 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
              alpha=1,
              size = 2.5) +
   geom_hline(yintercept=0.01, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) + 
+             linetype="dashed",
+             size  = 0.75) + 
   theme_bw() +
   scale_x_continuous("Starting Frequency", 
                      breaks = c(0.025,0.05,0.1,0.15,0.20), 
                      labels = c(0.025,0.05,0.1,0.15,0.20)) +
   scale_y_continuous("P(detected)") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        axis.title.y = element_blank()) +
-  guides(color = F)
-# geom_point(data = numDf, aes(x = time,
-#                              y = yval,
-#                              color = as.factor(VG)),
-#            alpha=c(0,1),
-#            size = 2.5,
-#            shape = 17) +
-# geom_line(data = numDf, aes(x = time,
-#                             y = yval,
-#                             color = as.factor(VG)),
-#           alpha = 0.6,
-#           size = 1.5,
-#           linetype = "dashed")
+  guides(color = F) + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) +
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.justification = c("left", "top"),
+        legend.position = c(.02,.98),
+        legend.box.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
+
 
 p3
 
@@ -448,7 +464,7 @@ master$statDist <- statDist <- master$statDist %>%
   as.numeric()
 
 summary(master$statDist)
-plot(density(master$statDist))
+# plot(density(master$statDist))
 
 # master <- master %>% filter(VG != 1e-04)
 
@@ -460,26 +476,26 @@ e3 <- ggplot(data = master, aes(x = start, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
-  # scale_x_continuous("Population Scaled Selection Coefficient") +
-  # scale_y_continuous("Error") +
-  xlab("Starting Frequency") + 
+  guides(color=F) +
+  scale_x_continuous("Starting Frequency", 
+                     breaks = c(0.025,0.05,0.1,0.15,0.20), 
+                     labels = c(0.025,0.05,0.1,0.15,0.20)) +
   ylab("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
-# scale_y_break(c(0.02,0.05), scales = 1)
-
-## idk if i like the break?
+  scale_y_log10() + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.justification = c("left", "top"),
+        legend.position = c(.02,.98),
+        legend.box.background = element_rect(colour = "black"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank())  + 
+  annotation_logticks(sides = "l") 
 
 e3 
 
@@ -487,10 +503,17 @@ e3
 #### pDetected Main ####
 ########################
 
-p1 + p2 + p3 + plot_layout(guides = "collect") + 
+p1 + p2 + p3 + 
   plot_annotation(tag_levels = 'A')  & 
-  theme(plot.tag = element_text(size = 24),
-        legend.position = "bottom")
+  theme(plot.tag = element_text(size = 12))
+
+#########################
+#### pDetected Error ####
+#########################
+
+e1 + e2 + e3 + 
+  plot_annotation(tag_levels = 'A')  & 
+  theme(plot.tag = element_text(size = 12))
 
 ############################
 #### Convergence 20 Gen ####
@@ -549,8 +572,7 @@ my_labeller = as_labeller(
 
 ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
+             linetype="dashed", size  = 0.75) +
   geom_line(aes(color = k),
             alpha = 0.6,
             linewidth = 1.5) + 
@@ -559,20 +581,25 @@ ggplot(master, aes(x = end, y = dens)) +
              labeller = my_labeller) +
   coord_cartesian(ylim=c(-2,10)) +
   theme_bw() + 
-  scale_color_viridis(discrete = T) +
+  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
   guides(color=guide_legend(title = bquote(k[max]),
-                            nrow = 1)) +
+                            override.aes = list(linewidth = 0.75),
+                            ncol = 2)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = "20 Generations") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12),
-        legend.position="bottom")
+  theme(axis.title = element_text(size=12),
+      title = element_text(size = 12),
+      axis.text = element_text(size = 10),
+      legend.text = element_text(size = 8),
+      legend.title = element_text(size = 11),
+      legend.justification = c("right", "top"),
+      legend.position = c(.48,.98),
+      legend.box.background = element_rect(colour = "black"),
+      legend.spacing.y = unit(0, 'cm'),
+      legend.key.size = unit(0.8, "line"),
+      panel.grid.minor.y = element_blank(),
+      panel.grid.minor.x = element_blank()) 
 
 ##############################
 #### Convergence Alpha VG ####
@@ -631,8 +658,7 @@ my_labeller = as_labeller(
 
 ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
+             linetype="dashed", size  = 0.75) +
   geom_line(aes(color = k),
             alpha = 0.6,
             linewidth = 1.5) + 
@@ -641,20 +667,25 @@ ggplot(master, aes(x = end, y = dens)) +
              labeller = my_labeller) +
   coord_cartesian(ylim=c(-2,10)) +
   theme_bw() + 
-  scale_color_viridis(discrete = T) +
+  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
   guides(color=guide_legend(title = bquote(k[max]),
-                            nrow = 1)) +
+                            override.aes = list(linewidth = 0.75),
+                            ncol = 2)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = "200 Generations") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12),
-        legend.position="bottom")
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 11),
+        legend.justification = c("right", "top"),
+        legend.position = c(.48,.98),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
 
 ############################
 #### Convergence 2Na 5 ####
@@ -714,30 +745,35 @@ my_labeller = as_labeller(
 
 ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
+             linetype="dashed",
+             size  = 0.75) +
   geom_line(aes(color = k),
             alpha = 0.6,
             linewidth = 1.5) + 
   facet_grid(rows=vars(geg),
              cols=vars(time),
              labeller = my_labeller) +
-  coord_cartesian(ylim=c(-1,2)) +
+  coord_cartesian(ylim=c(-0.25,2)) +
   theme_bw() + 
-  scale_color_viridis(discrete = T) +
+  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
   guides(color=guide_legend(title = bquote(k[max]),
-                            nrow = 1)) +
+                            override.aes = list(linewidth = 0.75),
+                            ncol = 2)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 5")) +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12),
-        legend.position = "bottom")
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 11),
+        legend.justification = c("right", "top"),
+        legend.position = c(.48,.98),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
 
 ############################
 #### Convergence 2Na 10 ####
@@ -795,8 +831,8 @@ my_labeller = as_labeller(
 
 ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
+             linetype="dashed",
+             size  = 0.75) +
   geom_line(aes(color = k),
             alpha = 0.6,
             linewidth = 1.5) + 
@@ -805,20 +841,25 @@ ggplot(master, aes(x = end, y = dens)) +
              labeller = my_labeller) + 
   coord_cartesian(ylim=c(-2,6)) +
   theme_bw() + 
-  scale_color_viridis(discrete = T) +
+  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
   guides(color=guide_legend(title = bquote(k[max]),
-                            nrow = 1)) +
+                            override.aes = list(linewidth = 0.75),
+                            ncol = 2)) +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 10")) +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12),
-        legend.position = "bottom")
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 11),
+        legend.justification = c("right", "top"),
+        legend.position = c(.47,.48),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
 
 #######################
 #### pDetection Ne ####
@@ -1037,10 +1078,10 @@ dfnotdetected <- df %>% filter(bin == 0) %>%
          selCoef = as.factor(selCoef),
          pintdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
   mutate(pintdetected = as.factor(pintdetected))
-dfnotdetected$reps_number <- rep(c(3,
-                                   13.6,
-                                   11,
-                                   5.7),
+dfnotdetected$reps_number <- rep(c(2.85,
+                                   13.1,
+                                   10.5,
+                                   5.2),
                                  each = 5)
 dfnotdetected$vjust = rep((1.5 * c(2,3,4,5,1)), 4)
 
@@ -1084,7 +1125,7 @@ ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
                                             y = 1,
                                             label = pintdetected,
                                             vjust = vjust), 
-                  size = 6.5,
+                  size = 5,
                   bg.color = "darkgrey", bg.r = 0.03,
                   show.legend = F) + 
   guides(color=guide_legend(title = "\u03b1",
@@ -1286,7 +1327,7 @@ ggplot(dfdetected, aes(y = prob,
                                             y = 1,
                                             label = pintdetected,
                                             vjust = vjust),
-                  size = 6.5,
+                  size = 5.5,
                   bg.color = "darkgrey", 
                   bg.r = 0.03,
                   show.legend = F) + 
@@ -1396,7 +1437,7 @@ master$statDist <- statDist <- master$statDist %>%
   gsub("\\*\\^", "e", .) %>% 
   as.numeric()
 
-ggplot(data = master, aes(x = popalpha, y = statDist)) + 
+p1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -1404,31 +1445,41 @@ ggplot(data = master, aes(x = popalpha, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
-  xlab(bquote(2 * N[e] * "\u03b1 \u039b / W")) +
+  guides(color=F) +
+  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
+                     breaks = c(0, 1, 5, 10, 15, 20), 
+                     labels = c(0, 1, 5, 10, 15, 20)) +
   ylab("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) +
-  scale_y_break(c(1,40), scales = 1) +
-  scale_y_break(c(60, 240), scales = 1) +
-  scale_y_break(c(260, 33000), scales = 1)
+  scale_y_log10() + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  labs(tag = "A") + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
+                                   colour = c(rep("black",1),
+                                              "red",
+                                              rep("black",4))),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("left", "top"),
+        legend.position = c(.01,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.tag = element_text(size = 12))  + 
+  annotation_logticks(sides = "l") 
+
+p1
 
 ####################
 #### Error Time ####
 ####################
 
-rm(list = ls())
+# rm(list = ls())
 
 setwd("~/Documents/GitHub/path_integral/results/numErrorTime")
 list.files()
@@ -1445,7 +1496,7 @@ master$statDist <- statDist <- master$statDist %>%
   gsub("\\*\\^", "e", .) %>% 
   as.numeric()
 
-ggplot(data = master, aes(x = time, y = statDist)) + 
+p2 <- ggplot(data = master, aes(x = time, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -1453,45 +1504,35 @@ ggplot(data = master, aes(x = time, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
+  guides(color=F) +
   xlab("Time (Genomic Units)") +
   ylab("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+  scale_y_log10() + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  labs(tag = "B") + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("left", "top"),
+        legend.position = c(.01,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.tag = element_text(size = 12))  + 
+  annotation_logticks(sides = "l") 
 
-# mster <- master %>% filter(VG<=0.001)
-# ggplot(data = mster, aes(x = time, y = error)) +
-#   geom_line(aes(color = as.factor(VG)),
-#             alpha = 0.6,
-#             size = 1.5) +
-#   geom_point(aes(color = as.factor(VG)),
-#              alpha=1,
-#              size = 2.5) +
-#   theme_bw() +
-#   guides(color=guide_legend(title = "Genetic Variance",
-#                             override.aes = list(alpha=1))) +
-#   scale_x_continuous("Population Scaled Selection Coefficient") +
-#   scale_y_continuous("Absolute Error") +
-#   theme(panel.grid.minor.y = element_blank(),
-#         panel.grid.minor.x = element_blank()) +
-#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
-#   scale_color_viridis(discrete = T)
+p2
 #################
 #### Error k ####
 #################
 
-rm(list = ls())
+# rm(list = ls())
 
 setwd("~/Documents/GitHub/path_integral/results/numErrorK")
 list.files()
@@ -1509,7 +1550,7 @@ master$statDist <- statDist <- master$statDist %>%
   as.numeric()
 
 
-ggplot(data = master, aes(x = k, y = statDist)) + 
+p3 <- ggplot(data = master, aes(x = k, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -1518,27 +1559,38 @@ ggplot(data = master, aes(x = k, y = statDist)) +
              size = 2.5) +
   theme_bw() +
   guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75),
+                            nrow = 2)) +
   scale_x_continuous(bquote(k[max])) +
-  scale_y_continuous("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+  scale_y_log10("Statistical Distance") + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  labs(tag = "C") + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("left", "bottom"),
+        legend.position = c(.01,.01),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.tag = element_text(size = 12))  + 
+  annotation_logticks(sides = "l") 
+
+p3
 
 #####################
 #### Error Start ####
 #####################
 
-rm(list = ls())
+# rm(list = ls())
 
 setwd("~/Documents/GitHub/path_integral/results/numErrorStart")
 list.files()
@@ -1556,7 +1608,7 @@ master$statDist <- statDist <- master$statDist %>%
   as.numeric()
 
 
-ggplot(data = master, aes(x = start, y = statDist)) + 
+p4 <- ggplot(data = master, aes(x = start, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
             size = 1.5) + 
@@ -1564,23 +1616,43 @@ ggplot(data = master, aes(x = start, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
-                            override.aes = list(alpha=1))) +
+  guides(color=F) +
   scale_x_continuous("Starting Frequency",
-                     breaks = (1:9 / 10)) +
-  scale_y_continuous("Statistical Distance") +
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) + 
-  scale_color_viridis(discrete = T) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+                     breaks = (1:9 / 10)) + 
+  scale_y_log10("Statistical Distance") + 
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  labs(tag = "D") + 
+  theme(axis.title = element_text(size=12),
+        axis.title.y = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("left", "top"),
+        legend.position = c(.01,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        plot.tag = element_text(size = 12))  + 
+  annotation_logticks(sides = "l") 
+
+p4
+
+########################
+#### alt error main ####
+########################
+
+p5 <- ggplot(data.frame(l = "Statistical Distance", x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+p5 + ((p1 | p2) / (p3 | p4)) + plot_layout(widths = c(1, 25))
+
 
 ##################################
 ########### Deprecated ########### 

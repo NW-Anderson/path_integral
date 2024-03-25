@@ -26,7 +26,7 @@ pints <- fread("linked_sim_pint_densities.csv") %>%
          selCoef = case_when(Scenario %in% c(1,3) ~ "\u03b1 = 0.005",
                              Scenario %in% c(2,4) ~ "\u03b1 = 0.01"))
 
-setwd("/media/nathan/T7/path_integral/genicSimComparison")
+setwd("/media/nathan/T7/path_integral/genicSimComparison/k=5")
 
 genic <- data.frame()
 for(file in list.files()){
@@ -77,8 +77,23 @@ genic_means <- genic %>% group_by(selCoef) %>%
   ungroup()
 
 ggplot(data = allele_freqs, aes(x = end, color = clr)) + 
-  geom_density(show.legend = F, size = 1.25,
+  geom_vline(data = group_means, aes(xintercept = mn), 
+             linetype = "dashed",
+             color = turbo(10)[2]) +
+  geom_vline(data = pint_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[8]) + 
+  geom_vline(data = genic_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[4]) + 
+  geom_density(data = allele_freqs, show.legend = F, size = 1.25,
                alpha = 1.75) + 
+  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) +
+  geom_line(data = genic, aes(x = end, y = dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) + 
   xlim(0,1) + 
   labs(
     title = "Linked: Ending Frequency for Alleles Starting Between 0.09 and 0.11") +
@@ -88,33 +103,30 @@ ggplot(data = allele_freqs, aes(x = end, color = clr)) +
   facet_grid(rows = vars(bigU),
              cols = vars(selCoef)) + 
   theme_bw() +
-  geom_vline(data = group_means, aes(xintercept = mn), 
-             linetype = "dashed",
-             color = turbo(10)[1]) + 
-  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) +
-  scale_color_manual(values = c(turbo(10)[1],
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
+  scale_color_manual(values = c(turbo(10)[2],
                                 turbo(10)[8],  
-                                turbo(10)[5]),
+                                turbo(10)[4]),
                      name = "",
                      labels = c("Linked\n Simulation",
-                                "Hayward",
+                                "Polygenic\n Selection",
                                 "Genic")) + 
-  geom_vline(data = pint_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[8]) + 
-  geom_line(data = genic, aes(x = end, y = dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) + 
-  geom_vline(data = genic_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[5]) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.position = "bottom") 
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12))  
 
 ########
 # main #
@@ -136,42 +148,54 @@ pint_means <- pint_means %>% filter(bigU == "U = 0.025",
                                     selCoef == "α = 0.01")
 
 p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) + 
-  geom_density(show.legend = F, size = 1.25,
+  geom_vline(data = pint_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[8]) + 
+  geom_vline(data = genic_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[4]) + 
+  geom_vline(data = group_means, aes(xintercept = mn), 
+             linetype = "dashed",
+             color = turbo(10)[2]) + 
+  geom_density(data = allele_freqs, show.legend = F, size = 1.25,
                alpha = 1.75) + 
+  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) +
+  geom_line(data = genic, aes(x = end, y = dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) + 
   xlim(0,1) + 
   labs(
     title = "Linked") +
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
   scale_x_continuous("Ending Frequency",
                      breaks = seq(0,1,0.2)) + 
   scale_y_continuous("Density") + 
   theme_bw() +
-  geom_vline(data = group_means, aes(xintercept = mn), 
-             linetype = "dashed",
-             color = turbo(10)[1]) + 
-  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) +
-  scale_color_manual(values = c(turbo(10)[1], 
+  scale_color_manual(values = c(turbo(10)[2], 
                                 turbo(10)[8],  
-                                turbo(10)[5]),
+                                turbo(10)[4]),
                      name = "",
                      labels = c("Linked\n Simulation",
-                                "Hayward",
+                                "Polygenic\n Selection",
                                 "Genic")) + 
-  geom_vline(data = pint_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[8]) + 
-  geom_line(data = genic, aes(x = end, y = dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) + 
-  geom_vline(data = genic_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[5]) + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.position = "bottom") 
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12))  
 
 p1
 
@@ -197,7 +221,7 @@ pints <- fread("unlinked_sim_densities.csv.gz") %>%
          selCoef = case_when(scenario %in% c(1,3) ~ "\u03b1 = 0.005",
                              scenario %in% c(2,4) ~ "\u03b1 = 0.01"))
 
-setwd("/media/nathan/T7/path_integral/genicSimComparison")
+setwd("/media/nathan/T7/path_integral/genicSimComparison/k=5")
 
 genic <- data.frame()
 for(file in list.files()){
@@ -247,8 +271,25 @@ genic_means <- genic %>% group_by(selCoef) %>%
   ungroup()
 
 ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) + 
-  geom_density(show.legend = F, size = 1.25,
+  geom_vline(data = group_means, aes(xintercept = mn), 
+             linetype = "dashed",
+             color = turbo(10)[2]) + 
+  geom_vline(data = pint_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[8]) + 
+  geom_vline(data = genic_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[4]) +
+  geom_density(data = allele_freqs, 
+               show.legend = F, 
+               size = 1.25,
                alpha = 1.75) + 
+  geom_line(data = pints, aes(x = end_freq, y = density, color = clr),
+            size = 1.25,
+            alpha = 0.75) +
+  geom_line(data = genic, aes(x = end, y = dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) + 
   xlim(0,1) + 
   labs(
     title = "Unlinked: Ending Frequency for Alleles Starting Between 0.09 and 0.11") +
@@ -258,33 +299,30 @@ ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
   facet_grid(cols = vars(selCoef),
              rows = vars(bigU)) + 
   theme_bw() +
-  geom_vline(data = group_means, aes(xintercept = mn), 
-             linetype = "dashed",
-             color = turbo(10)[2]) + 
-  geom_line(data = pints, aes(x = end_freq, y = density, color = clr),
-            size = 1.25,
-            alpha = 0.75) +
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
   scale_color_manual(values = c(turbo(10)[2],  
                                 turbo(10)[8], 
-                                turbo(10)[5]),
+                                turbo(10)[4]),
                      name = "",
                      labels = c("Unlinked\n Simulation",
-                                "Hayward",
+                                "Polygenic\n Selection",
                                 "Genic")) + 
-  geom_vline(data = pint_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[8]) + 
-  geom_line(data = genic, aes(x = end, y = dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) + 
-  geom_vline(data = genic_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[5]) +
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.position = "bottom") 
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 10),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12)) 
 
 ########
 # main #
@@ -307,8 +345,23 @@ pint_means <- pint_means %>% filter(bigU == "U = 0.025",
                                     selCoef == "α = 0.01")
 
 p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) + 
-  geom_density(show.legend = F, size = 1.25,
+  geom_vline(data = pint_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[8]) + 
+  geom_vline(data = genic_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[4]) +
+  geom_vline(data = group_means, aes(xintercept = mn), 
+             linetype = "dashed",
+             color = turbo(10)[2]) + 
+  geom_density(data = allele_freqs, show.legend = F, size = 1.25,
                alpha = 1.75) + 
+  geom_line(data = pints, aes(x = end_freq, y = density, color = clr),
+            size = 1.25,
+            alpha = 0.75) +
+  geom_line(data = genic, aes(x = end, y = dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) + 
   xlim(0,1) + 
   labs(
     title = "Unlinked") +
@@ -316,33 +369,30 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
                      breaks = seq(0,1,0.2)) + 
   scale_y_continuous("Density") + 
   theme_bw() +
-  geom_vline(data = group_means, aes(xintercept = mn), 
-             linetype = "dashed",
-             color = turbo(10)[2]) + 
-  geom_line(data = pints, aes(x = end_freq, y = density, color = clr),
-            size = 1.25,
-            alpha = 0.75) +
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
   scale_color_manual(values = c(turbo(10)[2],  
                                 turbo(10)[8], 
-                                turbo(10)[5]),
+                                turbo(10)[4]),
                      name = "",
                      labels = c("Unlinked\n Simulation",
-                                "Hayward",
+                                "Polygenic\n Selection",
                                 "Genic")) + 
-  geom_vline(data = pint_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[8]) + 
-  geom_line(data = genic, aes(x = end, y = dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) + 
-  geom_vline(data = genic_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[5]) +
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.position = "bottom") 
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12)) 
 
 p2
 
@@ -394,11 +444,24 @@ group_means <- allele_freqs %>% group_by(bigU, selCoef) %>%
 true_neut_means <- true_neut %>% summarize(mn = mean(freq))
 
 ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) + 
-  geom_density(show.legend = F, size = 1.25,
-               alpha = 0.75) +
+  geom_vline(data = pint_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[4]) +
   geom_vline(data = group_means, aes(xintercept = mn),
              linetype = "dashed",
-             color = turbo(10)[10]) +
+             color = turbo(10)[2]) +
+  geom_vline(data = true_neut_means, aes(xintercept = mn),
+             linetype = "dashed",
+             color = turbo(10)[8]) +
+  geom_density(data = true_neut, aes(x = freq, color =clr),
+               size = 1.25,
+               alpha = 0.75,
+               show.legend = F) + 
+  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) +
+  geom_density(show.legend = F, size = 1.25,
+               alpha = 0.75) +
   xlim(0,1) + 
   labs(
     title = "Neutral: Ending Frequency for Alleles Starting Between 0.09 and 0.11") +
@@ -408,99 +471,93 @@ ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
   facet_grid(cols = vars(selCoef),
              rows = vars(bigU)) + 
   theme_bw() +
-  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) +
-  geom_vline(data = pint_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[4]) +
-  geom_density(data = true_neut, aes(x = freq, color =clr),
-            size = 1.25,
-            alpha = 0.75,
-            show.legend = F) +
-  geom_vline(data = true_neut_means, aes(xintercept = mn),
-             linetype = "dashed",
-             color = turbo(10)[7]) +
-  scale_color_manual(values = c(turbo(10)[10],  
-                                turbo(10)[7], 
-                                turbo(10)[4]),
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
+  scale_color_manual(values = c(turbo(10)[8],  
+                                turbo(10)[4], 
+                                turbo(10)[2]),
                      name = "",
-                     labels = c("Linked Selection\n Simulation",
-                                "True Neutral\n Simulation",
-                                "Kimura's Solution")) + 
-  theme(legend.position = "bottom") + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) 
+                     labels = c("Neutral + Linked\n Simulation",
+                                "Neutral\n Simulation",
+                                "Kimura's\n Solution")) + 
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12)) 
 
 ########
 # main #
 ########
 
-allele_freqs <- allele_freqs %>% filter(par == "U=0.025_a=0.01")
+allele_freqs <- allele_freqs %>% filter(par == "U=0.025_a=0.01",
+                                        end_freq <= 0.5)
 group_means <- group_means %>% filter(bigU == "U = 0.025",
                                       selCoef == "α = 0.01")
+pints <- pints %>% filter(end_freq <= 0.5)
+true_neut <- true_neut %>% filter(freq <= 0.5)
 
 p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) + 
-  geom_density(show.legend = F, size = 1.25,
-               alpha = 0.75) +
   geom_vline(data = group_means, aes(xintercept = mn),
              linetype = "dashed",
-             color = turbo(10)[10]) +
-  xlim(0,1) + 
+             color = turbo(10)[8]) +
+  geom_vline(data = true_neut_means, aes(xintercept = mn),
+             linetype = "dashed",
+             color = turbo(10)[2]) +
+  geom_vline(data = pint_means, aes(xintercept = expectation),
+             linetype = "dashed",
+             color = turbo(10)[4]) +
+  geom_density(data = allele_freqs, show.legend = F, size = 1.25,
+               alpha = 0.75) +
+  geom_density(data = true_neut, aes(x = freq, color =clr),
+               size = 1.25,
+               alpha = 0.75,
+               show.legend = F) +
+  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
+            size = 1.25,
+            alpha = 0.75) +
   labs(
     title = "Neutral") +
   scale_x_continuous("Ending Frequency",
                      breaks = seq(0,1,0.2)) + 
   scale_y_continuous("Density") + 
   theme_bw() +
-  geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
-            size = 1.25,
-            alpha = 0.75) +
-  geom_vline(data = pint_means, aes(xintercept = expectation),
-             linetype = "dashed",
-             color = turbo(10)[4]) +
-  geom_density(data = true_neut, aes(x = freq, color =clr),
-               size = 1.25,
-               alpha = 0.75,
-               show.legend = F) +
-  geom_vline(data = true_neut_means, aes(xintercept = mn),
-             linetype = "dashed",
-             color = turbo(10)[7]) +
-  scale_color_manual(values = c(turbo(10)[10],  
-                                turbo(10)[7], 
-                                turbo(10)[4]),
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) +
+  scale_color_manual(values = c(turbo(10)[8],
+                                turbo(10)[4],
+                                turbo(10)[2]),
                      name = "",
-                     labels = c("Neutral + Linked\n Selection Simulation",
-                                "Neutral\n Simulation",
-                                "Kimura's Solution")) + 
-  theme(legend.position = "bottom") + 
-  theme(axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) 
+                     labels = c("Neutral +\n Linked\n Simulation",
+                                "Kimura's\n Solution",
+                                "Neutral\n Simulation")) +
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12)) 
 
 p3
-
-p4 <- data.frame(x = 1,
-                       y = 1,
-                       txt = "LD FIG") %>%
-  ggplot(., aes(x = x, y = y)) + 
-  geom_text(aes(label = txt),
-            size = 24) + 
-  theme_bw() + 
-  theme_bw() +
-  theme(axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        axis.title = element_blank())
- 
-# (p1 + p2) / (p4 + p3) + plot_layout(guides = "collect") +
-#   plot_annotation(tag_levels = 'A')  &
-#   theme(plot.tag = element_text(size = 24),
-#         legend.position = "bottom")
 
 ################
 #### LD Fig ####
@@ -510,9 +567,10 @@ setwd("/home/nathan/Documents/GitHub/path_integral/simulations")
 
 params  <- fread("params.txt")
 
-setwd("/media/nathan/T7/path_integral/sigmaD")
+setwd("/media/nathan/T7/path_integral/sigmaD-linlog")
 
 master <- data.frame()
+bincount_data <- data.frame()
 count <- 0
 for(file in list.files()){
   count <- count + 1
@@ -521,8 +579,9 @@ for(file in list.files()){
   cur_seed <- strsplit(file, split = "_")[[1]][2]
   
   par <- params %>% filter(V1 == cur_seed)
+  raw_df <- fread(file)
   
-  df <- fread(file) %>% 
+  df <- raw_df %>% 
     select(-c("pos_bincount", 
               "neg_bincount",
               "posneg_bincount")) %>% 
@@ -530,39 +589,112 @@ for(file in list.files()){
          variable.name = "class") %>% 
     mutate(bigU = par$V2,
            selCoef = par$V3)
-  
   master <- dplyr::bind_rows(master, df)
+  
+  df <- raw_df %>% 
+    select(-c("pos", 
+              "neg", 
+              "posneg")) %>%
+    melt(id.vars = "bin_start",
+         variable.name = "class") %>%
+    mutate(bigU = par$V2,
+           selCoef = par$V3)
+  bincount_data <- dplyr::bind_rows(bincount_data, df)
 }
 
-master$bin_start <- master$bin_start / 1e6 + 0.5
-
-master <- master %>% group_by(class, 
-                               bin_start, 
-                               bigU, 
-                               selCoef) %>%
-  summarise(mn = mean(value)) %>%
+bins <- c(unique(master$bin_start), 1e8)
+tmp <- unique(master$bin_start) + diff(bins) / 2
+df <- data.frame(bin_start = unique(master$bin_start),
+                 bin_mid = tmp)
+# master$bin_start <- master$bin_start / 1e6 + 0.5
+d <- master %>% 
+  merge(., df, by = "bin_start") %>%
+  mutate(bin_mid  = bin_mid * 1e-8  * 4e4) %>%
+  group_by(bin_start,
+           class, 
+           bin_mid, 
+           bigU, 
+           selCoef) %>%
+  summarise(mn = mean(value, na.rm = T)) %>%
   mutate(bigU = paste("U = ", bigU, sep = ""),
          selCoef = paste("\u03b1 = ", selCoef, sep = ""))
 
 # master <- master %>% filter(bin_start <= 5e7)
 
-ggplot(master, aes(x = bin_start, y = mn, color = class)) + 
+ggplot(d, aes(x = bin_mid, y = mn, color = class)) + 
   geom_line(size = 1.25,
             alpha = 0.75) + 
   facet_grid(cols = vars(selCoef),
-             rows = vars(bigU)) + 
+             rows = vars(bigU),
+             scales = "free") + 
   theme_bw() + 
-  xlab("Recombination Distance (cM)") + 
+  xlab(bquote("Recombination Distance (4" * N * r * ")")) + 
   ylab(bquote(bar(sigma)[D]^1)) +
   labs(title = "Linkage Disequilibrium") + 
+  scale_x_log10() +
+  theme(legend.position = "bottom") +  
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12)) +
+  scale_color_manual(values = c(turbo(10)[8],  
+                                turbo(10)[2], 
+                                turbo(10)[4]),
+                     name = "",
+                     labels = c("+/+",
+                                "-/-",
+                                "+/-")) +
+  guides(color=guide_legend(title = element_blank(),
+                            override.aes = list(alpha=1,
+                                                size = 1.25,
+                                                linewidth = 0.75))) 
+
+b <- bincount_data %>% 
+  merge(., df, by = "bin_start") %>%
+  # mutate(bin_mid  = bin_mid * 1e-6) %>%
+  mutate(bin_mid  = bin_mid * 1e-8  * 4e4) %>%
+  group_by(bin_start,
+           class, 
+           bin_mid, 
+           bigU, 
+           selCoef) %>%
+  summarise(mn = mean(value, na.rm = T)) %>%
+  mutate(bigU = paste("U = ", bigU, sep = ""),
+         selCoef = paste("\u03b1 = ", selCoef, sep = ""))
+
+ggplot(b, aes(x = bin_mid, y = mn, color = class)) + 
+  geom_line(size = 1.25,
+            alpha = 0.75) + 
+  facet_grid(cols = vars(selCoef),
+             rows = vars(bigU),
+             scales = "free") + 
+  theme_bw() + 
+  xlab(bquote("Recombination Distance (4" * N * r * ")")) + 
+  ylab("Mean Number of observations") +
+  labs(title = "Linkage Disequilibrium") + 
+  scale_x_log10(breaks = c(1e-4,
+                           1e-2,
+                           1,
+                           1e2)) +
+  scale_y_log10() + 
   theme(legend.position = "bottom") + 
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12)) +
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 12)) +
   scale_color_manual(values = c(turbo(10)[9],  
-                                turbo(10)[6], 
-                                turbo(10)[3]),
+                                turbo(10)[3], 
+                                turbo(10)[6]),
                      name = "",
                      labels = c("+/+",
                                 "-/-",
@@ -571,35 +703,89 @@ ggplot(master, aes(x = bin_start, y = mn, color = class)) +
 # Main #
 ########
 
-master <- master %>% filter(bigU == "U = 0.025",
-           selCoef == "α = 0.01")
+d <- d %>% filter(bigU == "U = 0.025",
+                            selCoef == "α = 0.01",
+                  bin_mid <= 500)
 
-p4 <- ggplot(master, aes(x = bin_start, y = mn, color = class)) + 
+setwd("/media/nathan/T7/path_integral/sigmaD_moments/take2")
+rhos <- fread("rhoval.csv") %>% unlist()
+LD_diff <- fread("MomentsLDdiff.csv") %>% unlist()
+LD_same <- fread("MomentsLDsame.csv") %>% unlist()
+
+momentsDf<- dplyr::bind_rows(data.frame(rho = rhos,
+                                        ld = LD_diff,
+                                        class = "diff"),
+                             data.frame(rho = rhos,
+                                        ld = LD_same,
+                                        class = "same")) %>%
+  filter(rho >= 1.315,
+         rho < 50) 
+
+# %>%
+#   mutate(ld = ld/2) # factor of two problem
+
+p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
   geom_line(size = 1.25,
             alpha = 0.75) + 
+  geom_line(data = momentsDf, aes(x = rho, y = ld, color = class, linetype = class),
+            size = 3, alpha = 0.5) +
   theme_bw() + 
-  xlab("Recombination Distance (cM)") + 
+  xlab(bquote("Recombination Distance (4" * N * r * ")")) + 
   ylab(bquote(bar(sigma)[D]^1)) +
-  labs(title = "Linkage Disequilibrium") + 
-  theme(legend.position = "bottom") + 
+  labs(title = "Linkage Disequilibrium",
+       linetype = "class",
+       color = "class") +
+  scale_x_log10() + 
   theme(axis.title = element_text(size=18),
         title = element_text(size = 15),
         axis.text = element_text(size = 12),
         legend.text = element_text(size = 12)) +
-  scale_color_manual(values = c(turbo(10)[9],  
-                                turbo(10)[6], 
+  scale_color_manual(values = c(turbo(10)[8],
+                                turbo(10)[2],
+                                turbo(10)[4],
+                                turbo(10)[7],
                                 turbo(10)[3]),
-                     name = "",
-                     labels = c("+/+",
+                     name = "class",
+                     labels = c("E(Diff)",
                                 "-/-",
-                                "+/-"))
+                                "+/+",
+                                "+/-",
+                                "E(Same)")) +
+  scale_linetype_manual(name = "class",
+                        values = c("11",rep("solid",3),"11"),
+                        labels = c("E(Diff)",
+                                   "-/-",
+                                   "+/+",
+                                   "+/-",
+                                   "E(Same)")) +
+  theme(axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("right", "top"),
+        legend.position = c(.99,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        strip.text = element_text(size = 12)) + 
+  guides(color = guide_legend(title = element_blank(),
+                              ncol = 2,
+                              override.aes = list(alpha = 1,
+                                                  linewidth = 2)),
+         linetype = guide_legend(title = element_blank(),
+                                 ncol = 2,
+                                 override.aes = list(alpha = 1,
+                                                     size = 1)))
 
 p4
 
 (p1 + p2) / (p4 + p3) + 
   plot_annotation(tag_levels = 'A')  &
-  theme(plot.tag = element_text(size = 24),
-        legend.position = "bottom")
+  theme(plot.tag = element_text(size = 12),
+        plot.margin = margin(0, 0, 0, 0, "pt"))
 
 # setwd("/media/nathan/T7/path_integral")
 # 
