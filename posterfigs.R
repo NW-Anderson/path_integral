@@ -31,10 +31,12 @@ for(rep in 1:20){
 master %>% filter(rep %in% sample(unique(rep),5)) %>%
   ggplot(., aes(x = t, y = C, 
                 group = rep,
-                # color = log_amp,
-                alpha = log_amp)) + 
-  geom_line(linewidth = 1.5) +  
-  geom_hline(yintercept = 1) + 
+                color = log_amp #,
+                # alpha = log_amp
+                )) + 
+  geom_point(size = 0.4) +
+  geom_line(linewidth = 1) +  
+  # geom_hline(yintercept = 1) + 
   guides(color = F,
          alpha = F) +
   scale_x_continuous(name = "Time",
@@ -45,7 +47,10 @@ master %>% filter(rep %in% sample(unique(rep),5)) %>%
   scale_y_continuous(name = "Frequency",
                      breaks = c(0,1),
                      expand = c(0,0),
-                     limits = c(0,1)) + 
+                     limits = c(0,1)) +
+  scale_colour_gradientn(colours = c("black", "grey80"),
+                         trans = "reverse") +
+  # scale_color_continuous(trans = "reverse")
   theme(plot.margin=unit(c(.2,.5,.2,.2),"cm")) + 
   theme_bw() + 
   theme(axis.title = element_text(size=12),
@@ -100,18 +105,23 @@ for(rep in 1:3){
                        sd = sqrt(C2[-length(C2)]*(1-C2[-length(C2)])* dt))*dt))
     
     t2 <- t[501:1000]
-    tmp <- dplyr::bind_rows(data.frame(t = t1,
-                                       C = C1,
-                                       log_amp = p1,
-                                       rep = rep,
-                                       scats = 1),
-                            data.frame(t = t2,
-                                       C = C2,
-                                       log_amp = p2,
-                                       rep = rep,
-                                       scats = 1))
-    master <- dplyr::bind_rows(master,
-                               tmp)
+    # tmp <- dplyr::bind_rows(data.frame(t = t1,
+    #                                    C = C1,
+    #                                    log_amp = p1,
+    #                                    rep = rep,
+    #                                    scats = 1),
+    #                         data.frame(t = t2,
+    #                                    C = C2,
+    #                                    log_amp = p2,
+    #                                    rep = rep,
+    #                                    scats = 1))
+    # master <- dplyr::bind_rows(master,
+    #                            tmp)
+    master <- dplyr::bind_rows(master, data.frame(t = t,
+                                                  C = C,
+                                                  log_amp = c(rep(p1,500),
+                                                              rep(p2,500)),
+                                                  rep = rep))
   }
 }
 
@@ -121,9 +131,11 @@ linedf <- data.frame(x = rep(t[500],2),
 master %>% # filter(rep %in% sample(unique(rep),1)) %>%
   ggplot(., aes(x = t, y = C, 
                 group = rep,
-                # color = log_amp,
-                alpha = log_amp)) + 
-  geom_line(linewidth = 1.5) +  
+                color = log_amp #,
+                # alpha = log_amp
+                )) + 
+  geom_point(size = 0.4) +
+  geom_line(linewidth = 1) +
   guides(color = F,
          alpha = F) +
   scale_x_continuous(name = "Time",
@@ -135,6 +147,8 @@ master %>% # filter(rep %in% sample(unique(rep),1)) %>%
                      breaks = c(0,1),
                      expand = c(0,0),
                      limits = c(0,1)) + 
+  scale_colour_gradientn(colours = c("black", "grey80"),
+                         trans = "reverse") +
   theme(plot.margin=unit(c(.2,.5,.2,.2),"cm")) + 
   theme_bw() + 
   theme(axis.title = element_text(size=12),
@@ -160,7 +174,7 @@ master %>% # filter(rep %in% sample(unique(rep),1)) %>%
 
 
 
-xxxxx
+
 
 
 
