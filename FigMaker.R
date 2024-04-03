@@ -867,7 +867,7 @@ ggplot(master, aes(x = end, y = dens)) +
 
 rm(list=ls())
 
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedAlphaNE")
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
 list.files()
 master <- data.frame()
 for(file in list.files()){
@@ -880,7 +880,7 @@ names(master) <- c("selCoef", "Ne", "time", "start",
 master$popalpha = 2 * master$Ne * master$selCoef
 rm(tmp)
 
-ggplot(data = master, aes(x = Ne, y = pintdetected)) + 
+p1 <- ggplot(data = master, aes(x = Ne, y = pintdetected)) + 
   geom_line(aes(color = as.factor(selCoef)),
             alpha = 0.6,
             size = 1.5) + 
@@ -891,30 +891,35 @@ ggplot(data = master, aes(x = Ne, y = pintdetected)) +
              linetype="dashed",
              color = turbo(11)[11], size  = 0.75) +
   theme_bw() +
-  guides(color=guide_legend(title = "\u03b1",
-                            override.aes = list(alpha=1))) +
   scale_x_continuous(bquote(N[e]),
-                     breaks = c(200, 250, 500, 1000)) +
+                     breaks = c(100,200, 250, 500, 1000)) +
   scale_y_continuous("P(detected)") +
-  scale_color_viridis(discrete = T) + 
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        axis.text.x = element_text(angle = 45, 
-                                   vjust = 1, 
-                                   hjust=1),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12))
+  guides(color=guide_legend(title = "\u03b1",
+                            override.aes = list(linewidth = 0.75))) +
+  scale_color_manual(values = turbo(10)[c(2,4,6,7,9)]) +     
+  theme(axis.title = element_text(size=12),
+        axis.title.x = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 11),
+        legend.justification = c("left", "top"),
+        legend.position = c(0.02,0.98),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        # legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) 
 
+p1
 ##################
 #### Error Ne ####
 ##################
 
-rm(list=ls())
+# rm(list=ls())
 
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedAlphaNE")
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
 list.files()
 master <- data.frame()
 for(file in list.files()){
@@ -932,7 +937,7 @@ master$statDist <- statDist <- master$statDist %>%
   gsub("\\*\\^", "e", .) %>% 
   as.numeric()
 
-ggplot(data = master, aes(x = Ne, y = statDist)) + 
+p2 <- ggplot(data = master, aes(x = Ne, y = statDist)) + 
   geom_line(aes(color = as.factor(selCoef)),
             alpha = 0.6,
             size = 1.5) + 
@@ -940,25 +945,45 @@ ggplot(data = master, aes(x = Ne, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = "\u03b1",
-                            override.aes = list(alpha=1))) +
+  guides(color=F) +
   scale_x_continuous(bquote(N[e]),
-                     breaks = c(200, 250, 500, 1000)) +
-  scale_y_continuous("Statistical Distance") +
-  scale_color_viridis(discrete = T) + 
-  theme(panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        axis.text.x = element_text(angle = 45, 
-                                   vjust = 1, 
-                                   hjust=1),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12)) +
-  geom_hline(yintercept=0, 
-             linetype="dashed", 
-             color = turbo(11)[11], size  = 0.75) 
+                     breaks = c(100,200, 250, 500, 1000)) +
+  scale_y_log10("Statistical Distance") +
+  scale_color_manual(values = turbo(10)[c(2,4,6,7,9)]) +  
+  theme(axis.title = element_text(size=12),
+        axis.title.x = element_blank(),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 11),
+        legend.justification = c("left", "top"),
+        legend.position = c(0.02,0.98),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        # legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  annotation_logticks(sides = "l") 
+
+#####################
+#### Ne combined ####
+#####################
+
+p3 <- ggplot(data.frame(l = "x", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = deparse(bquote(N[e]))), 
+            # angle = 90,
+            size = 5 / 14 * 12,
+            parse = T) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+(p1 | p2) / p3 + 
+  # plot_annotation(tag_levels = 'A')  & 
+  # theme(plot.tag = element_text(size = 12)) & 
+  plot_layout(heights = c(25,1))
+
 
 #############
 #### RFS ####
@@ -966,72 +991,7 @@ ggplot(data = master, aes(x = Ne, y = statDist)) +
 
 rm(list=ls())
 
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedAlphaNE")
-list.files()
-master <- data.frame()
-for(file in list.files()){
-  tmp <- fread(file)
-  master <- dplyr::bind_rows(master, tmp)
-}
-names(master) <- c("selCoef", "Ne", "time", "start", 
-                   "thresh", "pintAUC", "pintdetected", 
-                   "numAUC", "numdetected", "statDist")
-master$popalpha = 2 * master$Ne * master$selCoef
-rm(tmp)
-
-master <- master %>% filter(selCoef == 0.01)
-master$reps = 1000 / master$Ne
-
-df <- data.table()
-for(i in 1:nrow(master)){
-  tmp <- master[i,]
-  for(j in 0:tmp$reps){
-    foo <- data.table(Ne = tmp$Ne,
-                      reps = paste(tmp$reps, 
-                                   " Replicates of Size ", 
-                                   tmp$Ne),
-                      reps_number = tmp$reps,
-                      bin = j,
-                      prob = choose(tmp$reps, j) * 
-                        tmp$pintdetected^j * 
-                        (1 - tmp$pintdetected)^(tmp$reps - j))
-    df <- dplyr::bind_rows(df, foo)
-  }
-}
-rm(foo, master, tmp, file, i, j)
-
-dfdetected <- df %>% filter(bin > 0) %>% 
-  group_by(reps) %>% 
-  mutate(pintdetected = sum(prob)) %>% 
-  mutate(prob = prob / pintdetected) %>% ungroup() 
-dfnotdetected <- df %>% filter(bin == 0)
-dfnotdetected$reps_number <- c(1,3,2.5,1.5)
-
-ggplot(dfdetected, aes(y=prob, x=as.factor(bin))) + 
-  geom_bar(stat="identity",
-           fill = viridis(4)[2],
-           alpha = 0.5) + 
-  facet_wrap(~ reps, scales="free_x") + 
-  theme_bw() + 
-  xlab("Number of Replicates Detected") + 
-  ylab("Probability Given Detected at least Once") + 
-  geom_text(data = dfnotdetected, aes(x = reps_number, 
-                                      y = 1.1, 
-                                      label = paste("P(detected > 0 times) : ",round(1- prob,3))),
-            hjust = 0.5, vjust = 1) + 
-  theme(panel.grid.minor = element_blank(),
-        axis.title = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
-  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1))
-
-#############
-#### RFS ####
-#############
-
-rm(list=ls())
-
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedAlphaNE")
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
 list.files()
 master <- data.frame()
 for(file in list.files()){
@@ -1045,7 +1005,7 @@ master$popalpha = 2 * master$Ne * master$selCoef
 rm(tmp)
 
 # master <- master %>% filter(selCoef == 0.01)
-master$reps = 4000 / master$Ne
+master$reps = 5000 / master$Ne
 
 df <- data.table()
 for(i in 1:nrow(master)){
@@ -1064,6 +1024,8 @@ for(i in 1:nrow(master)){
 }
 rm(foo, master, tmp, file, i, j)
 
+df <- df %>% filter(Ne != 250)
+
 dfdetected <- df %>% filter(bin > 0) %>% 
   group_by(reps, selCoef) %>% 
   mutate(pintdetected = sum(prob)) %>% 
@@ -1071,173 +1033,98 @@ dfdetected <- df %>% filter(bin > 0) %>%
          selCoef = as.factor(selCoef),
          reps = as.factor(reps)) %>% ungroup() 
 dfdetected$reps <- factor(dfdetected$reps,
-                          levels = levels(dfdetected$reps)[c(3,4,1,2)])
+                          levels = levels(dfdetected$reps)[c(3,1,2,4)])
 
 dfnotdetected <- df %>% filter(bin == 0) %>% 
   mutate(reps = as.factor(reps),
-         selCoef = as.factor(selCoef),
-         pintdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
-  mutate(pintdetected = as.factor(pintdetected))
-dfnotdetected$reps_number <- rep(c(2.85,
-                                   13.1,
-                                   10.5,
-                                   5.2),
-                                 each = 5)
-dfnotdetected$vjust = rep((1.5 * c(2,3,4,5,1)), 4)
-
-breaksfun <- function(x){
-  1:max(x)
-}
-
-# my_labeller = as_labeller(
-#   c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
-#     "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
-#     "geg10" = "m[max]==10",
-#     "geg50" = "m[max]==50"),
-#   default = label_parsed
-# )
+         selCoef = as.factor(selCoef))
 
 my_labeller = as_labeller(
-  c("4" = "4 ~ `Replicates,` ~ N[e] == 1000",
-    "8" = "8 ~ `Replicates,` ~ N[e] == 500",
-    "16" = "16 ~ `Replicates,` ~ N[e] == 250",
-    "20" = "20 ~ `Replicates,` ~ N[e] == 200"),
+  c("5" = "5 ~ `Replicates,` ~ N[e] == 1000",
+    "10" = "10 ~ `Replicates,` ~ N[e] == 500",
+    "20" = "20 ~ `Replicates,` ~ N[e] == 250",
+    "25" = "25 ~ `Replicates,` ~ N[e] == 200",
+    "50"  = "50 ~ `Replicates,` ~ N[e] == 100"),
   default = label_parsed
 )
 
-ggplot(dfdetected, aes(y=prob, x=bin, color = selCoef,
-                       group = selCoef)) + 
-  geom_line(alpha = 0.6,
-            size = 1.5) + 
-  geom_point(alpha=1,
-             size = 2.5) +
-  facet_wrap(~ factor(reps, 
-                      levels = unique(dfdetected$reps)[c(1,4,3,2)]), 
-             scales="free_x",
-             labeller = my_labeller) + 
-  theme_bw() + 
-  scale_x_continuous(breaks = breaksfun) + 
-  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
-  scale_color_viridis(discrete = T) + 
-  xlab("Number of Replicates Detected") + 
-  ylab("Probability Given Detected at least Once") + 
-  geom_shadowtext(data = dfnotdetected, aes(x = reps_number,
-                                            y = 1,
-                                            label = pintdetected,
-                                            vjust = vjust), 
-                  size = 5,
-                  bg.color = "darkgrey", bg.r = 0.03,
-                  show.legend = F) + 
-  guides(color=guide_legend(title = "\u03b1",
-                            override.aes = list(alpha=1),
-                            nrow = 1)) +
-  theme(panel.grid.minor = element_blank(),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12),
-        axis.text.x = element_text(angle = 45, 
-                                   vjust = 1, 
-                                   hjust=1),
-        legend.position = "bottom") 
 
-########################
-#### RFS all 1 size ####
-########################
-
-rm(list=ls())
-
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
-list.files()
-master <- data.frame()
-for(file in list.files()){
-  tmp <- fread(file)
-  master <- dplyr::bind_rows(master, tmp)
-}
-names(master) <- c("alpha", "VG", "start", 
-                   "time", "thresh", "pintAUC", 
-                   "pintDetected", "numAUC", "numDetected",
-                   "statDist")
-master$popalpha = 1000 * master$alpha
-rm(tmp, file)
-
-master$statDist <- statDist <- master$statDist %>% 
-  gsub('[{}]', '', .) %>% 
-  gsub("\\*\\^", "e", .) %>% 
-  as.numeric()
-
-master <- master %>% filter(VG  == 1e-3)
-
-df <- data.table()
-for(i in 1:nrow(master)){
-  tmp <- master[i,]
-  for(reps in c(5, 10, 15, 20)){
-    for(j in 0:reps){
-      foo <- data.table(reps = paste(reps, " Replicates"),
-                        reps_number = reps,
-                        bin = j,
-                        popalpha = tmp$popalpha,
-                        prob = choose(reps, j) * 
-                          tmp$pintDetected^j * 
-                          (1 - tmp$pintDetected)^(reps - j))
-      df <- dplyr::bind_rows(df, foo)
-    }
-  }
-}
-rm(foo, tmp, file, i, j)
-
-dfdetected <- df %>% filter(bin > 0) %>% 
-  group_by(reps, popalpha) %>% 
-  mutate(Pdetected = sum(prob)) %>% 
-  mutate(prob = prob / Pdetected,
-         # # bin = as.factor(bin),
-         # Ne = as.factor(Ne),
-         reps = as.factor(reps),
-         popalpha = as.factor(popalpha)) %>% ungroup() 
-dfdetected$reps <- factor(dfdetected$reps, 
-                          levels = levels(dfdetected$reps)[c(4,1,2,3)])
-
-dfnotdetected <- df %>% filter(bin == 0) %>% 
-  mutate(reps = as.factor(reps),
-         popalpha = as.factor(popalpha),
-         pdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
-  mutate(pdetected = as.factor(pdetected))
-dfnotdetected$reps_number <- rep(c(3.5,
-                                   6.75,
-                                   9.75,
-                                   13),
-                                 6)
-dfnotdetected$vjust = rep((1.5 * 1:6), each = 4)
-
-
-breaksfun <- function(x){
-  1:max(x)
+for(i in 1:4){
+  tmpdetected <- dfdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  tmpnotdetected <- dfnotdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  
+  p <- ggplot(tmpdetected, aes(y=prob, x=bin, color = selCoef,
+                         group = selCoef)) + 
+    geom_line(alpha = 0.6,
+              size = 1.5) + 
+    geom_point(alpha=1,
+               size = 2.5) +
+    facet_wrap(~ factor(reps,
+                        levels = unique(dfdetected$reps)[c(2,4,3,1)]), 
+               scales="free_x",
+               labeller = my_labeller) + 
+    theme_bw() + 
+    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+    scale_color_manual(values = turbo(10)[c(2,4,6,7,9)],
+                       labels = paste(levels(dfnotdetected$selCoef),
+                                      "              ",
+                                      formatC(round(1-tmpnotdetected$prob[c(5,1:4)],3),
+                                              3,format="f"), 
+                                      "         ",
+                                      sep ="")) +  
+    xlab("Number of Replicates Detected") + 
+    ylab("Probability Given Detected at least Once") + 
+    guides(color=guide_legend(title = "   \u03b1    P(detected > 0 times)",
+                              override.aes = list(alpha=1,
+                                                  linewidth = 0.75,
+                                                  size = 1.25),
+                              label.position = "left")) +
+    theme(axis.title = element_blank(),
+          title = element_text(size = 12),
+          axis.text = element_text(size = 10),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.text = element_text(size = 10),
+          legend.title = element_text(size = 10),
+          legend.justification = c("right", "top"),
+          legend.position = c(.98,.98),
+          legend.box.background = element_rect(colour = "black"),
+          legend.spacing.y = unit(0, 'cm'),
+          legend.key.size = unit(0.8, "line"),
+          panel.grid.minor.x = element_blank(),
+          panel.grid.minor.y = element_blank()) 
+  
+  if(i == 1) p1 <- p
+  if(i == 2) p2 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2))) 
+  if(i == 3) p3 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)), limits = c(1,10)) 
+  if(i == 4) p4 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)), limits = c(1,10)) 
 }
 
-ggplot(dfdetected, aes(y = prob,
-                       x = bin,
-                       color = popalpha)) + 
-  geom_line(alpha = 0.6,
-            size = 1.5) + 
-  geom_point(alpha=1,
-             size = 2.5) +
-  facet_wrap(~ reps, scales="free") + 
-  theme_bw() + 
-  scale_x_continuous(breaks = breaksfun) + 
-  scale_color_viridis(discrete = T) + 
-  theme(panel.grid.minor = element_blank(),
-        axis.title = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
-  xlab("Number of Replicates Detected") + 
-  ylab("Probability Given Detected at least Once") + 
-  geom_text(data = dfnotdetected, aes(x = reps_number,
-                                      y = 1,
-                                      label = pdetected,
-                                      vjust = vjust)) + 
-  guides(color=guide_legend(title = "Selection\nCoefficient",
-                            override.aes = list(alpha=1))) 
+p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            # angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+p6 <- ggplot(data.frame(l = "Probability Given Detected at least Once", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+layout <- "
+ABC
+ADE
+#FF
+"
+
+p6 + p1 + p2 + p3 + p4 + p5 + plot_layout(design = layout,
+                                          widths = c(1,25,25),
+                                          heights = c(25,25,1))
+
 
 #############
 #### RFS ####
@@ -1245,7 +1132,7 @@ ggplot(dfdetected, aes(y = prob,
 
 rm(list=ls())
 
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedAlphaNE")
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
 list.files()
 master <- data.frame()
 for(file in list.files()){
@@ -1279,6 +1166,8 @@ for(i in 1:nrow(master)){
 }
 rm(foo, tmp, file, i, j)
 
+df <- df %>% filter(Ne != 250)
+
 dfdetected <- df %>% filter(bin > 0) %>% 
   group_by(reps, Ne) %>% 
   mutate(pintdetected = sum(prob)) %>% 
@@ -1291,56 +1180,81 @@ dfdetected$reps <- factor(dfdetected$reps,
 
 dfnotdetected <- df %>% filter(bin == 0) %>% 
   mutate(reps = as.factor(reps),
-         Ne = as.factor(Ne),
-         pintdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
-  mutate(pintdetected = as.factor(pintdetected))
-dfnotdetected$reps_number <- rep(c(3.5,
-                                   6.75,
-                                   9.75,
-                                   13),
-                                 4)
-dfnotdetected$vjust = rep((1.5 * c(4,1,2,3)), each = 4)
+         Ne = as.factor(Ne))
 
-
-breaksfun <- function(x){
-  1:max(x)
+for(i in 1:4){
+  tmpdetected <- dfdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  tmpnotdetected <- dfnotdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  
+  p <- ggplot(tmpdetected, aes(y=prob, x=bin, color = Ne,
+                               group = Ne)) + 
+    geom_line(alpha = 0.6,
+              size = 1.5) + 
+    geom_point(alpha=1,
+               size = 2.5) +
+    facet_wrap(~ reps, 
+               scales="free_x") + 
+    theme_bw() + 
+    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+    scale_color_manual(values = turbo(10)[c(2,4,7,9)],
+                       labels = paste(levels(dfnotdetected$Ne),
+                                      "              ",
+                                      formatC(round(1-tmpnotdetected$prob[c(1,3,4,2)],3),
+                                              3,format="f"), 
+                                      "             ",
+                                      sep ="")) +  
+    xlab("Number of Replicates Detected") + 
+    ylab("Probability Given Detected at least Once") + 
+    guides(color=guide_legend(title = bquote("   "~N[e]~"    P(detected > 0 times)"),
+                              override.aes = list(alpha=1,
+                                                  linewidth = 0.75,
+                                                  size = 1.25),
+                              label.position = "left")) +
+    theme(axis.title = element_blank(),
+          title = element_text(size = 12),
+          axis.text = element_text(size = 10),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.text = element_text(size = 10),
+          legend.title = element_text(size = 10),
+          legend.justification = c("right", "top"),
+          legend.position = c(.98,.98),
+          legend.box.background = element_rect(colour = "black"),
+          legend.spacing.y = unit(0, 'cm'),
+          legend.key.size = unit(0.8, "line"),
+          panel.grid.minor.x = element_blank(),
+          panel.grid.minor.y = element_blank()) 
+  
+  if(i == 1) p1 <- p
+  if(i == 2) p2 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)))
+  if(i == 3) p3 <- p + scale_x_continuous(breaks = seq(1,15,by = 2))
+  if(i == 4) p4 <- p + scale_x_continuous(breaks = c(1, seq(2,20,by = 2)))
 }
 
-ggplot(dfdetected, aes(y = prob,
-                       x = bin,
-                       color = Ne)) + 
-  geom_line(alpha = 0.6,
-            size = 1.5) + 
-  geom_point(alpha=1,
-             size = 2.5) +
-  facet_wrap(~ reps, scales="free") + 
-  theme_bw() + 
-  scale_x_continuous(breaks = breaksfun) + 
-  scale_color_viridis(discrete = T) + 
-  theme(panel.grid.minor = element_blank(),
-        axis.title = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
-  xlab("Number of Replicates Detected") + 
-  ylab("Probability Given Detected at least Once") + 
-  geom_shadowtext(data = dfnotdetected, aes(x = reps_number,
-                                            y = 1,
-                                            label = pintdetected,
-                                            vjust = vjust),
-                  size = 5.5,
-                  bg.color = "darkgrey", 
-                  bg.r = 0.03,
-                  show.legend = F) + 
-  guides(color=guide_legend(title = bquote(N[e]),
-                            override.aes = list(alpha=1),
-                            nrow = 1)) +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        axis.title = element_text(size=18),
-        title = element_text(size = 15),
-        axis.text = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        strip.text = element_text(size = 12),
-        legend.position = "bottom")
+p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            # angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+p6 <- ggplot(data.frame(l = "Probability Given Detected at least Once", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+layout <- "
+ABC
+ADE
+#FF
+"
+
+p6 + p1 + p2 + p3 + p4 + p5 + plot_layout(design = layout,
+                                          widths = c(1,25,25),
+                                          heights = c(25,25,1))
 
 ######################
 #### model figure ####
@@ -2280,3 +2194,164 @@ ggplot(df) +
   scale_linetype_manual(values=c(rep("solid",6), "dashed"),
                         name="k_max") + 
   theme(axis.title = element_text(size=18))
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", 
+                   "thresh", "pintAUC", "pintdetected", 
+                   "numAUC", "numdetected", "statDist")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+master <- master %>% filter(selCoef == 0.01)
+master$reps = 1000 / master$Ne
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(j in 0:tmp$reps){
+    foo <- data.table(Ne = tmp$Ne,
+                      reps = paste(tmp$reps, 
+                                   " Replicates of Size ", 
+                                   tmp$Ne),
+                      reps_number = tmp$reps,
+                      bin = j,
+                      prob = choose(tmp$reps, j) * 
+                        tmp$pintdetected^j * 
+                        (1 - tmp$pintdetected)^(tmp$reps - j))
+    df <- dplyr::bind_rows(df, foo)
+  }
+}
+rm(foo, master, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps) %>% 
+  mutate(pintdetected = sum(prob)) %>% 
+  mutate(prob = prob / pintdetected) %>% ungroup() 
+dfnotdetected <- df %>% filter(bin == 0)
+# dfnotdetected$reps_number <- c(1,3,2.5,1.5)
+
+ggplot(dfdetected, aes(y=prob, x=as.factor(bin))) + 
+  geom_bar(stat="identity",
+           fill = viridis(4)[2],
+           alpha = 0.5) + 
+  facet_wrap(~ reps, scales="free_x") + 
+  theme_bw() + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number, 
+                                      y = 1.1, 
+                                      label = paste("P(detected > 0 times) : ",round(1- prob,3))),
+            hjust = 0.5, vjust = 1) + 
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1))
+
+########################
+#### RFS all 1 size ####
+########################
+
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
+rm(tmp, file)
+
+master$statDist <- statDist <- master$statDist %>% 
+  gsub('[{}]', '', .) %>% 
+  gsub("\\*\\^", "e", .) %>% 
+  as.numeric()
+
+master <- master %>% filter(VG  == 1e-3)
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(reps in c(5, 10, 15, 20)){
+    for(j in 0:reps){
+      foo <- data.table(reps = paste(reps, " Replicates"),
+                        reps_number = reps,
+                        bin = j,
+                        popalpha = tmp$popalpha,
+                        prob = choose(reps, j) * 
+                          tmp$pintDetected^j * 
+                          (1 - tmp$pintDetected)^(reps - j))
+      df <- dplyr::bind_rows(df, foo)
+    }
+  }
+}
+rm(foo, tmp, file, i, j)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps, popalpha) %>% 
+  mutate(Pdetected = sum(prob)) %>% 
+  mutate(prob = prob / Pdetected,
+         # # bin = as.factor(bin),
+         # Ne = as.factor(Ne),
+         reps = as.factor(reps),
+         popalpha = as.factor(popalpha)) %>% ungroup() 
+dfdetected$reps <- factor(dfdetected$reps, 
+                          levels = levels(dfdetected$reps)[c(4,1,2,3)])
+
+dfnotdetected <- df %>% filter(bin == 0) %>% 
+  mutate(reps = as.factor(reps),
+         popalpha = as.factor(popalpha),
+         pdetected = paste("P(detected > 0 times) : ",formatC(round(1-prob,3),3,format="f"))) %>%
+  mutate(pdetected = as.factor(pdetected))
+dfnotdetected$reps_number <- rep(c(3.5,
+                                   6.75,
+                                   9.75,
+                                   13),
+                                 6)
+dfnotdetected$vjust = rep((1.5 * 1:6), each = 4)
+
+
+breaksfun <- function(x){
+  1:max(x)
+}
+
+ggplot(dfdetected, aes(y = prob,
+                       x = bin,
+                       color = popalpha)) + 
+  geom_line(alpha = 0.6,
+            size = 1.5) + 
+  geom_point(alpha=1,
+             size = 2.5) +
+  facet_wrap(~ reps, scales="free") + 
+  theme_bw() + 
+  scale_x_continuous(breaks = breaksfun) + 
+  scale_color_viridis(discrete = T) + 
+  theme(panel.grid.minor = element_blank(),
+        axis.title = element_text(size=18),
+        axis.text.x = element_text(size = 12),
+        legend.text = element_text(size = 12)) + 
+  xlab("Number of Replicates Detected") + 
+  ylab("Probability Given Detected at least Once") + 
+  geom_text(data = dfnotdetected, aes(x = reps_number,
+                                      y = 1,
+                                      label = pdetected,
+                                      vjust = vjust)) + 
+  guides(color=guide_legend(title = "Selection\nCoefficient",
+                            override.aes = list(alpha=1))) 
