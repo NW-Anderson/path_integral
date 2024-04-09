@@ -128,14 +128,16 @@ for(rep in 1:3){
 print(unique(master$log_amp))
 linedf <- data.frame(x = rep(t[500],2),
                      y = c(1,0.2))
+
+
 master %>% # filter(rep %in% sample(unique(rep),1)) %>%
   ggplot(., aes(x = t, y = C, 
                 group = rep,
                 color = log_amp #,
                 # alpha = log_amp
                 )) + 
-  geom_point(size = 0.4) +
-  geom_line(linewidth = 1) +
+  # geom_point(size = 0.4) +
+  geom_line(linewidth = 0.75) +
   guides(color = F,
          alpha = F) +
   scale_x_continuous(name = "Time",
@@ -169,7 +171,6 @@ master %>% # filter(rep %in% sample(unique(rep),1)) %>%
             linetype = "dashed",
             linewidth = 0.75,
             alpha = 0.5)
-
 
 
 

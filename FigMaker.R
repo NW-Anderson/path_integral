@@ -34,7 +34,9 @@ library(rsvg)
 library(ggrepel)
 library(shadowtext)
 library(Cairo)
+library(extrafont)
 dev.off()
+
 
 ####################
 #### Comparison ####
@@ -65,12 +67,16 @@ ggplot(master, aes(x = end, y = dens)) +
             alpha = 0.75,
             size = 1.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
+  guides(color=guide_legend(title = bquote(italic(V[G])),
                             override.aes = list(alpha=1))) +
-  scale_x_continuous("Ending Frequency") + 
-  scale_y_continuous("Density") + 
+  scale_x_continuous("Ending Frequency",
+                     expand = c(0,0)) + 
+  scale_y_continuous("Density",
+                     expand = c(0,0),
+                     limits = c(0,2.35)) + 
   scale_color_manual(values = turbo(10)[c(2,3,4,7,8,9)]) + 
-  theme(axis.title = element_text(size=12),
+  theme(text = element_text(family = "LM Roman 10"),
+        axis.title = element_text(size=12),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
         legend.text = element_text(size = 10),
@@ -78,8 +84,8 @@ ggplot(master, aes(x = end, y = dens)) +
         legend.justification = c("right", "top"),
         legend.position = c(.98,.98),
         legend.box.background = element_rect(colour = "black"),
-        panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) 
+        panel.grid = element_blank()) 
+
 
 ####################################
 ####### pDetection Alpha VG #######
@@ -122,15 +128,17 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
              size = 2.5) +
   geom_hline(yintercept=0.01, 
              linetype="dashed", 
-             size  = 0.75) + 
-  geom_vline(xintercept=1, 
-             linetype="dashed", 
-             size  = 0.75) + 
+             size  = 0.75,
+             alpha = 0.6) + 
   theme_bw() +
-  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
+  scale_x_continuous(bquote(italic(2 * N[e] * alpha * Lambda * "/" *  W)), 
                      breaks = c(0, 1, 5, 10, 15, 20), 
-                     labels = c(0, 1, 5, 10, 15, 20)) +
-  scale_y_continuous("P(detected)") +
+                     labels = c(0, 1, 5, 10, 15, 20),
+                     expand = c(0.05,0)) +
+  scale_y_continuous("P(detected)",
+                     # breaks = seq(0,0.3,by = 0.05),
+                     expand = c(0,0), 
+                     limits = c(0,max(numDf$yval)*1.05)) +
   geom_point(data = numDf, aes(x = popalpha, 
                                y = yval,
                                color = as.factor(VG)),
@@ -144,27 +152,26 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
             alpha = 0.6,
             size = 1.5,
             linetype = "dashed")  + 
-  guides(color=guide_legend(title = bquote(V[G]),
+  guides(color=guide_legend(title = bquote(italic(V[G])),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
                                                 linewidth = 0.75))) +
   scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
-  theme(axis.title = element_text(size=12),
-      title = element_text(size = 12),
-      axis.text = element_text(size = 10),
-      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                 colour = c(rep("black",1),
-                                            "red",
-                                            rep("black",4))),
-      legend.text = element_text(size = 8),
-      legend.title = element_text(size = 10),
-      legend.justification = c("left", "top"),
-      legend.position = c(.01,.99),
-      legend.box.background = element_rect(colour = "black"),
-      legend.spacing.y = unit(0, 'cm'),
-      legend.key.size = unit(0.8, "line"),
-      panel.grid.minor.y = element_blank(),
-      panel.grid.minor.x = element_blank()) 
+  theme(text = element_text(family = "LM Roman 10"),
+        axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("left", "top"),
+        legend.position = c(.01,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank()) 
 
 p1
 
@@ -278,10 +285,14 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
              size = 2.5) +
   geom_hline(yintercept=0.01, 
              linetype="dashed", 
-             size  = 0.75) + 
+             size  = 0.75,
+             alpha = 0.6) + 
   theme_bw() +
-  scale_x_continuous("Time\n(Genomic Units)") +
-  scale_y_continuous("P(detected)") +
+  scale_x_continuous("Time\n(Genomic Units)",
+                     expand = c(0.05,0)) +
+  scale_y_continuous("P(detected)",
+                     expand = c(0,0),
+                     limits = c(0,max(numDf$yval) * 1.05)) +
   geom_point(data = numDf, aes(x = time,
                                y = yval,
                                color = as.factor(VG)),
@@ -298,7 +309,8 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
   guides(color = F,
          shape = F) +
   scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
-  theme(axis.title = element_text(size=12),
+  theme(text = element_text(family = "LM Roman 10"),
+        axis.title = element_text(size=12),
         axis.title.y = element_blank(),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
@@ -309,7 +321,8 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
         legend.position = c(.02,.98),
         legend.box.background = element_rect(colour = "black"),
         panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) 
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank()) 
 
 p2
 
@@ -418,11 +431,15 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
   theme_bw() +
   scale_x_continuous("Starting Frequency", 
                      breaks = c(0.025,0.05,0.1,0.15,0.20), 
-                     labels = c(0.025,0.05,0.1,0.15,0.20)) +
-  scale_y_continuous("P(detected)") +
+                     labels = c(0.025,0.05,0.1,0.15,0.20),
+                     expand = c(0.05,0)) +
+  scale_y_continuous("P(detected)",
+                     expand = c(0,0),
+                     limits = c(0,max(master$pintDetected) * 1.05)) +
   guides(color = F) + 
   scale_color_manual(values = turbo(10)[c(2,4,7,9)]) +
-  theme(axis.title = element_text(size=12),
+  theme(text = element_text(family = "LM Roman 10"),
+        axis.title = element_text(size=12),
         axis.title.y = element_blank(),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
@@ -433,7 +450,8 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
         legend.position = c(.02,.98),
         legend.box.background = element_rect(colour = "black"),
         panel.grid.minor.y = element_blank(),
-        panel.grid.minor.x = element_blank()) 
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank()) 
 
 
 p3
@@ -1024,62 +1042,35 @@ for(i in 1:nrow(master)){
 }
 rm(foo, master, tmp, file, i, j)
 
-df <- df %>% filter(Ne != 250)
-
-dfdetected <- df %>% filter(bin > 0) %>% 
-  group_by(reps, selCoef) %>% 
-  mutate(pintdetected = sum(prob)) %>% 
-  mutate(prob = prob / pintdetected,
-         selCoef = as.factor(selCoef),
-         reps = as.factor(reps)) %>% ungroup() 
-dfdetected$reps <- factor(dfdetected$reps,
-                          levels = levels(dfdetected$reps)[c(3,1,2,4)])
-
-dfnotdetected <- df %>% filter(bin == 0) %>% 
+df <- df %>% filter(Ne != 250) %>%
   mutate(reps = as.factor(reps),
          selCoef = as.factor(selCoef))
-
-my_labeller = as_labeller(
-  c("5" = "5 ~ `Replicates,` ~ N[e] == 1000",
-    "10" = "10 ~ `Replicates,` ~ N[e] == 500",
-    "20" = "20 ~ `Replicates,` ~ N[e] == 250",
-    "25" = "25 ~ `Replicates,` ~ N[e] == 200",
-    "50"  = "50 ~ `Replicates,` ~ N[e] == 100"),
-  default = label_parsed
-)
+df$reps <- factor(df$reps,
+                  levels = levels(df$reps)[c(3,1,2,4)])
 
 
 for(i in 1:4){
-  tmpdetected <- dfdetected %>% filter(reps == levels(dfdetected$reps)[i])
-  tmpnotdetected <- dfnotdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  d <- df %>% filter(reps == levels(df$reps)[i])
+  d <- d[order(d$selCoef),]
   
-  p <- ggplot(tmpdetected, aes(y=prob, x=bin, color = selCoef,
-                         group = selCoef)) + 
+  p <- ggplot(d, aes(y=prob, x=bin, color = selCoef,
+                     group = selCoef)) + 
     geom_line(alpha = 0.6,
               size = 1.5) + 
     geom_point(alpha=1,
                size = 2.5) +
-    facet_wrap(~ factor(reps,
-                        levels = unique(dfdetected$reps)[c(2,4,3,1)]), 
-               scales="free_x",
-               labeller = my_labeller) + 
     theme_bw() + 
-    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+    scale_x_continuous("Number of Replicates Detected",
+                       expand = c(0.05,0)) +
+    scale_y_continuous("Probability",
+                     breaks = c(0, 0.25, 0.5, 0.75, 1),
+                     limits = c(0,1), 
+                     expand = c(0,0)) + 
     scale_color_manual(values = turbo(10)[c(2,4,6,7,9)],
-                       labels = paste(levels(dfnotdetected$selCoef),
-                                      "              ",
-                                      formatC(round(1-tmpnotdetected$prob[c(5,1:4)],3),
-                                              3,format="f"), 
-                                      "         ",
-                                      sep ="")) +  
-    xlab("Number of Replicates Detected") + 
-    ylab("Probability Given Detected at least Once") + 
-    guides(color=guide_legend(title = "   \u03b1    P(detected > 0 times)",
-                              override.aes = list(alpha=1,
-                                                  linewidth = 0.75,
-                                                  size = 1.25),
-                              label.position = "left")) +
-    theme(axis.title = element_blank(),
+                       labels = levels(d$selCoef)) +  
+    guides(color = F) + 
+    theme(text = element_text(family = "LM Roman 10"),
+          axis.title = element_blank(),
           title = element_text(size = 12),
           axis.text = element_text(size = 10),
           axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
@@ -1091,27 +1082,37 @@ for(i in 1:4){
           legend.spacing.y = unit(0, 'cm'),
           legend.key.size = unit(0.8, "line"),
           panel.grid.minor.x = element_blank(),
+          panel.grid.major.x = element_blank(),
           panel.grid.minor.y = element_blank()) 
   
-  if(i == 1) p1 <- p
-  if(i == 2) p2 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2))) 
-  if(i == 3) p3 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)), limits = c(1,10)) 
-  if(i == 4) p4 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)), limits = c(1,10)) 
+  if(i == 1) p1 <- p + labs(title = bquote(5 ~ `Replicates,` ~ italic(N[e]) == 1000))
+  if(i == 2) p2 <- p + scale_x_continuous(breaks =  seq(0,10,by = 2)) + 
+    labs(title = bquote(10 ~ "Replicates," ~ italic(N[e]) == ~ "500")) + 
+    guides(color=guide_legend(title = expression(italic(alpha)),
+                              override.aes = list(alpha=1,
+                                                  linewidth = 0.75,
+                                                  size = 1.25))) 
+  if(i == 3) p3 <- p + labs(title = bquote(25 ~ `Replicates,` ~ italic(N[e]) == 200)) + 
+      scale_x_continuous(breaks = seq(0,10,by = 2), limits = c(0,10)) 
+  if(i == 4) p4 <- p + labs(title = bquote(50 ~ `Replicates,` ~ italic(N[e]) == 100)) +
+    scale_x_continuous(breaks = seq(0,10,by = 2), limits = c(0,10)) 
 }
 
 p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
                         x = 1, y = 1)) +
   geom_text(aes(x, y, label = l), 
             # angle = 90,
-            size = 5 / 14 * 12) + 
+            size = 5 / 14 * 12,
+            family = "LM Roman 10") + 
   theme_void() +
   coord_cartesian(clip = "off")
 
-p6 <- ggplot(data.frame(l = "Probability Given Detected at least Once", 
+p6 <- ggplot(data.frame(l = "Probability", 
                         x = 1, y = 1)) +
   geom_text(aes(x, y, label = l), 
             angle = 90,
-            size = 5 / 14 * 12) + 
+            size = 5 / 14 * 12,
+            family = "LM Roman 10") + 
   theme_void() +
   coord_cartesian(clip = "off")
 
@@ -1122,7 +1123,7 @@ ADE
 "
 
 p6 + p1 + p2 + p3 + p4 + p5 + plot_layout(design = layout,
-                                          widths = c(1,25,25),
+                                          widths = c(2,25,25),
                                           heights = c(25,25,1))
 
 
@@ -1166,50 +1167,33 @@ for(i in 1:nrow(master)){
 }
 rm(foo, tmp, file, i, j)
 
-df <- df %>% filter(Ne != 250)
-
-dfdetected <- df %>% filter(bin > 0) %>% 
-  group_by(reps, Ne) %>% 
-  mutate(pintdetected = sum(prob)) %>% 
-  mutate(prob = prob / pintdetected,
-         # # bin = as.factor(bin),
-         Ne = as.factor(Ne),
-         reps = as.factor(reps)) %>% ungroup() 
-dfdetected$reps <- factor(dfdetected$reps, 
-                          levels = levels(dfdetected$reps)[c(4,1,2,3)])
-
-dfnotdetected <- df %>% filter(bin == 0) %>% 
+df <- df %>% filter(Ne != 250) %>%
   mutate(reps = as.factor(reps),
          Ne = as.factor(Ne))
+df$reps <- factor(df$reps,
+                  levels = levels(df$reps)[c(4,1,2,3)])
 
+ 
 for(i in 1:4){
-  tmpdetected <- dfdetected %>% filter(reps == levels(dfdetected$reps)[i])
-  tmpnotdetected <- dfnotdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  d <- df %>% filter(reps == levels(df$reps)[i])
+  d <- d[order(d$Ne),]
   
-  p <- ggplot(tmpdetected, aes(y=prob, x=bin, color = Ne,
+  p <- ggplot(d, aes(y=prob, x=bin, color = Ne,
                                group = Ne)) + 
     geom_line(alpha = 0.6,
               size = 1.5) + 
     geom_point(alpha=1,
                size = 2.5) +
-    facet_wrap(~ reps, 
-               scales="free_x") + 
     theme_bw() + 
-    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+    scale_x_continuous("Number of Replicates Detected",
+                       expand = c(0.05,0)) +
+    scale_y_continuous("Probability",
+                       breaks = c(0, 0.25, 0.5, 0.75, 1),
+                       limits = c(0,1), 
+                       expand = c(0,0)) + 
     scale_color_manual(values = turbo(10)[c(2,4,7,9)],
-                       labels = paste(levels(dfnotdetected$Ne),
-                                      "              ",
-                                      formatC(round(1-tmpnotdetected$prob[c(1,3,4,2)],3),
-                                              3,format="f"), 
-                                      "             ",
-                                      sep ="")) +  
-    xlab("Number of Replicates Detected") + 
-    ylab("Probability Given Detected at least Once") + 
-    guides(color=guide_legend(title = bquote("   "~N[e]~"    P(detected > 0 times)"),
-                              override.aes = list(alpha=1,
-                                                  linewidth = 0.75,
-                                                  size = 1.25),
-                              label.position = "left")) +
+                       labels = levels(d$Ne)) +  
+    guides(color = F) + 
     theme(axis.title = element_blank(),
           title = element_text(size = 12),
           axis.text = element_text(size = 10),
@@ -1222,12 +1206,20 @@ for(i in 1:4){
           legend.spacing.y = unit(0, 'cm'),
           legend.key.size = unit(0.8, "line"),
           panel.grid.minor.x = element_blank(),
+          panel.grid.major.x = element_blank(),
           panel.grid.minor.y = element_blank()) 
   
-  if(i == 1) p1 <- p
-  if(i == 2) p2 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)))
-  if(i == 3) p3 <- p + scale_x_continuous(breaks = seq(1,15,by = 2))
-  if(i == 4) p4 <- p + scale_x_continuous(breaks = c(1, seq(2,20,by = 2)))
+  if(i == 1) p1 <- p + labs(title = unique(d$reps))
+  if(i == 2) p2 <- p + scale_x_continuous(breaks =  seq(0,10,by = 2)) + 
+    labs(title = unique(d$reps)) + 
+    guides(color=guide_legend(title = bquote(italic(N[e])),
+                              override.aes = list(alpha=1,
+                                                  linewidth = 0.75,
+                                                  size = 1.25))) 
+  if(i == 3) p3 <- p + labs(title = unique(d$reps)) + 
+    scale_x_continuous(breaks = seq(0,10,by = 2), limits = c(0,10)) 
+  if(i == 4) p4 <- p + labs(title = unique(d$reps)) +
+    scale_x_continuous(breaks = seq(0,10,by = 2), limits = c(0,10)) 
 }
 
 p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
@@ -1238,7 +1230,7 @@ p5 <- ggplot(data.frame(l = "Number of Replicates Detected",
   theme_void() +
   coord_cartesian(clip = "off")
 
-p6 <- ggplot(data.frame(l = "Probability Given Detected at least Once", 
+p6 <- ggplot(data.frame(l = "Probability", 
                         x = 1, y = 1)) +
   geom_text(aes(x, y, label = l), 
             angle = 90,
@@ -1253,7 +1245,7 @@ ADE
 "
 
 p6 + p1 + p2 + p3 + p4 + p5 + plot_layout(design = layout,
-                                          widths = c(1,25,25),
+                                          widths = c(2,25,25),
                                           heights = c(25,25,1))
 
 ######################
@@ -1311,21 +1303,24 @@ ggplot(df, aes(x = x, y = y)) +
                                  "Initial Trait\n Distribution"),
                         name = "") +
   theme_bw() +
-  theme(axis.title.y = element_blank(),
+  theme(text = element_text(family = "LM Roman 10"),
+        axis.title = element_text(size=12),
+        axis.text = element_text(size = 10),
+        axis.title.y = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks.y = element_blank(),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12),
+        legend.position = "bottom",
         panel.grid.minor = element_blank(),
         panel.grid.major.y = element_blank(),
-        panel.border = element_blank(),
-        legend.position = "bottom",
-        axis.title.x = element_text(size=18),
-        axis.text.x = element_text(size = 12),
-        legend.text = element_text(size = 12)) + 
+        panel.border = element_blank()) + 
   scale_x_continuous(breaks = c(0,1),
                      labels = c("0" = "Old\nOptimum", 
                                 "1" = "New\nOptimum"),
                      name = "Trait Value") +
-  guides(linetype = guide_legend(override.aes = list(linewidth = 2),
+  guides(linetype = guide_legend(override.aes = list(linewidth = 2,
+                                                     linetype = "solid"),
                                  nrow = 1)) +
   geom_area(data = areadf, 
             fill = the_colors[2],
@@ -1371,10 +1366,7 @@ p1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) +
         axis.title.y = element_blank(),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
-        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                   colour = c(rep("black",1),
-                                              "red",
-                                              rep("black",4))),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
         legend.justification = c("left", "top"),
@@ -2355,3 +2347,274 @@ ggplot(dfdetected, aes(y = prob,
                                       vjust = vjust)) + 
   guides(color=guide_legend(title = "Selection\nCoefficient",
                             override.aes = list(alpha=1))) 
+
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", 
+                   "thresh", "pintAUC", "pintdetected", 
+                   "numAUC", "numdetected", "statDist")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+# master <- master %>% filter(selCoef == 0.01)
+master$reps = 5000 / master$Ne
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(j in 0:tmp$reps){
+    foo <- data.table(Ne = tmp$Ne,
+                      reps = paste(tmp$reps),
+                      selCoef = tmp$selCoef,
+                      reps_number = tmp$reps,
+                      bin = j,
+                      prob = choose(tmp$reps, j) * 
+                        tmp$pintdetected^j * 
+                        (1 - tmp$pintdetected)^(tmp$reps - j))
+    df <- dplyr::bind_rows(df, foo)
+  }
+}
+rm(foo, master, tmp, file, i, j)
+
+df <- df %>% filter(Ne != 250)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps, selCoef) %>% 
+  mutate(pintdetected = sum(prob)) %>% 
+  mutate(prob = prob / pintdetected,
+         selCoef = as.factor(selCoef),
+         reps = as.factor(reps)) %>% ungroup() 
+dfdetected$reps <- factor(dfdetected$reps,
+                          levels = levels(dfdetected$reps)[c(3,1,2,4)])
+
+dfnotdetected <- df %>% filter(bin == 0) %>% 
+  mutate(reps = as.factor(reps),
+         selCoef = as.factor(selCoef))
+
+my_labeller = as_labeller(
+  c("5" = "5 ~ `Replicates,` ~ N[e] == 1000",
+    "10" = "10 ~ `Replicates,` ~ N[e] == 500",
+    "20" = "20 ~ `Replicates,` ~ N[e] == 250",
+    "25" = "25 ~ `Replicates,` ~ N[e] == 200",
+    "50"  = "50 ~ `Replicates,` ~ N[e] == 100"),
+  default = label_parsed
+)
+
+
+for(i in 1:4){
+  tmpdetected <- dfdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  tmpnotdetected <- dfnotdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  
+  p <- ggplot(tmpdetected, aes(y=prob, x=bin, color = selCoef,
+                               group = selCoef)) + 
+    geom_line(alpha = 0.6,
+              size = 1.5) + 
+    geom_point(alpha=1,
+               size = 2.5) +
+    facet_wrap(~ factor(reps,
+                        levels = unique(dfdetected$reps)[c(2,4,3,1)]), 
+               scales="free_x",
+               labeller = my_labeller) + 
+    theme_bw() + 
+    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+    scale_color_manual(values = turbo(10)[c(2,4,6,7,9)],
+                       labels = paste(levels(dfnotdetected$selCoef),
+                                      "              ",
+                                      formatC(round(1-tmpnotdetected$prob[c(5,1:4)],3),
+                                              3,format="f"), 
+                                      "         ",
+                                      sep ="")) +  
+    xlab("Number of Replicates Detected") + 
+    ylab("Probability Given Detected at least Once") + 
+    guides(color=guide_legend(title = "   \u03b1    P(detected > 0 times)",
+                              override.aes = list(alpha=1,
+                                                  linewidth = 0.75,
+                                                  size = 1.25),
+                              label.position = "left")) +
+    theme(axis.title = element_blank(),
+          title = element_text(size = 12),
+          axis.text = element_text(size = 10),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.text = element_text(size = 10),
+          legend.title = element_text(size = 10),
+          legend.justification = c("right", "top"),
+          legend.position = c(.98,.98),
+          legend.box.background = element_rect(colour = "black"),
+          legend.spacing.y = unit(0, 'cm'),
+          legend.key.size = unit(0.8, "line"),
+          panel.grid.minor.x = element_blank(),
+          panel.grid.minor.y = element_blank()) 
+  
+  if(i == 1) p1 <- p
+  if(i == 2) p2 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2))) 
+  if(i == 3) p3 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)), limits = c(1,10)) 
+  if(i == 4) p4 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)), limits = c(1,10)) 
+}
+
+p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            # angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+p6 <- ggplot(data.frame(l = "Probability Given Detected at least Once", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+layout <- "
+ABC
+ADE
+#FF
+"
+
+p6 + p1 + p2 + p3 + p4 + p5 + plot_layout(design = layout,
+                                          widths = c(1,25,25),
+                                          heights = c(25,25,1))
+
+
+#############
+#### RFS ####
+#############
+
+rm(list=ls())
+
+setwd("/media/nathan/T7/path_integral/improvedPDetectedAlphaNE")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("selCoef", "Ne", "time", "start", 
+                   "thresh", "pintAUC", "pintdetected", 
+                   "numAUC", "numdetected", "statDist")
+master$popalpha = 2 * master$Ne * master$selCoef
+rm(tmp)
+
+master <- master %>% filter(selCoef == 1e-2)
+
+df <- data.table()
+for(i in 1:nrow(master)){
+  tmp <- master[i,]
+  for(reps in c(5, 10, 15, 20)){
+    for(j in 0:reps){
+      foo <- data.table(reps = paste(reps, " Replicates"),
+                        reps_number = reps,
+                        bin = j,
+                        selCoef = tmp$selCoef,
+                        Ne = tmp$Ne,
+                        prob = choose(reps, j) * 
+                          tmp$pintdetected^j * 
+                          (1 - tmp$pintdetected)^(reps - j))
+      df <- dplyr::bind_rows(df, foo)
+    }
+  }
+}
+rm(foo, tmp, file, i, j)
+
+df <- df %>% filter(Ne != 250)
+
+dfdetected <- df %>% filter(bin > 0) %>% 
+  group_by(reps, Ne) %>% 
+  mutate(pintdetected = sum(prob)) %>% 
+  mutate(prob = prob / pintdetected,
+         # # bin = as.factor(bin),
+         Ne = as.factor(Ne),
+         reps = as.factor(reps)) %>% ungroup() 
+dfdetected$reps <- factor(dfdetected$reps, 
+                          levels = levels(dfdetected$reps)[c(4,1,2,3)])
+
+dfnotdetected <- df %>% filter(bin == 0) %>% 
+  mutate(reps = as.factor(reps),
+         Ne = as.factor(Ne))
+
+for(i in 1:4){
+  tmpdetected <- dfdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  tmpnotdetected <- dfnotdetected %>% filter(reps == levels(dfdetected$reps)[i])
+  
+  p <- ggplot(tmpdetected, aes(y=prob, x=bin, color = Ne,
+                               group = Ne)) + 
+    geom_line(alpha = 0.6,
+              size = 1.5) + 
+    geom_point(alpha=1,
+               size = 2.5) +
+    facet_wrap(~ reps, 
+               scales="free_x") + 
+    theme_bw() + 
+    scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1)) + 
+    scale_color_manual(values = turbo(10)[c(2,4,7,9)],
+                       labels = paste(levels(dfnotdetected$Ne),
+                                      "              ",
+                                      formatC(round(1-tmpnotdetected$prob[c(1,3,4,2)],3),
+                                              3,format="f"), 
+                                      "             ",
+                                      sep ="")) +  
+    xlab("Number of Replicates Detected") + 
+    ylab("Probability Given Detected at least Once") + 
+    guides(color=guide_legend(title = bquote("   "~N[e]~"    P(detected > 0 times)"),
+                              override.aes = list(alpha=1,
+                                                  linewidth = 0.75,
+                                                  size = 1.25),
+                              label.position = "left")) +
+    theme(axis.title = element_blank(),
+          title = element_text(size = 12),
+          axis.text = element_text(size = 10),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.text = element_text(size = 10),
+          legend.title = element_text(size = 10),
+          legend.justification = c("right", "top"),
+          legend.position = c(.98,.98),
+          legend.box.background = element_rect(colour = "black"),
+          legend.spacing.y = unit(0, 'cm'),
+          legend.key.size = unit(0.8, "line"),
+          panel.grid.minor.x = element_blank(),
+          panel.grid.minor.y = element_blank()) 
+  
+  if(i == 1) p1 <- p
+  if(i == 2) p2 <- p + scale_x_continuous(breaks = c(1, seq(2,10,by = 2)))
+  if(i == 3) p3 <- p + scale_x_continuous(breaks = seq(1,15,by = 2))
+  if(i == 4) p4 <- p + scale_x_continuous(breaks = c(1, seq(2,20,by = 2)))
+}
+
+p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            # angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+p6 <- ggplot(data.frame(l = "Probability Given Detected at least Once", 
+                        x = 1, y = 1)) +
+  geom_text(aes(x, y, label = l), 
+            angle = 90,
+            size = 5 / 14 * 12) + 
+  theme_void() +
+  coord_cartesian(clip = "off")
+
+layout <- "
+ABC
+ADE
+#FF
+"
+
+p6 + p1 + p2 + p3 + p4 + p5 + plot_layout(design = layout,
+                                          widths = c(1,25,25),
+                                          heights = c(25,25,1))
