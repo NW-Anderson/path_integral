@@ -79,6 +79,7 @@ ggplot(master, aes(x = end, y = dens)) +
         axis.title = element_text(size=12),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         legend.text = element_text(size = 10),
         legend.title = element_text(size = 12),
         legend.justification = c("right", "top"),

@@ -966,6 +966,25 @@ p4
 ####################
 #### Linked RFS ####
 ####################
+rm(list=ls())
+
+setwd("~/Documents/GitHub/path_integral/results/improvedPDetectionAlphaVG")
+list.files()
+master <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  master <- dplyr::bind_rows(master, tmp)
+}
+names(master) <- c("alpha", "VG", "start", 
+                   "time", "thresh", "pintAUC", 
+                   "pintDetected", "numAUC", "numDetected",
+                   "statDist")
+master$popalpha = 1000 * master$alpha
+rm(tmp, file)
+
+thresh <- 0.1 + unique(master$thresh)
+rm(master)
+
 setwd("/media/nathan/T7/path_integral/simulations/out")
 
 allele_freqs <- fread("linked_positive_eff_09_11.csv.gz")  %>% 
@@ -975,14 +994,25 @@ allele_freqs <- fread("linked_positive_eff_09_11.csv.gz")  %>%
          selCoef = case_when(group_id %in% c("U=0.025_a=0.01", "U=0.0025_a=0.01") ~ "\u03b1 = 0.01",
                              group_id %in% c("U=0.025_a=0.005", "U=0.0025_a=0.005") ~ "\u03b1 = 0.005"))
 
-setwd("/media/nathan/T7/path_integral/simulations/out/pintComparison")
-
-pints <- fread("linked_sim_pint_densities.csv") %>% 
-  mutate(clr = "2",
-         bigU = case_when(Scenario %in% c(1,2) ~ "U = 0.0025",
-                          Scenario %in% c(3,4) ~ "U = 0.025"),
-         selCoef = case_when(Scenario %in% c(1,3) ~ "\u03b1 = 0.005",
-                             Scenario %in% c(2,4) ~ "\u03b1 = 0.01"))
+cases <- unique(allele_freqs$group_id)
+master <- data.frame()
+for(i in cases){
+  df <- allele_freqs %>% filter(group_id == i)
+  for(j in 1:10000){
+    tmp <- df %>% filter(seed == sample(seed,1)) %>% 
+      filter(site == sample(site,1),
+             deme %in% sample(1:100, 10)) %>%
+      mutate(detected = end >= thresh)
+    
+    print(paste(i,j, sum(tmp$detected), sep = " : "))
+    master <- dplyr::bind_rows(master,
+                               data.frame(case = i,
+                                          rep = j,
+                                          num_detected = sum(tmp$detected)))
+    
+                         
+  }
+}
 
 df <- data.table()
 for(i in 1:nrow(master)){
