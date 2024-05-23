@@ -588,6 +588,8 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
   scale_y_continuous("Density", 
                      limits = c(0,max(pints$Dens) * 1.05),
                      expand = (c(0,0))) +
+  labs(
+    title = "Neutral") +
   theme_bw() +
   guides(color=guide_legend(title = element_blank(),
                             override.aes = list(alpha=1,
