@@ -163,9 +163,9 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
   geom_vline(data = group_means, aes(xintercept = mn), 
              linetype = "dashed",
              color = turbo(10)[2]) +
-  geom_vline(xintercept = 0.1,
-             linetype = "dashed",
-             color = "gray80") +
+  # geom_vline(xintercept = 0.1,
+  #            linetype = "dashed",
+  #            color = "gray80") +
   # geom_density(data = allele_freqs, show.legend = F, size = 1.25,
   #              alpha = 0.75) + 
   geom_line(data = tmp, aes(x = x, y = y, color = clr),
@@ -178,7 +178,7 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
             size = 1.25,
             alpha = 0.75) +
   labs(
-    title = "Linked") +
+    title = "Linked Simulation") +
   guides(color=guide_legend(title = element_blank(),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
@@ -200,9 +200,9 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
                                 "Polygenic\n Selection",
                                 "Genic")) + 
   theme(text = element_text(family = "LM Roman 10"),
-        axis.title = element_text(size=12),
-        title = element_text(size = 12),
-        axis.text = element_text(size = 10),
+        axis.title = element_text(size=10),
+        title = element_text(size = 10),
+        axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
@@ -212,7 +212,7 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
         legend.spacing.y = unit(0, 'cm'),
         legend.key.size = unit(0.8, "line"),
         panel.grid = element_blank(),
-        strip.text = element_text(size = 12))  
+        strip.text = element_text(size = 10))  
 
 p1
 
@@ -377,9 +377,9 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
   geom_vline(data = group_means, aes(xintercept = mn), 
              linetype = "dashed",
              color = turbo(10)[2]) + 
-  geom_vline(xintercept = 0.1,
-             linetype = "dashed",
-             color = "gray80") +
+  # geom_vline(xintercept = 0.1,
+  #            linetype = "dashed",
+  #            color = "gray80") +
   # geom_density(data = allele_freqs, show.legend = F, size = 1.25,
   #              alpha = 0.75) + 
   geom_line(data = tmp, aes(x = x, y = y, color = clr),
@@ -392,7 +392,7 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
             size = 1.25,
             alpha = 0.75) + 
   labs(
-    title = "Unlinked") +
+    title = "Unlinked Simulation") +
   scale_x_continuous("Ending Frequency",
                      breaks = seq(0,1,0.1),
                      labels = c(0,expression(italic(x) == 0.1), seq(0.2,1,by = 0.1)),
@@ -414,9 +414,9 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
                                 "Polygenic\n Selection",
                                 "Genic")) + 
   theme(text = element_text(family = "LM Roman 10"),
-        axis.title = element_text(size=12),
-        title = element_text(size = 12),
-        axis.text = element_text(size = 10),
+        axis.title = element_text(size=10),
+        title = element_text(size = 10),
+        axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
@@ -426,7 +426,7 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
         legend.spacing.y = unit(0, 'cm'),
         legend.key.size = unit(0.8, "line"),
         panel.grid = element_blank(),
-        strip.text = element_text(size = 12)) 
+        strip.text = element_text(size = 10)) 
 
 p2
 
@@ -561,9 +561,9 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
   geom_vline(data = pint_means, aes(xintercept = expectation),
              linetype = "dashed",
              color = turbo(10)[4]) +
-  geom_vline(xintercept = 0.1,
-             linetype = "dashed",
-             color = "gray80") +
+  # geom_vline(xintercept = 0.1,
+  #            linetype = "dashed",
+  #            color = "gray80") +
   geom_line(data = tmp, aes(x = x, y = y, color = clr),
             size = 1.25,
             alpha = 0.75) +
@@ -589,7 +589,7 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
                      limits = c(0,max(pints$Dens) * 1.05),
                      expand = (c(0,0))) +
   labs(
-    title = "Neutral") +
+    title = "Neutral Simulation") +
   theme_bw() +
   guides(color=guide_legend(title = element_blank(),
                             override.aes = list(alpha=1,
@@ -603,9 +603,9 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
                                 "Kimura's\n Solution",
                                 "Neutral\n Simulation")) +
   theme(text = element_text(family = "LM Roman 10"),
-        axis.title = element_text(size=12),
-        title = element_text(size = 12),
-        axis.text = element_text(size = 10),
+        axis.title = element_text(size=10),
+        title = element_text(size = 10),
+        axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
@@ -615,7 +615,7 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
         legend.spacing.y = unit(0, 'cm'),
         legend.key.size = unit(0.8, "line"),
         panel.grid = element_blank(),
-        strip.text = element_text(size = 12)) 
+        strip.text = element_text(size = 10)) 
 
 p3
 
@@ -827,9 +827,9 @@ p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
                                    "diff",
                                    "same")) +
   theme(text = element_text(family = "LM Roman 10"),
-        axis.title = element_text(size=12),
-        title = element_text(size = 12),
-        axis.text = element_text(size = 10),
+        axis.title = element_text(size=10),
+        title = element_text(size = 10),
+        axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
         legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
@@ -839,7 +839,7 @@ p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
         legend.spacing.y = unit(0, 'cm'),
         legend.key.size = unit(0.8, "line"),
         panel.grid= element_blank(),
-        strip.text = element_text(size = 12)) + 
+        strip.text = element_text(size = 10)) + 
   guides(color = guide_legend(title = element_blank(),
                               ncol = 2,
                               override.aes = list(alpha = 1,
@@ -854,7 +854,7 @@ p4
 (p1 + p2) / (p4 + p3) + 
   plot_annotation(tag_levels = 'A')  &
   theme(plot.tag = element_text(size = 12),
-        # plot.margin = margin(0, 0, 0, 0, "pt")
+        plot.margin = margin(0, 5.5, 0, 5.5, "pt")
         )
 
 # setwd("/media/nathan/T7/path_integral")

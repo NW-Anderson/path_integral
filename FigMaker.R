@@ -62,13 +62,16 @@ for(file in list.files()){
                                         end = end))
 }
 
+textScale <- 1.5
+
 ggplot(master, aes(x = end, y = dens)) + 
   geom_line(aes(color = vg),
             alpha = 0.75,
             size = 1.5) +
   theme_bw() +
   guides(color=guide_legend(title = bquote(italic(V[G])),
-                            override.aes = list(alpha=1))) +
+                            override.aes = list(alpha=1),
+                            ncol = 2)) +
   scale_x_continuous("Ending Frequency",
                      expand = c(0,0)) + 
   scale_y_continuous("Density",
@@ -76,18 +79,20 @@ ggplot(master, aes(x = end, y = dens)) +
                      limits = c(0,2.35)) + 
   scale_color_manual(values = turbo(10)[c(2,3,4,7,8,9)]) + 
   theme(text = element_text(family = "LM Roman 10"),
-        axis.title = element_text(size=12),
-        title = element_text(size = 12),
-        axis.text = element_text(size = 10),
+        axis.title = element_text(size= textScale * 12),
+        title = element_text(size = textScale * 12),
+        axis.text = element_text(size = textScale * 10),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 12),
+        legend.text = element_text(size = textScale * 10),
+        legend.title = element_text(size = textScale * 12),
         legend.justification = c("right", "top"),
         legend.position = c(.98,.98),
         legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
         panel.grid = element_blank()) 
 
-
+         
 ####################################
 ####### pDetection Alpha VG #######
 ####################################
@@ -136,7 +141,7 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20),
                      expand = c(0.05,0)) +
-  scale_y_continuous("P(detected)",
+  scale_y_continuous("Probability Detected\n(Q)",
                      # breaks = seq(0,0.3,by = 0.05),
                      expand = c(0,0), 
                      limits = c(0,max(numDf$yval)*1.05)) +
@@ -912,7 +917,7 @@ p1 <- ggplot(data = master, aes(x = Ne, y = pintdetected)) +
   theme_bw() +
   scale_x_continuous(bquote(N[e]),
                      breaks = c(100,200, 250, 500, 1000)) +
-  scale_y_continuous("P(detected)") +
+  scale_y_continuous("Probability Detected\n(Q)") +
   guides(color=guide_legend(title = "\u03b1",
                             override.aes = list(linewidth = 0.75))) +
   scale_color_manual(values = turbo(10)[c(2,4,6,7,9)]) +     
