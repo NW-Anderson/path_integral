@@ -72,7 +72,7 @@ ggplot(master, aes(x = end, y = dens)) +
   guides(color=guide_legend(title = bquote(italic(V[G])),
                             override.aes = list(alpha=1),
                             ncol = 2)) +
-  scale_x_continuous("Ending Frequency",
+  scale_x_continuous("Ending frequency",
                      expand = c(0,0)) + 
   scale_y_continuous("Density",
                      expand = c(0,0),
@@ -141,7 +141,7 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20),
                      expand = c(0.05,0)) +
-  scale_y_continuous("Probability Detected\n(Q)",
+  scale_y_continuous("Probability detected\n(Q)",
                      # breaks = seq(0,0.3,by = 0.05),
                      expand = c(0,0), 
                      limits = c(0,max(numDf$yval)*1.05)) +
@@ -294,7 +294,7 @@ p2 <- ggplot(data = pintDf, aes(x = time, y = pintDetected)) +
              size  = 0.75,
              alpha = 0.6) + 
   theme_bw() +
-  scale_x_continuous("Time\n(Genomic Units)",
+  scale_x_continuous("Time\n(genomic units)",
                      expand = c(0.05,0)) +
   scale_y_continuous("P(detected)",
                      expand = c(0,0),
@@ -435,7 +435,7 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
              linetype="dashed",
              size  = 0.75) + 
   theme_bw() +
-  scale_x_continuous("Starting Frequency", 
+  scale_x_continuous("Starting frequency", 
                      breaks = c(0.025,0.05,0.1,0.15,0.20), 
                      labels = c(0.025,0.05,0.1,0.15,0.20),
                      expand = c(0.05,0)) +
@@ -1200,20 +1200,20 @@ for(i in 1:4){
           panel.grid.major.x = element_blank(),
           panel.grid.minor.y = element_blank()) 
   
-  if(i == 1) p1 <- p + labs(title = bquote(5 ~ `Replicates,` ~ italic(N[e]) == 1000))
+  if(i == 1) p1 <- p + labs(title = bquote(5 ~ `replicates,` ~ italic(N[e]) == 1000))
   if(i == 2) p2 <- p + scale_x_continuous(breaks =  seq(0,10,by = 2)) + 
-    labs(title = bquote(10 ~ "Replicates," ~ italic(N[e]) == ~ "500")) + 
+    labs(title = bquote(10 ~ "replicates," ~ italic(N[e]) == ~ "500")) + 
     guides(color=guide_legend(title = expression(italic(alpha)),
                               override.aes = list(alpha=1,
                                                   linewidth = 0.75,
                                                   size = 1.25))) 
-  if(i == 3) p3 <- p + labs(title = bquote(25 ~ `Replicates,` ~ italic(N[e]) == 200)) + 
+  if(i == 3) p3 <- p + labs(title = bquote(25 ~ `replicates,` ~ italic(N[e]) == 200)) + 
       scale_x_continuous(breaks = seq(0,10,by = 2), limits = c(0,10)) 
-  if(i == 4) p4 <- p + labs(title = bquote(50 ~ `Replicates,` ~ italic(N[e]) == 100)) +
+  if(i == 4) p4 <- p + labs(title = bquote(50 ~ `replicates,` ~ italic(N[e]) == 100)) +
     scale_x_continuous(breaks = seq(0,10,by = 2), limits = c(0,10)) 
 }
 
-p5 <- ggplot(data.frame(l = "Number of Replicates Detected", 
+p5 <- ggplot(data.frame(l = "Number of replicates detected", 
                         x = 1, y = 1)) +
   geom_text(aes(x, y, label = l), 
             # angle = 90,
@@ -1408,14 +1408,14 @@ ggplot(df, aes(x = x, y = y)) +
             linewidth = 2,
             alpha = 0.75) +
   scale_color_manual(values = c(rep(the_colors[1],2), the_colors[2]),
-                     labels=c("Shifted Fitness\n Function",
-                              "Initial Fitness\n Function",
-                              "Initial Trait\n Distribution"),
+                     labels=c("Shifted fitness\n function",
+                              "Initial fitness\n function",
+                              "Initial trait\n distribution"),
                      name = "") +
   scale_linetype_manual(values = c("dotted", rep("solid",2)),
-                        labels=c("Shifted Fitness\n Function",
-                                 "Initial Fitness\n Function",
-                                 "Initial Trait\n Distribution"),
+                        labels=c("Shifted fitness\n function",
+                                 "Initial fitness\n function",
+                                 "Initial trait\n distribution"),
                         name = "") +
   theme_bw() +
   theme(text = element_text(family = "LM Roman 10"),
@@ -1431,9 +1431,9 @@ ggplot(df, aes(x = x, y = y)) +
         panel.grid.major.y = element_blank(),
         panel.border = element_blank()) + 
   scale_x_continuous(breaks = c(0,1),
-                     labels = c("0" = "Old\nOptimum", 
-                                "1" = "New\nOptimum"),
-                     name = "Trait Value") +
+                     labels = c("0" = "Old\noptimum", 
+                                "1" = "New\noptimum"),
+                     name = "Trait value") +
   guides(linetype = guide_legend(override.aes = list(linewidth = 2,
                                                      linetype = "solid"),
                                  nrow = 1)) +

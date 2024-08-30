@@ -178,14 +178,16 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
             size = 1.25,
             alpha = 0.75) +
   labs(
-    title = "Linked Simulation") +
+    title = "Linked simulation") +
   guides(color=guide_legend(title = element_blank(),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
-                                                linewidth = 0.75),
-                            by_row =T,
-                            keyheight = 1.75)) +
-  scale_x_continuous("Ending Frequency",
+                                                linewidth = 0.75)
+                            # ,
+                            # by_row =T,
+                            # keyheight = 1.75
+                            )) +
+  scale_x_continuous("Ending frequency",
                      breaks = seq(0,1,0.1),
                      labels = c(0,expression(italic(x) == 0.1), seq(0.2,1,by = 0.1)),
                      limits = c(0,0.5), 
@@ -198,15 +200,15 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
                                 turbo(10)[8],  
                                 turbo(10)[4]),
                      name = "",
-                     labels = c("Linked\n   Simulation",
-                                "Polygenic\n   Selection",
+                     labels = c("Linked simulation",
+                                "Polygenic selection",
                                 "Genic")) + 
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=10),
         title = element_text(size = 10),
         axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        legend.text = element_text(size = 10),
+        legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
         legend.justification = c("right", "top"),
         legend.position = c(.99,.99),
@@ -394,8 +396,8 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
             size = 1.25,
             alpha = 0.75) + 
   labs(
-    title = "Unlinked Simulation") +
-  scale_x_continuous("Ending Frequency",
+    title = "Unlinked simulation") +
+  scale_x_continuous("Ending frequency",
                      breaks = seq(0,1,0.1),
                      labels = c(0,expression(italic(x) == 0.1), seq(0.2,1,by = 0.1)),
                      limits = c(0,0.5), 
@@ -407,22 +409,24 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
   guides(color=guide_legend(title = element_blank(),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
-                                                linewidth = 0.75),
-                            by_row =T,
-                            keyheight = 1.75)) +
+                                                linewidth = 0.75)
+                            # ,
+                            # by_row =T,
+                            # keyheight = 1.75
+                            )) +
   scale_color_manual(values = c(turbo(10)[2],  
                                 turbo(10)[8], 
                                 turbo(10)[4]),
                      name = "",
-                     labels = c("Unlinked\n Simulation",
-                                "Polygenic\n Selection",
+                     labels = c("Unlinked simulation",
+                                "Polygenic selection",
                                 "Genic")) + 
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=10),
         title = element_text(size = 10),
         axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        legend.text = element_text(size = 10),
+        legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
         legend.justification = c("right", "top"),
         legend.position = c(.99,.99),
@@ -583,7 +587,7 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
   geom_line(data = pints, aes(x = end_freq, y = Dens, color = clr),
             size = 1.25,
             alpha = 0.75) +
-  scale_x_continuous("Ending Frequency",
+  scale_x_continuous("Ending frequency",
                      breaks = seq(0,1,0.1),
                      labels = c(0,expression(italic(x) == 0.1), 
                                 seq(0.2,1,by = 0.1)),
@@ -593,27 +597,29 @@ p3 <- ggplot(data = allele_freqs, aes(x = end_freq, color = clr)) +
                      limits = c(0,max(pints$Dens) * 1.05),
                      expand = (c(0,0))) +
   labs(
-    title = "Neutral Simulation") +
+    title = "Neutral simulation") +
   theme_bw() +
   guides(color=guide_legend(title = element_blank(),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
-                                                linewidth = 0.75),
-                            by_row =T,
-                            keyheight = 1.75)) +
+                                                linewidth = 0.75)
+                            # ,
+                            # by_row =T,
+                            # keyheight = 1.75
+                            )) +
   scale_color_manual(values = c(turbo(10)[8],
                                 turbo(10)[4],
                                 turbo(10)[2]),
                      name = "",
-                     labels = c("Neutral +\n Linked\n Simulation",
-                                "Kimura's\n Solution",
-                                "Neutral\n Simulation")) +
+                     labels = c("Neutral + linked\n simulation",
+                                "Kimura's solution",
+                                "Neutral simulation")) +
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=10),
         title = element_text(size = 10),
         axis.text = element_text(size = 8),
         axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        legend.text = element_text(size = 10),
+        legend.text = element_text(size = 8),
         legend.title = element_text(size = 10),
         legend.justification = c("right", "top"),
         legend.position = c(.99,.99),
@@ -796,9 +802,9 @@ p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
   geom_line(data = momentsDf, aes(x = rho, y = ld, color = class, linetype = class),
             size = 3, alpha = 0.5) +
   theme_bw() + 
-  xlab(bquote("Recombination Distance (4" * italic(N) * italic(r) * ")")) + 
+  xlab(bquote("Recombination distance (4" * italic(N) * italic(r) * ")")) + 
   ylab(bquote(bar(sigma)[italic(D)]^1)) +
-  labs(title = "Linkage Disequilibrium",
+  labs(title = "Linkage disequilibrium",
        linetype = "class",
        color = "class") +
   scale_x_log10() + 
@@ -811,8 +817,8 @@ p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
                      labels = c("+/-",
                                 "-/-",
                                 "+/+",
-                                "Pred. Diff.",
-                                "Pred. Same"),
+                                "Pred. diff.",
+                                "Pred. same"),
                      breaks = c("posneg",
                                 "neg",
                                 "pos",
@@ -825,8 +831,8 @@ p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
                         labels = c("+/-",
                                    "-/-",
                                    "+/+",
-                                   "Pred. Diff.",
-                                   "Pred. Same"),
+                                   "Pred. diff.",
+                                   "Pred. same"),
                         breaks = c("posneg",
                                    "neg",
                                    "pos",
