@@ -586,6 +586,28 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, df)
 }
 
+setwd("/media/nathan/T7/path_integral/MC/data")
+tmp <- fread("2na1_vg-3_gen20_1_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 time = 0.02,
+                 geg = rep(paste("geg", c(10,50), sep = ""), 
+                           each = length(tmp)),
+                 end = 1:99/100,
+                 selcoef = 1)
+master <- dplyr::bind_rows(master, df)
+tmp <- fread("2na10_vg-3_gen20-50-150_1_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 time = 0.02,
+                 geg = rep(paste("geg", c(10,50), sep = ""), 
+                           each = length(tmp)),
+                 end = 1:99/100,
+                 selcoef = 10)
+master <- dplyr::bind_rows(master, df)
+
 my_labeller = as_labeller(
   c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
     "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
@@ -594,21 +616,30 @@ my_labeller = as_labeller(
   default = label_parsed
 )
 
+# tmp <- master %>% filter(k %in% c("1"))
+
 ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
              linetype="dashed", size  = 0.75) +
-  geom_line(aes(color = k),
+  geom_line(aes(color = k, 
+                linewidth = k, 
+                linetype = k),
             alpha = 0.6,
-            linewidth = 1.5) + 
+            # linewidth = 1.5
+            ) + 
   facet_grid(rows=vars(geg),
              cols=vars(selcoef),
              labeller = my_labeller) +
   coord_cartesian(ylim=c(-2,10)) +
   theme_bw() + 
-  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
+  scale_color_manual(values = turbo(11)[c(2,3,4,6,7,8,9,10)]) + 
+  scale_linetype_manual(values = c(rep("solid",6), "11", "33")) +
+  scale_linewidth_manual(values = c(rep(1.5, 6), rep(1,2))) + 
   guides(color=guide_legend(title = bquote(k[max]),
                             override.aes = list(linewidth = 0.75),
-                            ncol = 2)) +
+                            ncol = 2),
+         linetype = "none",
+         linewidth = "none") +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = "20 Generations") +
@@ -672,6 +703,44 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, df)
 }
 
+setwd("/media/nathan/T7/path_integral/MC/data")
+tmp <- fread("2na10_vg-2_gen200_1_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 vg = 1e-2,
+                 geg = "geg50",
+                 end = 1:99/100,
+                 selcoef = 10)
+master <- dplyr::bind_rows(master, df)
+tmp <- fread("2na10_vg-4_gen200_1_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 vg = 1e-4,
+                 geg = "geg50",
+                 end = 1:99/100,
+                 selcoef = 10)
+master <- dplyr::bind_rows(master, df)
+tmp <- fread("2na1_vg-2_gen200_1_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 vg = 1e-2,
+                 geg = "geg50",
+                 end = 1:99/100,
+                 selcoef = 1)
+master <- dplyr::bind_rows(master, df)
+tmp <- fread("2na1_vg-4_gen200_1_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 vg = 1e-4,
+                 geg = "geg50",
+                 end = 1:99/100,
+                 selcoef = 1)
+master <- dplyr::bind_rows(master, df)
+
 my_labeller = as_labeller(
   c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
     "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
@@ -683,18 +752,25 @@ my_labeller = as_labeller(
 ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
              linetype="dashed", size  = 0.75) +
-  geom_line(aes(color = k),
+  geom_line(aes(color = k,
+                linetype = k,
+                linewidth = k),
             alpha = 0.6,
-            linewidth = 1.5) + 
+            # linewidth = 1.5
+            ) + 
   facet_grid(rows=vars(vg),
              cols=vars(selcoef),
              labeller = my_labeller) +
   coord_cartesian(ylim=c(-2,10)) +
   theme_bw() + 
-  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
+  scale_color_manual(values = turbo(11)[c(2,3,4,6,7,8,9,10)]) + 
+  scale_linetype_manual(values = c(rep("solid",6), "11", "33")) +
+  scale_linewidth_manual(values = c(rep(1.5, 6), rep(1,2))) + 
   guides(color=guide_legend(title = bquote(k[max]),
                             override.aes = list(linewidth = 0.75),
-                            ncol = 2)) +
+                            ncol = 2),
+         linewidth = "none",
+         linetype = "none") +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = "200 Generations") +
@@ -771,7 +847,9 @@ ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
              linetype="dashed",
              size  = 0.75) +
-  geom_line(aes(color = k),
+  geom_line(aes(color = k,
+                linetype = k,
+                linewidth = k),
             alpha = 0.6,
             linewidth = 1.5) + 
   facet_grid(rows=vars(geg),
@@ -779,10 +857,14 @@ ggplot(master, aes(x = end, y = dens)) +
              labeller = my_labeller) +
   coord_cartesian(ylim=c(-0.25,2)) +
   theme_bw() + 
-  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
+  scale_color_manual(values = turbo(11)[c(2,3,4,6,7,8,10)]) + 
+  scale_linetype_manual(values = c(rep("solid",6), "33")) +
+  scale_linewidth_manual(values = c(rep(1.5, 6), rep(1,1))) + 
   guides(color=guide_legend(title = bquote(k[max]),
                             override.aes = list(linewidth = 0.75),
-                            ncol = 2)) +
+                            ncol = 2),
+         linetype = "none",
+         linewidth = "none") +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 5")) +
@@ -845,6 +927,26 @@ for(file in list.files()){
   master <- dplyr::bind_rows(master, df)
 }
 
+setwd("/media/nathan/T7/path_integral/MC/data")
+tmp <- fread("2na10_vg-3_gen20-50-150_2_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 time = 0.05,
+                 geg = rep(c(10,50), 
+                           each = length(tmp)),
+                 end = 1:99/100)
+master <- dplyr::bind_rows(master, df)
+tmp <- fread("2na10_vg-3_gen20-50-150_3_transMats.csv")
+tmp = tmp$V1
+df <- data.frame(dens = tmp,
+                 k = "MC",
+                 time = 0.15,
+                 geg = rep(c(10,50), 
+                           each = length(tmp)),
+                 end = 1:99/100)
+master <- dplyr::bind_rows(master, df)
+
 my_labeller = as_labeller(
   c("0.05" = "t==0.05",
     "0.15" = "t==0.15",
@@ -857,18 +959,25 @@ ggplot(master, aes(x = end, y = dens)) +
   geom_hline(yintercept=0, 
              linetype="dashed",
              size  = 0.75) +
-  geom_line(aes(color = k),
+  geom_line(aes(color = k,
+                linetype = k,
+                linewidth = k),
             alpha = 0.6,
-            linewidth = 1.5) + 
+            # linewidth = 1.5
+            ) + 
   facet_grid(rows=vars(geg),
              cols=vars(time),
              labeller = my_labeller) + 
   coord_cartesian(ylim=c(-2,6)) +
   theme_bw() + 
-  scale_color_manual(values = turbo(10)[c(2,3,4,6,7,8,9)]) + 
+  scale_color_manual(values = turbo(11)[c(2,3,4,6,7,8,9,10)]) + 
+  scale_linetype_manual(values = c(rep("solid",6), "11", "33")) +
+  scale_linewidth_manual(values = c(rep(1.5, 6), rep(1,2))) + 
   guides(color=guide_legend(title = bquote(k[max]),
                             override.aes = list(linewidth = 0.75),
-                            ncol = 2)) +
+                            ncol = 2),
+         linetype = "none",
+         linewidth = "none") +
   xlab("Ending Frequency") + 
   ylab("Density") +
   labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 10")) +
