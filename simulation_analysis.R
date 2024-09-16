@@ -201,7 +201,7 @@ p1 <- ggplot(data = allele_freqs, aes(x = end, color = clr)) +
                                 turbo(10)[4]),
                      name = "",
                      labels = c("Linked simulation",
-                                "Polygenic selection",
+                                "Path integral",
                                 "Genic")) + 
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=10),
@@ -419,7 +419,7 @@ p2 <- ggplot(data = allele_freqs, aes(x = end_freqs, color = clr)) +
                                 turbo(10)[4]),
                      name = "",
                      labels = c("Unlinked simulation",
-                                "Polygenic selection",
+                                "Path integral",
                                 "Genic")) + 
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=10),
