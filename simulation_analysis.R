@@ -779,6 +779,31 @@ d <- d %>% filter(bigU == "U = 0.025",
                             selCoef == "α = 0.01",
                   bin_mid <= 500)
 
+p <- d %>% filter(class == "pos") %>% 
+  rename(pmn = mn) %>% 
+  ungroup() %>%
+  select(!class) %>%
+  as.data.table() 
+  
+n <- d %>% filter(class == "neg") %>% 
+  rename(nmn = mn) %>% 
+  ungroup() %>%
+  select(!class) %>%
+  as.data.table() 
+
+pn <- d %>% filter(class == "posneg") %>% 
+  ungroup() %>%
+  select(!class) %>%
+  mutate(class = "Diff.") %>%
+  as.data.table() 
+
+tmp <- merge.data.table(p,n) %>%
+  mutate(mn = (pmn + nmn) / 2) %>%
+  select(!c(pmn,nmn)) %>%
+  mutate(class = "Same")
+
+d <- bind_rows(pn, tmp)
+
 setwd("/media/nathan/T7/path_integral/sigmaD_moments/take2")
 rhos <- fread("rhoval.csv") %>% unlist()
 LD_diff <- fread("MomentsLDdiff.csv") %>% unlist()
@@ -810,32 +835,27 @@ p4 <- ggplot(d, aes(x = bin_mid, y = mn, color = class, linetype = class)) +
   scale_x_log10() + 
   scale_color_manual(values = c(turbo(10)[8],
                                 turbo(10)[2],
-                                turbo(10)[4],
                                 turbo(10)[7],
                                 turbo(10)[3]),
                      name = "class",
-                     labels = c("+/-",
-                                "-/-",
-                                "+/+",
+                     labels = c("Diff.",
+                                "Same",
                                 "Pred. diff.",
                                 "Pred. same"),
-                     breaks = c("posneg",
-                                "neg",
-                                "pos",
+                     breaks = c("Diff.",
+                                "Same",
                                 "diff",
                                 "same")
                      ) +
   scale_linetype_manual(name = "class",
-                        values = c(rep("solid",3),
+                        values = c(rep("solid",2),
                                    rep("11",2)),
-                        labels = c("+/-",
-                                   "-/-",
-                                   "+/+",
+                        labels = c("Diff.",
+                                   "Same",
                                    "Pred. diff.",
                                    "Pred. same"),
-                        breaks = c("posneg",
-                                   "neg",
-                                   "pos",
+                        breaks = c("Diff.",
+                                   "Same",
                                    "diff",
                                    "same")) +
   theme(text = element_text(family = "LM Roman 10"),
