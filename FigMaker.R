@@ -55,10 +55,10 @@ for(file in list.files()){
   tmp <- fread(file) %>% unlist()
   master <- dplyr::bind_rows(master, 
                              data.frame(dens = tmp,
-                                        vg = factor(c(1e-4, 1e-3, 1e-2, 
-                                                      1e-1, "Genic", "Neutral"),
-                                                    levels = c("Genic", 1e-4, 1e-3, 1e-2, 
-                                                               1e-1, "Neutral")),
+                                        vg = factor(c(0.1, 1, 10, 
+                                                      100, "Genic", "Neutral"),
+                                                    levels = c("Genic", 0.1, 1, 10, 
+                                                               100, "Neutral")),
                                         end = end))
 }
 
@@ -69,7 +69,7 @@ ggplot(master, aes(x = end, y = dens)) +
             alpha = 0.75,
             size = 1.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(italic(V[G])),
+  guides(color=guide_legend(title = bquote(italic(2 * N[e] * V[G] * "/" *  V[S])),
                             override.aes = list(alpha=1),
                             ncol = 2)) +
   scale_x_continuous("Ending frequency",
@@ -125,6 +125,9 @@ numDf <- master %>% filter(VG == 1e-4,
 numDf$yval <- c(numDf[1,]$pintDetected,
                 numDf[2,]$numDetected)
 
+pintDf$VG <- 1000 * pintDf$VG
+numDf$VG <- 1000 * numDf$VG
+
 p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
@@ -137,7 +140,7 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
              size  = 0.75,
              alpha = 0.6) + 
   theme_bw() +
-  scale_x_continuous(bquote(italic(2 * N[e] * alpha * Lambda * "/" *  W)), 
+  scale_x_continuous(bquote(italic(2 * N[e] * alpha * Lambda * "/" *  V[S])), 
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20),
                      expand = c(0.05,0)) +
@@ -158,7 +161,7 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
             alpha = 0.6,
             size = 1.5,
             linetype = "dashed")  + 
-  guides(color=guide_legend(title = bquote(italic(V[G])),
+  guides(color=guide_legend(title = bquote(italic(2 * N[e] * V[G] * "/" *  V[S])),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
                                                 linewidth = 0.75))) +
@@ -211,6 +214,8 @@ summary(master$statDist)
 
 # master <- master %>% filter(VG != 1e-04)
 
+master$VG <- master$VG * 1000
+
 e1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
@@ -219,11 +224,11 @@ e1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
+  guides(color=guide_legend(title = bquote(2 * N[e] * V[G] * "/" *  V[S]),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
                                                 linewidth = 0.75))) +
-  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
+  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b /" * V[S]), 
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20)) +
   ylab("Statistical Distance") +
@@ -232,10 +237,7 @@ e1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) +
   theme(axis.title = element_text(size=12),
       title = element_text(size = 12),
       axis.text = element_text(size = 10),
-      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1,
-                                 colour = c(rep("black",1),
-                                            "red",
-                                            rep("black",4))),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
       legend.text = element_text(size = 8),
       legend.title = element_text(size = 10),
       legend.justification = c("left", "top"),
@@ -609,8 +611,8 @@ df <- data.frame(dens = tmp,
 master <- dplyr::bind_rows(master, df)
 
 my_labeller = as_labeller(
-  c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
-    "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
+  c("1" = "2 * N[e] * `\u03b1 \u039b /` * V[S] * `= 1`",
+    "10" = "2 * N[e] * `\u03b1 \u039b /` * V[S] * `= 10`",
     "geg10" = "m[max]==10",
     "geg50" = "m[max]==50"),
   default = label_parsed
@@ -742,10 +744,10 @@ df <- data.frame(dens = tmp,
 master <- dplyr::bind_rows(master, df)
 
 my_labeller = as_labeller(
-  c("1" = "2 * N[e] * `\u03b1 \u039b / W = 1`",
-    "10" = "2 * N[e] * `\u03b1 \u039b / W = 10`",
-    "1e-04" = "V[G] == 10^-4",
-    "0.01" = "V[G] == 10^-2"),
+  c("1" = "2 * N[e] * `\u03b1 \u039b /` * V[S] * `= 1`",
+    "10" = "2 * N[e] * `\u03b1 \u039b /` * V[S] * `= 10`",
+    "1e-04" = "2 * N[e] * V[G] * `/` * V[S] == 10^-1",
+    "0.01" = "2 * N[e] * V[G] * `/` * V[S] == 10^1"),
   default = label_parsed
 )
 
@@ -867,7 +869,7 @@ ggplot(master, aes(x = end, y = dens)) +
          linewidth = "none") +
   xlab("Ending Frequency") + 
   ylab("Density") +
-  labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 5")) +
+  labs(title = bquote(2 * N[e] * "\u03b1 \u039b /" * V[S] *  "= 5")) +
   theme(axis.title = element_text(size=12),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
@@ -980,7 +982,7 @@ ggplot(master, aes(x = end, y = dens)) +
          linewidth = "none") +
   xlab("Ending Frequency") + 
   ylab("Density") +
-  labs(title = bquote(2 * N[e] * "\u03b1 \u039b / W = 10")) +
+  labs(title = bquote(2 * N[e] * "\u03b1 \u039b /" * V[S] *  "= 10")) +
   theme(axis.title = element_text(size=12),
         title = element_text(size = 12),
         axis.text = element_text(size = 10),
@@ -1470,7 +1472,7 @@ p1 <- ggplot(data = master, aes(x = popalpha, y = statDist)) +
              size = 2.5) +
   theme_bw() +
   guides(color=F) +
-  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b / W"), 
+  scale_x_continuous(bquote(2 * N[e] * "\u03b1 \u039b /" * V[S]), 
                      breaks = c(0, 1, 5, 10, 15, 20), 
                      labels = c(0, 1, 5, 10, 15, 20)) +
   ylab("Statistical Distance") +
@@ -1570,6 +1572,7 @@ master$statDist <- statDist <- master$statDist %>%
   gsub("\\*\\^", "e", .) %>% 
   as.numeric()
 
+master$VG <- master$VG * 1000
 
 p3 <- ggplot(data = master, aes(x = k, y = statDist)) + 
   geom_line(aes(color = as.factor(VG)),
@@ -1579,7 +1582,7 @@ p3 <- ggplot(data = master, aes(x = k, y = statDist)) +
              alpha=1,
              size = 2.5) +
   theme_bw() +
-  guides(color=guide_legend(title = bquote(V[G]),
+  guides(color=guide_legend(title = bquote(2 * N[e] * V[G] * "/" *  V[S]),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
                                                 linewidth = 0.75),
