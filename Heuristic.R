@@ -150,29 +150,6 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
 
 p1
 
-setwd("~/Documents/GitHub/path_integral/results/heuristic/Selection")
-heurDf <- data.frame()
-for(file in list.files()){
-  tmp <- fread(file)
-  heurDf <- bind_rows(heurDf, tmp)
-}
-
-heurDf <- heurDf %>% rename(s = V1,
-                            pdet = V2,
-                            pdetlog = V3) %>%
-  mutate(s = 1000 * s) %>%
-  reshape2::melt(., measure.vars = c("pdet",
-                                     "pdetlog"))
-
-geom_point(data = heurDf, aes(x = s,
-                              y = value)) +
-  geom_line(data = heurDf, aes(x = s,
-                               y = value,
-                               linetype = variable)) + 
-  scale_linetype_discrete("Heuristic",
-                          labels = c("Exp.",
-                                     "Log.")) + 
-
 #########################
 #### pDetection Time ####
 #########################
@@ -312,6 +289,19 @@ master$statDist <- statDist <- master$statDist %>%
 # numDf$yval <- c(numDf[1,]$pintDetected,
 #                 numDf[2,]$numDetected)
 
+setwd("~/Documents/GitHub/path_integral/results/heuristic/start")
+heurDf <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  heurDf <- bind_rows(heurDf, tmp)
+}
+
+heurDf <- heurDf %>% rename(start = V1,
+                            pdet = V2,
+                            pdetlog = V3) %>%
+  reshape2::melt(., measure.vars = c("pdet",
+                                     "pdetlog"))
+
 p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) + 
   geom_line(aes(color = as.factor(VG)),
             alpha = 0.6,
@@ -329,8 +319,17 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
                      expand = c(0.05,0)) +
   scale_y_continuous("P(detected)",
                      expand = c(0,0),
-                     limits = c(0,max(master$pintDetected) * 1.05)) +
-  guides(color = F) + 
+                     limits = c(0,max(heurDf$value) * 1.05)) +
+  geom_point(data = heurDf, aes(x = start,
+                                y = value)) +
+  geom_line(data = heurDf, aes(x = start,
+                               y = value,
+                               linetype = variable)) + 
+  scale_linetype_discrete("Heuristic",
+                          labels = c("Exp.",
+                                     "Log.")) + 
+  guides(color = F,
+         linetype = F) + 
   scale_color_manual(values = turbo(10)[c(2,4,7,9)]) +
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=12),
@@ -349,67 +348,6 @@ p3 <- ggplot(data = master, aes(x = start, y = pintDetected)) +
 
 
 p3
-
-#####################
-#### Error Start ####
-#####################
-
-# rm(list=ls())
-
-setwd("~/Documents/GitHub/path_integral/results/improvedPDetectedStartVG")
-list.files()
-master <- data.frame()
-for(file in list.files()){
-  tmp <- fread(file)
-  master <- dplyr::bind_rows(master, tmp)
-}
-names(master) <- c("alpha", "VG", "start", 
-                   "time", "thresh", "pintAUC", 
-                   "pintDetected", "numAUC", "numDetected",
-                   "statDist")
-master$popalpha = 1000 * master$alpha
-rm(tmp, file)
-
-master$statDist <- statDist <- master$statDist %>% 
-  gsub('[{}]', '', .) %>% 
-  gsub("\\*\\^", "e", .) %>% 
-  as.numeric()
-
-summary(master$statDist)
-# plot(density(master$statDist))
-
-# master <- master %>% filter(VG != 1e-04)
-
-e3 <- ggplot(data = master, aes(x = start, y = statDist)) + 
-  geom_line(aes(color = as.factor(VG)),
-            alpha = 0.6,
-            size = 1.5) + 
-  geom_point(aes(color = as.factor(VG)),
-             alpha=1,
-             size = 2.5) +
-  theme_bw() +
-  guides(color=F) +
-  scale_x_continuous("Starting Frequency", 
-                     breaks = c(0.025,0.05,0.1,0.15,0.20), 
-                     labels = c(0.025,0.05,0.1,0.15,0.20)) +
-  ylab("Statistical Distance") +
-  scale_y_log10() + 
-  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
-  theme(axis.title = element_text(size=12),
-        axis.title.y = element_blank(),
-        title = element_text(size = 12),
-        axis.text = element_text(size = 10),
-        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 12),
-        legend.justification = c("left", "top"),
-        legend.position = c(.02,.98),
-        legend.box.background = element_rect(colour = "black"),
-        panel.grid.minor.x = element_blank(),
-        panel.grid.minor.y = element_blank())  + 
-  annotation_logticks(sides = "l") 
-
-e3 
 
 ########################
 #### pDetected Main ####
