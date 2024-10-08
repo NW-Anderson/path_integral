@@ -51,11 +51,11 @@ ggplot(df) +
 
 start = 0.1
 s = 0.01
-ne = 50
+ne = 500
 
 pfix = (1 - exp(-4 * ne * s * start)) / (1 - exp(-4 * ne * s))
 
-stochStart = rexp(10^1, pfix / start)
+stochStart = rexp(10^2, pfix / start)
 
 t <- 0:100
 
@@ -85,4 +85,5 @@ data.frame(x = seq(0,2,by = 0.01),
   theme_bw() + 
   xlab("Starting Freq") + 
   ylab("Density")
+
 
