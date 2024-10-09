@@ -422,3 +422,70 @@ p1 <- ggplot(data = heurDf) +
 p1
 
 #########################
+
+setwd("~/Documents/GitHub/path_integral/results/heuristic/poly")
+heurDf <- data.frame()
+for(file in list.files()){
+  tmp <- fread(file)
+  heurDf <- bind_rows(heurDf, tmp)
+}
+
+heurDf <- heurDf %>% rename(s = V1,
+                            start = V2,
+                            pdet = V3,
+                            pdetlog = V4,
+                            pdetMinus4 = V5,
+                            pdetMinus3 = V6,
+                            pdetMinus2 = V7,
+                            pdetMinus1 = V8) %>%
+  mutate(s = 1000 * s) %>%
+  reshape2::melt(., measure.vars = c("pdet",
+                                     "pdetlog",
+                                     "pdetMinus4",
+                                     "pdetMinus3",
+                                     "pdetMinus2",
+                                     "pdetMinus1"))
+
+p1 <- ggplot(data = heurDf) + 
+  theme_bw() +
+  scale_x_continuous(bquote(italic(2 * N[e] * s)),
+                     breaks = c(0, 1, 5, 10, 15, 20, 50, 100),
+                     labels = c(0, 1, 5, 10, 15, 20, 50, 100),
+                     expand = c(0.05,0)) +
+  scale_y_continuous("Probability detected\n(Q)",
+                     # breaks = seq(0,0.3,by = 0.05),
+                     expand = c(0,0), 
+                     limits = c(0,max(heurDf$value)*1.05)) +
+  geom_point(data = heurDf, aes(x = s,
+                                y = value)) +
+  geom_line(data = heurDf, aes(x = s,
+                               y = value,
+                               linetype = variable)) + 
+  scale_linetype_discrete("Heuristic",
+                          labels = c("Exp.",
+                                     "Log.",
+                                     "Genic")) +
+  # guides(color=guide_legend(title = bquote(italic(2 * N[e] * V[G] * "/" *  V[S])),
+  #                           override.aes = list(alpha=1,
+  #                                               size = 1.25,
+  #                                               linewidth = 0.75))) +
+  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+  theme(text = element_text(family = "LM Roman 10"),
+        axis.title = element_text(size=12),
+        title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.text = element_text(size = 8),
+        legend.title = element_text(size = 10),
+        legend.justification = c("left", "top"),
+        legend.position = c(.01,.99),
+        legend.box.background = element_rect(colour = "black"),
+        legend.spacing.y = unit(0, 'cm'),
+        legend.key.size = unit(0.8, "line"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank()) 
+
+p1
+
+#########################
