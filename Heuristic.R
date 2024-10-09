@@ -84,7 +84,7 @@ heurDf <- heurDf %>% rename(s = V1,
                             pdetlog = V3) %>%
   mutate(s = 1000 * s) %>%
   reshape2::melt(., measure.vars = c("pdet",
-                           "pdetlog"))
+                                     "pdetlog"))
 
 p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) + 
   geom_line(aes(color = as.factor(VG)),
@@ -125,8 +125,8 @@ p1 <- ggplot(data = pintDf, aes(x = popalpha, y = pintDetected)) +
                                y = value,
                                linetype = variable)) + 
   scale_linetype_discrete("Heuristic",
-                           labels = c("Exp.",
-                                      "Log.")) + 
+                          labels = c("Exp.",
+                                     "Log.")) + 
   guides(color=guide_legend(title = bquote(italic(2 * N[e] * V[G] * "/" *  V[S])),
                             override.aes = list(alpha=1,
                                                 size = 1.25,
@@ -444,32 +444,68 @@ heurDf <- heurDf %>% rename(s = V1,
                                      "pdetMinus4",
                                      "pdetMinus3",
                                      "pdetMinus2",
-                                     "pdetMinus1"))
+                                     "pdetMinus1")) %>%
+  mutate(lt = case_when(variable == "pdet" ~ 1,
+                        variable == "pdetlog" ~ 2,
+                        !(variable %in% c("pdet",
+                                          "pdetlog")) ~ 3))
 
-p1 <- ggplot(data = heurDf) + 
-  theme_bw() +
+heurDf$lt <- as.factor(heurDf$lt)
+
+
+# p1 <- 
+my_labeller = as_labeller(
+  c("0.01" = "p[0] * `= 0.01`",
+    "0.025" = "p[0] * `= 0.025`", 
+    "0.05" = "p[0] * `= 0.05`",
+    "0.1" = "p[0] * `= 0.1`"),
+  default = label_parsed
+)
+
+ggplot(heurDf) + 
+  theme_bw() + 
   scale_x_continuous(bquote(italic(2 * N[e] * s)),
-                     breaks = c(0, 1, 5, 10, 15, 20, 50, 100),
-                     labels = c(0, 1, 5, 10, 15, 20, 50, 100),
+                     breaks = c(1, 5, 10, 20, 30, 40, 50, 100),
+                     labels = c(1, 5, 10, 20, 30, 40, 50, 100),
                      expand = c(0.05,0)) +
-  scale_y_continuous("Probability detected\n(Q)",
+  scale_y_continuous("Probability detected\n(Q)"
+                     # ,
                      # breaks = seq(0,0.3,by = 0.05),
-                     expand = c(0,0), 
-                     limits = c(0,max(heurDf$value)*1.05)) +
+                     # expand = c(0,0)
+                     # , limits = c(0,max(heurDf$value)*1.05)
+  )+
   geom_point(data = heurDf, aes(x = s,
-                                y = value)) +
+                                y = value,
+                                color = variable)) + 
   geom_line(data = heurDf, aes(x = s,
                                y = value,
-                               linetype = variable)) + 
-  scale_linetype_discrete("Heuristic",
-                          labels = c("Exp.",
-                                     "Log.",
-                                     "Genic")) +
-  # guides(color=guide_legend(title = bquote(italic(2 * N[e] * V[G] * "/" *  V[S])),
-  #                           override.aes = list(alpha=1,
-  #                                               size = 1.25,
-  #                                               linewidth = 0.75))) +
-  scale_color_manual(values = turbo(10)[c(2,4,7,9)]) + 
+                               color = variable,
+                               linetype = variable)) +
+  scale_color_manual(bquote(italic(2 * N[e] * V[G] / V[S])),
+                     labels = c("Heur. (exp.)",
+                                "Heur (log.)",
+                                "0.1",
+                                "1",
+                                "10",
+                                "100"),
+                     values = c(rep("black",2),
+                                turbo(10)[c(2,4,7,10)])) +
+  scale_linetype_manual(bquote(italic(2 * N[e] * V[G] / V[S])),
+                        labels = c("Heur. (exp.)",
+                                   "Heur (log.)",
+                                   "0.1",
+                                   "1",
+                                   "10",
+                                   "100"),
+                        values = c("dotted",
+                                   "dashed",
+                                   rep("solid",4))) +
+  facet_wrap(vars(start),
+             scales = "free",
+             labeller = my_labeller) +
+  # guides(linetype = "none") + 
+  labs(color = bquote(italic(2 * N[e] * V[G] / V[S])),
+       linetype = bquote(italic(2 * N[e] * V[G] / V[S]))) +
   theme(text = element_text(family = "LM Roman 10"),
         axis.title = element_text(size=12),
         title = element_text(size = 12),
