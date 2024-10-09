@@ -465,8 +465,8 @@ my_labeller = as_labeller(
 ggplot(heurDf) + 
   theme_bw() + 
   scale_x_continuous(bquote(italic(2 * N[e] * s)),
-                     breaks = c(1, 5, 10, 20, 30, 40, 50, 100),
-                     labels = c(1, 5, 10, 20, 30, 40, 50, 100),
+                     breaks = c(1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100),
+                     labels = c(1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100),
                      expand = c(0.05,0)) +
   scale_y_continuous("Probability detected\n(Q)"
                      # ,
@@ -483,7 +483,7 @@ ggplot(heurDf) +
                                linetype = variable)) +
   scale_color_manual(bquote(italic(2 * N[e] * V[G] / V[S])),
                      labels = c("Heur. (exp.)",
-                                "Heur (log.)",
+                                "Heur (logistic)",
                                 "0.1",
                                 "1",
                                 "10",
@@ -492,7 +492,7 @@ ggplot(heurDf) +
                                 turbo(10)[c(2,4,7,10)])) +
   scale_linetype_manual(bquote(italic(2 * N[e] * V[G] / V[S])),
                         labels = c("Heur. (exp.)",
-                                   "Heur (log.)",
+                                   "Heur (logistic)",
                                    "0.1",
                                    "1",
                                    "10",
