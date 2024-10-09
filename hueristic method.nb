@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     61920,       1464]
-NotebookOptionsPosition[     57486,       1398]
-NotebookOutlinePosition[     57894,       1414]
-CellTagsIndexPosition[     57851,       1411]
+NotebookDataLength[     66633,       1574]
+NotebookOptionsPosition[     61386,       1498]
+NotebookOutlinePosition[     61790,       1514]
+CellTagsIndexPosition[     61747,       1511]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -517,8 +517,8 @@ Cell[BoxData[
       RowBox[{"[", "1", "]"}], "]"}]}]}], "\[IndentingNewLine]", 
    "]"}]}]], "Input",
  CellChangeTimes->{{3.937422499758951*^9, 3.937422525829399*^9}, {
-  3.9374228658378735`*^9, 3.9374228864223633`*^9}, {3.9374229362219353`*^9, 
-  3.9374229750240707`*^9}, {3.9374230418527565`*^9, 3.9374231063349533`*^9}},
+  3.9374228658378735`*^9, 3.9374228864223638`*^9}, {3.9374229362219353`*^9, 
+  3.9374229750240707`*^9}, {3.937423041852757*^9, 3.937423106334954*^9}},
  CellLabel->"In[11]:=",ExpressionUUID->"8e7bb278-3614-ac48-bef8-02db414b17cf"],
 
 Cell[CellGroupData[{
@@ -931,7 +931,7 @@ Cell[BoxData[
 \\\"ComplexInfinity\\\"}]\\) encountered.\"", 2, 20, 2, 27869834825698702329, 
    "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9373365403849173`*^9},
+ CellChangeTimes->{3.937336540384918*^9},
  CellLabel->
   "During evaluation of \
 In[20]:=",ExpressionUUID->"6cdd4ba3-71a6-e24e-8e80-6a88e3e04f1a"],
@@ -942,7 +942,7 @@ Cell[BoxData[
    "\"Infinite expression \\!\\(\\*FractionBox[\\\"1\\\", \\\"0\\\"]\\) \
 encountered.\"", 2, 20, 3, 27869834825698702329, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9373365403919177`*^9},
+ CellChangeTimes->{3.937336540391919*^9},
  CellLabel->
   "During evaluation of \
 In[20]:=",ExpressionUUID->"21b60e5b-0614-6a48-9ad3-7002771ff795"],
@@ -1015,7 +1015,7 @@ Cell[BoxData[
 \\\"::\\\", \\\"indet\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
 during this calculation.\"", 2, 20, 9, 27869834825698702329, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9373365420285406`*^9},
+ CellChangeTimes->{3.937336542028541*^9},
  CellLabel->
   "During evaluation of \
 In[20]:=",ExpressionUUID->"76b60271-fecd-514d-bb5e-3fc73535eaa2"],
@@ -1216,7 +1216,7 @@ Cell[BoxData[
 allowed by the MaxPoints or MinStepSize options for independent variable \
 \\!\\(\\*RowBox[{\\\"x\\\"}]\\).\"", 2, 14, 8, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.93742582486478*^9},
  CellLabel->
   "During evaluation of \
@@ -1230,7 +1230,7 @@ specified for the direction of independent variable \
 \\!\\(\\*RowBox[{\\\"x\\\"}]\\). Artificial boundary effects may be present \
 in the solution.\"", 2, 14, 9, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.9374258249055557`*^9},
  CellLabel->
   "During evaluation of \
@@ -1243,7 +1243,7 @@ Cell[BoxData[
 allowed by the MaxPoints or MinStepSize options for independent variable \
 \\!\\(\\*RowBox[{\\\"x\\\"}]\\).\"", 2, 14, 10, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.9374258526443653`*^9},
  CellLabel->
   "During evaluation of \
@@ -1257,7 +1257,7 @@ specified for the direction of independent variable \
 \\!\\(\\*RowBox[{\\\"x\\\"}]\\). Artificial boundary effects may be present \
 in the solution.\"", 2, 14, 11, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.9374258526851673`*^9},
  CellLabel->
   "During evaluation of \
@@ -1270,7 +1270,7 @@ Cell[BoxData[
 allowed by the MaxPoints or MinStepSize options for independent variable \
 \\!\\(\\*RowBox[{\\\"x\\\"}]\\).\"", 2, 14, 12, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.9374258818965855`*^9},
  CellLabel->
   "During evaluation of \
@@ -1283,7 +1283,7 @@ Cell[BoxData[
 \\\"::\\\", \\\"mxsst\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
 during this calculation.\"", 2, 14, 13, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.937425881903969*^9},
  CellLabel->
   "During evaluation of \
@@ -1297,7 +1297,7 @@ specified for the direction of independent variable \
 \\!\\(\\*RowBox[{\\\"x\\\"}]\\). Artificial boundary effects may be present \
 in the solution.\"", 2, 14, 14, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.937425881939247*^9},
  CellLabel->
   "During evaluation of \
@@ -1310,12 +1310,14 @@ Cell[BoxData[
 \\\"::\\\", \\\"bcart\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
 during this calculation.\"", 2, 14, 15, 27870423261401918993, "Local"},
   "MessageTemplate"]], "Message", "MSG",
- CellChangeTimes->{3.9374058242192082`*^9, 3.937425674901741*^9, 
+ CellChangeTimes->{3.9374058242192073`*^9, 3.937425674901741*^9, 
   3.937425743238121*^9, 3.937425881947241*^9},
  CellLabel->
   "During evaluation of \
 In[14]:=",ExpressionUUID->"33940393-567d-5a40-b9d6-ac0144ad3b07"]
 }, Open  ]],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
@@ -1383,21 +1385,119 @@ Cell[BoxData[{
    RowBox[{"{", 
     RowBox[{"selCoef", ",", " ", 
      RowBox[{"{", 
-      RowBox[{
-      "0.001", ",", "0.005", ",", "0.01", ",", "0.015", ",", "0.02", ",", " ",
-        "0.03", ",", "0.04", ",", "0.05"}], "}"}]}], "}"}], ",", 
-   "\[IndentingNewLine]", 
+      RowBox[{"0.02", ",", " ", "0.03", ",", "0.04", ",", "0.05"}], "}"}]}], 
+    "}"}], ",", "\[IndentingNewLine]", 
    RowBox[{"{", 
     RowBox[{"start", ",", 
      RowBox[{"{", 
       RowBox[{"0.01", ",", "0.025", ",", "0.05", ",", "0.1"}], "}"}]}], 
     "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",
- CellChangeTimes->{{3.9374238630547256`*^9, 
-  3.9374239881908264`*^9}},ExpressionUUID->"42888ca8-7de9-814c-9006-\
-f0d92fae4ef0"]
+ CellChangeTimes->{{3.9374238630547247`*^9, 3.9374239881908264`*^9}, {
+  3.937501053759531*^9, 3.937501082936056*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"42888ca8-7de9-814c-9006-f0d92fae4ef0"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NDSolve", "mxsst", 
+   "\"Using maximum number of grid points \\!\\(\\*RowBox[{\\\"10000\\\"}]\\) \
+allowed by the MaxPoints or MinStepSize options for independent variable \
+\\!\\(\\*RowBox[{\\\"x\\\"}]\\).\"", 2, 14, 1, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.93750109031242*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"0f274cd2-5727-7e41-9428-e147bb51b80b"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NDSolve", "bcart", 
+   "\"Warning: an insufficient number of boundary conditions have been \
+specified for the direction of independent variable \
+\\!\\(\\*RowBox[{\\\"x\\\"}]\\). Artificial boundary effects may be present \
+in the solution.\"", 2, 14, 2, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9375010903965797`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"62768f4c-24c4-ae46-b690-534ab96a36ca"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NDSolve", "mxsst", 
+   "\"Using maximum number of grid points \\!\\(\\*RowBox[{\\\"10000\\\"}]\\) \
+allowed by the MaxPoints or MinStepSize options for independent variable \
+\\!\\(\\*RowBox[{\\\"x\\\"}]\\).\"", 2, 14, 3, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9375011178464737`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"782a9e68-a12e-9248-aedd-fa389c52bc2f"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NDSolve", "bcart", 
+   "\"Warning: an insufficient number of boundary conditions have been \
+specified for the direction of independent variable \
+\\!\\(\\*RowBox[{\\\"x\\\"}]\\). Artificial boundary effects may be present \
+in the solution.\"", 2, 14, 4, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.937501117878031*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"7ec302ad-62a7-c846-930b-0bf0cd611580"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NDSolve", "mxsst", 
+   "\"Using maximum number of grid points \\!\\(\\*RowBox[{\\\"10000\\\"}]\\) \
+allowed by the MaxPoints or MinStepSize options for independent variable \
+\\!\\(\\*RowBox[{\\\"x\\\"}]\\).\"", 2, 14, 5, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9375011427912216`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"6345fbd0-3fbe-224a-ac1c-da76453e6ad5"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General", "stop", 
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"NDSolve\\\", \
+\\\"::\\\", \\\"mxsst\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
+during this calculation.\"", 2, 14, 6, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9375011428077087`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"2ee29f8a-b2e5-ea43-a0f8-14f2b0a3d585"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "NDSolve", "bcart", 
+   "\"Warning: an insufficient number of boundary conditions have been \
+specified for the direction of independent variable \
+\\!\\(\\*RowBox[{\\\"x\\\"}]\\). Artificial boundary effects may be present \
+in the solution.\"", 2, 14, 7, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.9375011428389683`*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"ed85c367-e8f6-5e4a-8cd2-927de18335fd"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General", "stop", 
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"NDSolve\\\", \
+\\\"::\\\", \\\"bcart\\\"}], \\\"MessageName\\\"]\\) will be suppressed \
+during this calculation.\"", 2, 14, 8, 27870918006074292499, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.937501142854702*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"abc86450-48dc-fd4b-8883-3776e8ab9224"]
+}, Open  ]]
 },
 WindowSize->{1428, 735.75},
-WindowMargins->{{-1440, Automatic}, {Automatic, 0}},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
 FrontEndVersion->"14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"6fe3db6b-c1fd-c14b-a17e-f89dde1711af"
@@ -1420,52 +1520,62 @@ Cell[4582, 126, 2630, 61, 214, "Input",ExpressionUUID->"89225d32-790f-1e4e-9332-
 Cell[7215, 189, 377, 8, 28, "Input",ExpressionUUID->"74248941-e0e0-c941-8d60-3069b0101033"],
 Cell[7595, 199, 3326, 86, 252, "Input",ExpressionUUID->"8759a051-c62c-6046-85c2-fbee019e0071"],
 Cell[10924, 287, 4390, 112, 306, "Input",ExpressionUUID->"f62c9075-d403-564e-a05f-771537e8cf03"],
-Cell[15317, 401, 4743, 120, 306, "Input",ExpressionUUID->"8e7bb278-3614-ac48-bef8-02db414b17cf"],
+Cell[15317, 401, 4739, 120, 336, "Input",ExpressionUUID->"8e7bb278-3614-ac48-bef8-02db414b17cf"],
 Cell[CellGroupData[{
-Cell[20085, 525, 429, 7, 28, "Input",ExpressionUUID->"57d355ef-8a26-a04c-9c41-42b4f7fc7e89"],
-Cell[20517, 534, 394, 5, 32, "Output",ExpressionUUID->"d1851a60-9dd5-3e47-9549-9bf2314f7169"]
+Cell[20081, 525, 429, 7, 28, "Input",ExpressionUUID->"57d355ef-8a26-a04c-9c41-42b4f7fc7e89"],
+Cell[20513, 534, 394, 5, 32, "Output",ExpressionUUID->"d1851a60-9dd5-3e47-9549-9bf2314f7169"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[20948, 544, 387, 6, 28, "Input",ExpressionUUID->"0bc7d2d3-f614-3243-b94d-95223b11e84d"],
-Cell[21338, 552, 315, 4, 32, "Output",ExpressionUUID->"4893386e-356c-a548-9297-eb3dda0ea1c4"]
+Cell[20944, 544, 387, 6, 28, "Input",ExpressionUUID->"0bc7d2d3-f614-3243-b94d-95223b11e84d"],
+Cell[21334, 552, 315, 4, 32, "Output",ExpressionUUID->"4893386e-356c-a548-9297-eb3dda0ea1c4"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[21690, 561, 980, 23, 105, "Input",ExpressionUUID->"06a53128-14e5-8249-8b99-4b344cfcb8c6"],
-Cell[22673, 586, 14638, 289, 252, "Output",ExpressionUUID->"3ae35ae8-e305-6e4b-b2a8-453917f06cb6"]
+Cell[21686, 561, 980, 23, 105, "Input",ExpressionUUID->"06a53128-14e5-8249-8b99-4b344cfcb8c6"],
+Cell[22669, 586, 14638, 289, 252, "Output",ExpressionUUID->"3ae35ae8-e305-6e4b-b2a8-453917f06cb6"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[37348, 880, 1400, 33, 124, "Input",ExpressionUUID->"b4541a4a-d6f5-1e45-bc61-b70dca7e0cd5"],
-Cell[38751, 915, 368, 9, 38, "Message",ExpressionUUID->"b26d55fd-85e0-2b4a-88c3-201b704bd7d7"],
-Cell[39122, 926, 408, 10, 28, "Message",ExpressionUUID->"6cdd4ba3-71a6-e24e-8e80-6a88e3e04f1a"],
-Cell[39533, 938, 371, 9, 38, "Message",ExpressionUUID->"21b60e5b-0614-6a48-9ad3-7002771ff795"],
-Cell[39907, 949, 406, 10, 28, "Message",ExpressionUUID->"2678c1a0-895e-d24e-b141-eeda69a4e258"],
-Cell[40316, 961, 545, 12, 28, "Message",ExpressionUUID->"764a96f7-18de-3042-ae50-6156e2675cad"],
-Cell[40864, 975, 369, 9, 38, "Message",ExpressionUUID->"52290fbf-ee2b-074c-9a15-99c221a609ca"],
-Cell[41236, 986, 449, 10, 28, "Message",ExpressionUUID->"bb188382-6376-b642-a526-7ecb6523b362"],
-Cell[41688, 998, 406, 10, 28, "Message",ExpressionUUID->"5ce32225-c958-e14f-8ac0-9215897010af"],
-Cell[42097, 1010, 455, 10, 28, "Message",ExpressionUUID->"76b60271-fecd-514d-bb5e-3fc73535eaa2"],
-Cell[42555, 1022, 547, 12, 28, "Message",ExpressionUUID->"1deb1d21-9abb-314f-af49-a2fb43a1489d"]
+Cell[37344, 880, 1400, 33, 124, "Input",ExpressionUUID->"b4541a4a-d6f5-1e45-bc61-b70dca7e0cd5"],
+Cell[38747, 915, 368, 9, 38, "Message",ExpressionUUID->"b26d55fd-85e0-2b4a-88c3-201b704bd7d7"],
+Cell[39118, 926, 406, 10, 28, "Message",ExpressionUUID->"6cdd4ba3-71a6-e24e-8e80-6a88e3e04f1a"],
+Cell[39527, 938, 369, 9, 38, "Message",ExpressionUUID->"21b60e5b-0614-6a48-9ad3-7002771ff795"],
+Cell[39899, 949, 406, 10, 28, "Message",ExpressionUUID->"2678c1a0-895e-d24e-b141-eeda69a4e258"],
+Cell[40308, 961, 545, 12, 28, "Message",ExpressionUUID->"764a96f7-18de-3042-ae50-6156e2675cad"],
+Cell[40856, 975, 369, 9, 38, "Message",ExpressionUUID->"52290fbf-ee2b-074c-9a15-99c221a609ca"],
+Cell[41228, 986, 449, 10, 28, "Message",ExpressionUUID->"bb188382-6376-b642-a526-7ecb6523b362"],
+Cell[41680, 998, 406, 10, 28, "Message",ExpressionUUID->"5ce32225-c958-e14f-8ac0-9215897010af"],
+Cell[42089, 1010, 453, 10, 28, "Message",ExpressionUUID->"76b60271-fecd-514d-bb5e-3fc73535eaa2"],
+Cell[42545, 1022, 547, 12, 28, "Message",ExpressionUUID->"1deb1d21-9abb-314f-af49-a2fb43a1489d"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[43139, 1039, 1450, 33, 124, "Input",ExpressionUUID->"806ca9ed-40ce-aa49-aac3-a0a3d46aa8ee"],
-Cell[44592, 1074, 471, 10, 28, "Message",ExpressionUUID->"2afe9e49-2a54-cd41-a95f-fcb0b099716d"],
-Cell[45066, 1086, 471, 10, 28, "Message",ExpressionUUID->"1be4d9e7-c9a6-3547-8b8a-84327f946a75"],
-Cell[45540, 1098, 474, 11, 28, "Message",ExpressionUUID->"e8d1b0ab-41bc-a245-96c0-ee8b3d4e32b1"],
-Cell[46017, 1111, 453, 10, 28, "Message",ExpressionUUID->"b98c9cc6-f68b-dd4d-81d0-dec22368e99f"]
+Cell[43129, 1039, 1450, 33, 124, "Input",ExpressionUUID->"806ca9ed-40ce-aa49-aac3-a0a3d46aa8ee"],
+Cell[44582, 1074, 471, 10, 28, "Message",ExpressionUUID->"2afe9e49-2a54-cd41-a95f-fcb0b099716d"],
+Cell[45056, 1086, 471, 10, 28, "Message",ExpressionUUID->"1be4d9e7-c9a6-3547-8b8a-84327f946a75"],
+Cell[45530, 1098, 474, 11, 28, "Message",ExpressionUUID->"e8d1b0ab-41bc-a245-96c0-ee8b3d4e32b1"],
+Cell[46007, 1111, 453, 10, 28, "Message",ExpressionUUID->"b98c9cc6-f68b-dd4d-81d0-dec22368e99f"]
 }, Open  ]],
-Cell[46485, 1124, 1524, 34, 124, "Input",ExpressionUUID->"24c575ab-94d3-8049-8406-b01bdfc67585"],
+Cell[46475, 1124, 1524, 34, 124, "Input",ExpressionUUID->"24c575ab-94d3-8049-8406-b01bdfc67585"],
 Cell[CellGroupData[{
-Cell[48034, 1162, 2008, 47, 162, "Input",ExpressionUUID->"6d2d4bf5-e30e-7143-af43-511a78782651"],
-Cell[50045, 1211, 543, 11, 28, "Message",ExpressionUUID->"6c64f1ac-426d-4d40-9894-4ba9759dc63c"],
-Cell[50591, 1224, 580, 12, 28, "Message",ExpressionUUID->"cd0332b1-ff40-1d41-9cc2-93b85af84970"],
-Cell[51174, 1238, 547, 11, 28, "Message",ExpressionUUID->"c511a188-3cb4-014d-a4db-d60354d44601"],
-Cell[51724, 1251, 581, 12, 28, "Message",ExpressionUUID->"6bcbd831-bebf-8e45-8999-328615f2b96a"],
-Cell[52308, 1265, 547, 11, 28, "Message",ExpressionUUID->"e99b0403-7504-6b44-a6a3-bcb4b60357fc"],
-Cell[52858, 1278, 524, 11, 28, "Message",ExpressionUUID->"81d3ac6e-75e2-7e4e-aab2-738231cf0609"],
-Cell[53385, 1291, 579, 12, 28, "Message",ExpressionUUID->"41f4299f-b26f-6a42-a8c1-9b2a15277f5a"],
-Cell[53967, 1305, 524, 11, 28, "Message",ExpressionUUID->"33940393-567d-5a40-b9d6-ac0144ad3b07"]
+Cell[48024, 1162, 2008, 47, 162, "Input",ExpressionUUID->"6d2d4bf5-e30e-7143-af43-511a78782651"],
+Cell[50035, 1211, 543, 11, 28, "Message",ExpressionUUID->"6c64f1ac-426d-4d40-9894-4ba9759dc63c"],
+Cell[50581, 1224, 580, 12, 28, "Message",ExpressionUUID->"cd0332b1-ff40-1d41-9cc2-93b85af84970"],
+Cell[51164, 1238, 547, 11, 28, "Message",ExpressionUUID->"c511a188-3cb4-014d-a4db-d60354d44601"],
+Cell[51714, 1251, 581, 12, 28, "Message",ExpressionUUID->"6bcbd831-bebf-8e45-8999-328615f2b96a"],
+Cell[52298, 1265, 547, 11, 28, "Message",ExpressionUUID->"e99b0403-7504-6b44-a6a3-bcb4b60357fc"],
+Cell[52848, 1278, 524, 11, 28, "Message",ExpressionUUID->"81d3ac6e-75e2-7e4e-aab2-738231cf0609"],
+Cell[53375, 1291, 579, 12, 28, "Message",ExpressionUUID->"41f4299f-b26f-6a42-a8c1-9b2a15277f5a"],
+Cell[53957, 1305, 524, 11, 28, "Message",ExpressionUUID->"33940393-567d-5a40-b9d6-ac0144ad3b07"]
 }, Open  ]],
-Cell[54506, 1319, 2976, 77, 289, "Input",ExpressionUUID->"42888ca8-7de9-814c-9006-f0d92fae4ef0"]
+Cell[CellGroupData[{
+Cell[54518, 1321, 2975, 75, 289, "Input",ExpressionUUID->"42888ca8-7de9-814c-9006-f0d92fae4ef0"],
+Cell[57496, 1398, 472, 10, 28, "Message",ExpressionUUID->"0f274cd2-5727-7e41-9428-e147bb51b80b"],
+Cell[57971, 1410, 509, 11, 28, "Message",ExpressionUUID->"62768f4c-24c4-ae46-b690-534ab96a36ca"],
+Cell[58483, 1423, 475, 10, 28, "Message",ExpressionUUID->"782a9e68-a12e-9248-aedd-fa389c52bc2f"],
+Cell[58961, 1435, 507, 11, 28, "Message",ExpressionUUID->"7ec302ad-62a7-c846-930b-0bf0cd611580"],
+Cell[59471, 1448, 475, 10, 28, "Message",ExpressionUUID->"6345fbd0-3fbe-224a-ac1c-da76453e6ad5"],
+Cell[59949, 1460, 454, 10, 28, "Message",ExpressionUUID->"2ee29f8a-b2e5-ea43-a0f8-14f2b0a3d585"],
+Cell[60406, 1472, 509, 11, 28, "Message",ExpressionUUID->"ed85c367-e8f6-5e4a-8cd2-927de18335fd"],
+Cell[60918, 1485, 452, 10, 28, "Message",ExpressionUUID->"abc86450-48dc-fd4b-8883-3776e8ab9224"]
+}, Open  ]]
 }
 ]
 *)
